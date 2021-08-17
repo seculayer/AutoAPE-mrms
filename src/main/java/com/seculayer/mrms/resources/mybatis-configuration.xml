@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<environments default="AI">
+		<environment id="AI">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+				<property name="poolMaximumActiveConnections" value="${jdbc.poolMaxActive}"/>
+				<property name="poolMaximumIdleConnections" value="${jdbc.poolMaxIdle}"/>
+				<property name="poolTimeToWait" value="${jdbc.poolTimeToWait}"/>
+				<property name="poolPingEnabled" value="true"/>
+				<property name="poolPingQuery" value="select 1"/>
+				<property name="poolPingConnectionsNotUsedFor" value="10000"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/seculayer/mrms/db/mapper/CommonMapper.xml" />
+	</mappers>
+</configuration>
