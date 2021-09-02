@@ -1,15 +1,12 @@
 package com.seculayer.mrms.managers;
 
-import java.io.FileInputStream;
-import java.lang.invoke.MethodHandles;
-
-
 import com.seculayer.mrms.db.CommonDAO;
+import com.seculayer.util.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.seculayer.util.conf.Configuration;
-import com.seculayer.mrms.managers.HTTPServerManager;
+import java.io.FileInputStream;
+import java.lang.invoke.MethodHandles;
 
 public class MRMServerManager {
     // base variables
