@@ -6,4 +6,38 @@
     <select id="selectTestQuery" resultType="map">
         SELECT 1
     </select>
+    <select id="selectVarFuncList" resultType="map">
+        SELECT conv_func_cls, conv_func_tag
+        FROM VAR_FUNC_INFO
+    </select>
+    <update id="updateSttusCd" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    learn_sttus_cd = #{learn_sttus_cd}, issue_task_idx = #{task_idx}, message = #{message}
+        WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <select id="selectSttusCd" resultType="map">
+        SELECT learn_sttus_cd
+        FROM LEARN_HIST
+        WHERE learn_hist_no = #{hist_no}
+    </select>
+    <update id="updateEps" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    eps = #{eps}
+        WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateLearnResult" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    ml_result_json = #{result}
+        WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateStartTime" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    start_time = #{curr_time}
+        WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateEndTime" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    end_time = #{curr_time}
+        WHERE  learn_hist_no = #{hist_no}
+    </update>
 </mapper>
