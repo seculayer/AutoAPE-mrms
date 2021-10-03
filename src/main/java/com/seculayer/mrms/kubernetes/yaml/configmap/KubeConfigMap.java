@@ -1,4 +1,4 @@
 package com.seculayer.mrms.kubernetes.yaml.configmap;
 
-public class KubeConfigMap {
+public abstract class KubeConfigMap {
 }
