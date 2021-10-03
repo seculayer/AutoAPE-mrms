@@ -16,6 +16,9 @@ public class MRMServerManager {
     // REST server
     private HTTPServerManager httpServer;
 
+    // kube Manager
+    private KubernetesManager kubeManager;
+
     private MRMServerManager(){}
 
     // Singleton pattern
@@ -40,6 +43,10 @@ public class MRMServerManager {
             // Database Test
             CommonDAO commonDAO = new CommonDAO();
             commonDAO.selectTestQuery();
+
+            // Kubernetes Manager
+            kubeManager = new KubernetesManager();
+
 
         } catch (Exception e) {
             logger.error(String.format("initialize error : %s", e));
