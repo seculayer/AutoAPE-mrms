@@ -11,7 +11,7 @@ fi
 ##########################################################################
 source "$BASE_DIR"/.libs
 
-CLASSPATH=$CLASSPATH:autml-mrms-1.0.0.jar
+CLASSPATH=$CLASSPATH:automl-mrms-1.0.0.jar
 JAVA_HOME=/usr/lib/jvm/zulu-11
 RUN_PATH=./
 
