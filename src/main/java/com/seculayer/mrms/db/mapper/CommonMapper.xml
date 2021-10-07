@@ -6,4 +6,9 @@
     <select id="selectTestQuery" resultType="map">
         SELECT 1
     </select>
+
+    <select id="selectCVTFunction" resultType="map">
+        SELECT *
+        FROM VAR_FUNC_INFO
+    </select>
 </mapper>

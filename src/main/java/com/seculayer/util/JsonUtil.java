@@ -2,6 +2,8 @@ package com.seculayer.util;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.json.JSONException;
+import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,5 +30,15 @@ public class JsonUtil {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<HashMap<String, Object>>() {};
         return objectMapper.readValue(data, typeReference);
+    }
+
+    public static JSONObject mapToJson(Map<String, Object> map) throws JSONException {
+        JSONObject jsonData = new JSONObject();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            jsonData.put(key, value);
+        }
+        return jsonData;
     }
 }
