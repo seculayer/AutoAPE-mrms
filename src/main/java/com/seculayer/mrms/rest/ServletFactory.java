@@ -2,9 +2,12 @@ package com.seculayer.mrms.rest;
 
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.rest.servlet.MRMSDummyServlet;
+import com.seculayer.util.JsonUtil;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -48,5 +51,9 @@ public class ServletFactory {
             }
         }
         return handler;
+    }
+
+    public static Map<String, Object> getBodyFromJSON(HttpServletRequest httpServletRequest) throws IOException {
+        return JsonUtil.getMapFromString(httpServletRequest.getReader());
     }
 }

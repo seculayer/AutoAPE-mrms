@@ -6,6 +6,10 @@
     <select id="selectTestQuery" resultType="map">
         SELECT 1
     </select>
+    <select id="selectCVTFunction" resultType="map">
+        SELECT *
+        FROM VAR_FUNC_INFO
+    </select>
     <select id="selectVarFuncList" resultType="map">
         SELECT conv_func_cls, conv_func_tag
         FROM VAR_FUNC_INFO
