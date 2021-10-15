@@ -15,122 +15,82 @@ public class CommonDAO {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final SqlSessionFactory factory = DBSessionManager.getSqlSession();
 
-    private static String mapperName = "CommonMapper.";
+    private static final String mapperName = "CommonMapper.";
 
+    // Select
     public void selectTestQuery(){
         String funcName = mapperName + "selectTestQuery";
-        SqlSession session = factory.openSession();
-        try {
+        try (SqlSession session = factory.openSession()) {
             Map<String, Object> map = session.selectOne(funcName);
             logger.debug("select test query : {}", map);
-        } finally {
-            session.close();
         }
-    }
-
-    public List<Map<String, Object>> selectCVTFunction(){
-        String funcName = mapperName + "selectCVTFunction";
-        SqlSession session = factory.openSession();
-        List<Map<String, Object>> map = null;
-        try {
-            map = session.selectList(funcName);
-            logger.debug("select list query : {}", map);
-        } finally {
-            session.close();
-        }
-        return map;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new CommonDAO().selectCVTFunction().toString());
     }
 
     public List<Map<String, Object>> selectVarFuncList(){
-        SqlSession session = factory.openSession();
         List<Map<String, Object>> map;
-        try {
+        try (SqlSession session = factory.openSession()) {
             map = session.selectList("CommonMapper.selectVarFuncList");
-        } finally {
-            session.close();
         }
 
         return map;
     }
 
-    public void updateSttusCd(String histNo, String status, String taskIdx, String message){
-        SqlSession session = factory.openSession();
-        Map<String, Object> map = new HashMap<>();
-        map.put("learn_sttus_cd", status);
-        map.put("hist_no", histNo);
-        map.put("task_idx", taskIdx);
-        map.put("message", message);
-        try{
-            session.update("CommonMapper.updateSttusCd", map);
-            session.commit();
-        }
-        finally {
-            session.close();
-        }
-    }
-
-    public Map<String, Object> selectSttusCd(String histNo){
-        SqlSession session = factory.openSession();
-        Map<String, Object> map = new HashMap<>();
-        map.put("hist_no", histNo);
+    public Map<String, Object> selectSttusCd(Map<String, Object> map){
         Map<String, Object> rstMap;
-        try {
+        try (SqlSession session = factory.openSession()) {
             rstMap = session.selectOne("CommonMapper.selectSttusCd", map);
-        } finally {
-            session.close();
         }
 
         return rstMap;
     }
 
-    public void updateEps(String histNo, double eps){
-        SqlSession session = factory.openSession();
-        Map<String, Object> map = new HashMap<>();
-        map.put("eps", eps);
-        map.put("hist_no", histNo);
-        try{
+    public List<Map<String, Object>> selectModelsInfo(Map<String, Object> map){
+        List<Map<String, Object>> rstListMap;
+        try (SqlSession session = factory.openSession()) {
+            rstListMap = session.selectList("CommonMapper.selectModelsInfo", map);
+        }
+
+        return rstListMap;
+    }
+
+
+    // Update
+    public void updateSttusCd(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateSttusCd", map);
+            session.commit();
+        }
+    }
+
+    public void updateEps(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateEps", map);
             session.commit();
         }
-        finally {
-            session.close();
-        }
     }
 
-    public void updateLearnResult(Map map){
-        SqlSession session = factory.openSession();
-        try{
+    public void updateLearnResult(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateLearnResult", map);
             session.commit();
         }
-        finally {
-            session.close();
-        }
     }
 
-    public void updateStartTime(Map map){
-        SqlSession session = factory.openSession();
-        try{
+    public void updateStartTime(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateStartTime", map);
             session.commit();
         }
-        finally {
-            session.close();
-        }
     }
 
-    public void updateEndTime(Map map){
-        SqlSession session = factory.openSession();
-        try{
+    public void updateEndTime(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateEndTime", map);
             session.commit();
         }
-        finally {
-            session.close();
-        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new CommonDAO().selectVarFuncList().toString());
     }
 }

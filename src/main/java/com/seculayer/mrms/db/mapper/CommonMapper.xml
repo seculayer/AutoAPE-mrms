@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="CommonMapper">
+    <!-- Select -->
     <select id="selectTestQuery" resultType="map">
         SELECT 1
     </select>
@@ -14,16 +15,24 @@
         SELECT conv_func_cls, conv_func_tag
         FROM VAR_FUNC_INFO
     </select>
-    <update id="updateSttusCd" parameterType="map">
-        UPDATE LEARN_HIST
-        SET    learn_sttus_cd = #{learn_sttus_cd}, issue_task_idx = #{task_idx}, message = #{message}
-        WHERE  learn_hist_no = #{hist_no}
-    </update>
     <select id="selectSttusCd" resultType="map">
         SELECT learn_sttus_cd
         FROM LEARN_HIST
         WHERE learn_hist_no = #{hist_no}
     </select>
+    <select id="selectModelsInfo" resultType="map">
+        SELECT *
+        FROM LEARN_HIST
+        WHERE project_id = #{project_id}
+    </select>
+
+
+    <!-- Update -->
+    <update id="updateSttusCd" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    learn_sttus_cd = #{learn_sttus_cd}, issue_task_idx = #{task_idx}, message = #{message}
+        WHERE  learn_hist_no = #{hist_no}
+    </update>
     <update id="updateEps" parameterType="map">
         UPDATE LEARN_HIST
         SET    eps = #{eps}

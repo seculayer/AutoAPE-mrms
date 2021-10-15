@@ -8,11 +8,25 @@
         (	project_id
         ,	project_purpose
         ,	dataset_id
+        ,   status
+        ,   start_time
         )
         VALUES
             (	#{project_id}
             ,	#{project_purpose_cd}
             ,	#{dataset_id}
+            ,	#{status}
+            ,	#{start_time}
             )
     </insert>
+    <select id="selectLearningProject" resultType="map">
+        SELECT learn_hist_no, status
+        FROM LEARN_HIST
+        WHERE project_id = #{project_id}
+    </select>
+    <update id="updateProjectSttus" parameterType="map">
+        UPDATE PROJECT_INFO
+        SET    status = #{status}
+        WHERE  project_id = #{project_id}
+    </update>
 </mapper>
