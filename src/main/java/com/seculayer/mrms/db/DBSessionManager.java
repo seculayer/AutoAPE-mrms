@@ -1,4 +1,4 @@
-package com.seculayer.mrms.managers;
+package com.seculayer.mrms.db;
 
 import com.seculayer.util.cipher.AES256;
 import org.apache.ibatis.io.Resources;

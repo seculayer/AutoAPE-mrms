@@ -1,5 +1,6 @@
-package com.seculayer.mrms.managers;
+package com.seculayer.mrms.rest;
 
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.util.conf.Configuration;
 import com.seculayer.mrms.rest.ServletFactory;
 import org.eclipse.jetty.server.*;

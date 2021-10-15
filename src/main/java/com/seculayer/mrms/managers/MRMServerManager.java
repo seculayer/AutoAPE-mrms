@@ -2,6 +2,8 @@ package com.seculayer.mrms.managers;
 
 import com.seculayer.mrms.checker.ProjectStatusChecker;
 import com.seculayer.mrms.db.CommonDAO;
+import com.seculayer.mrms.kubernetes.KubernetesManager;
+import com.seculayer.mrms.rest.HTTPServerManager;
 import com.seculayer.util.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +53,7 @@ public class MRMServerManager {
 
             // Kubernetes Manager
             kubeManager = KubernetesManager.getInstance();
-//            kubeManager.initialize();
+            kubeManager.initialize();
 
             projectIdList = new ArrayList<>();
 
