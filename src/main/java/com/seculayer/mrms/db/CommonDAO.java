@@ -28,23 +28,6 @@ public class CommonDAO {
         }
     }
 
-    public List<Map<String, Object>> selectCVTFunction(){
-        String funcName = mapperName + "selectCVTFunction";
-        SqlSession session = factory.openSession();
-        List<Map<String, Object>> map = null;
-        try {
-            map = session.selectList(funcName);
-            logger.debug("select list query : {}", map);
-        } finally {
-            session.close();
-        }
-        return map;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new CommonDAO().selectCVTFunction().toString());
-    }
-
     public List<Map<String, Object>> selectVarFuncList(){
         SqlSession session = factory.openSession();
         List<Map<String, Object>> map;

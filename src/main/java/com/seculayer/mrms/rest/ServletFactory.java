@@ -1,47 +1,60 @@
 package com.seculayer.mrms.rest;
 
 import com.seculayer.mrms.common.Constants;
-import com.seculayer.mrms.rest.servlet.MRMSDummyServlet;
 import com.seculayer.util.JsonUtil;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.*;
 import java.util.*;
 
 public class ServletFactory {
-    private static List<Class<?>> scan(String packageName){
+    private static List<Class<?>> scan(){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        String path = packageName.replace('.', '/');
+        String path = Constants.REST_PACKAGES.replace('.', '/');
 
         List<Class<?>> classes = new ArrayList<Class<?>>();
         try {
-            Enumeration<URL> resources = classLoader.getResources(path);
-            URL res = resources.nextElement();
-
-            for (File file : Objects.requireNonNull(new File(res.getFile()).listFiles())) {
-                if (file.getName().endsWith(".class")) {
-                    String className = packageName + '.' + file.getName().substring(0, file.getName().length() - 6);
-                    classes.add(classLoader.loadClass(className));
+            URL res = classLoader.getResource(path);
+            File packDir;
+            if (res.toString().contains("jar")) {
+                URL jar = ServletFactory.class.getProtectionDomain().getCodeSource().getLocation();
+                Path jarFile = Paths.get(jar.toString().substring("file:".length()));
+                FileSystem fs = FileSystems.newFileSystem(jarFile, null);
+                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
+                for(Path p: directoryStream) {
+                    String classPath = p.toString();
+                    if (classPath.endsWith(".class")) {
+                        String className = classPath.substring(0, classPath.length() - 6).replace("/", ".");
+                        classes.add(classLoader.loadClass(className));
+                    }
+                }
+            } else {
+                packDir = new File(Objects.requireNonNull(res.getFile()));
+                for (File file : Objects.requireNonNull(packDir.listFiles())) {
+                    if (file.getName().endsWith(".class")) {
+                        String className = Constants.REST_PACKAGES + '.' + file.getName().substring(0, file.getName().length() - 6);
+                        classes.add(classLoader.loadClass(className));
+                    }
                 }
             }
+
         } catch (Exception e){
             e.printStackTrace();
         }
-
         return classes;
     }
-
 
     public static ServletHandler createServletHandler(){
         ServletHandler handler = new ServletHandler();
         // add handlers
-        for (Class<?> servletClassName: ServletFactory.scan(Constants.REST_PACKAGES)){
+        for (Class<?> servletClassName: ServletFactory.scan()){
             try {
                 ServletHandlerAbstract servlet = (ServletHandlerAbstract) servletClassName.getConstructor().newInstance();
                 String contextPath = String.valueOf(servletClassName.getField("ContextPath").get(servletClassName.getClass()));
