@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class MRMSDummyServlet extends ServletHandlerAbstract {
-    protected static final long serialVersionUID = -3148899107745938614L;
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/test";
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {

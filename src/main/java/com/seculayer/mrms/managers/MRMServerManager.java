@@ -1,5 +1,6 @@
 package com.seculayer.mrms.managers;
 
+import com.seculayer.mrms.checker.ProjectStatusChecker;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.util.conf.Configuration;
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.lang.invoke.MethodHandles;
+import java.util.*;
 
 public class MRMServerManager {
     // base variables
@@ -18,6 +20,9 @@ public class MRMServerManager {
 
     // kube Manager
     private KubernetesManager kubeManager;
+
+    // project list
+    private List<Map<String, Object>> projectIdList;
 
     private MRMServerManager(){}
 
@@ -45,12 +50,48 @@ public class MRMServerManager {
             commonDAO.selectTestQuery();
 
             // Kubernetes Manager
-            kubeManager = new KubernetesManager();
+            kubeManager = KubernetesManager.getInstance();
+//            kubeManager.initialize();
 
+            projectIdList = new ArrayList<>();
 
+            this.initSchedule();
         } catch (Exception e) {
             logger.error(String.format("initialize error : %s", e));
             e.printStackTrace();
+        }
+    }
+
+    // scheduler
+    private long calcDelay(long period){
+        Calendar c = Calendar.getInstance();
+        long ns = System.currentTimeMillis();
+        int min = c.get(Calendar.MINUTE);
+        int sec = c.get(Calendar.SECOND);
+        if (sec + period >= 60) {
+            min += (int)((sec+period) / 60);
+            sec = 0;
+        } else {
+            sec = (int) ((sec/period + 1) * period);
+        }
+        c.set(Calendar.MINUTE, min);
+        c.set(Calendar.SECOND, sec);
+        return c.getTimeInMillis() - ns;
+    }
+
+    private void initSchedule(){
+        long period = conf.getLong("ape.schedule.period", 10);
+
+        Timer timer = new Timer();
+        long delay = this.calcDelay(period);
+
+        logger.info("Delay for JOB - {} seconds", delay / 1000);
+        this.initScheduleCheckers(timer, delay, period);
+    }
+
+    private void initScheduleCheckers(Timer timer, long delay, long period){
+        if (conf.getBoolean("use.learning.schedule", false)) {
+            timer.scheduleAtFixedRate(new ProjectStatusChecker(), delay, period * 1000);
         }
     }
 
@@ -60,5 +101,9 @@ public class MRMServerManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Map<String, Object>> getProjectIdList() {
+        return projectIdList;
     }
 }
