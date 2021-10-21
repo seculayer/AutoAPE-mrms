@@ -51,6 +51,23 @@ public class CommonDAO {
         return rstListMap;
     }
 
+    public List<Map<String, Object>> selectProjectsInfo(){
+        List<Map<String, Object>> rstListMap;
+        try (SqlSession session = factory.openSession()) {
+            rstListMap = session.selectList("CommonMapper.selectProjectsInfo");
+        }
+
+        return rstListMap;
+    }
+
+    public Map<String, Object> selectWorkflowInfo(Map<String, Object> map){
+        Map<String, Object> rstMap;
+        try (SqlSession session = factory.openSession()) {
+            rstMap = session.selectOne("CommonMapper.selectWorkflowInfo");
+        }
+
+        return rstMap;
+    }
 
     // Update
     public void updateSttusCd(Map<String, Object> map){

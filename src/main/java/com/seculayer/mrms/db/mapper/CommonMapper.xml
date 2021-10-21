@@ -22,8 +22,20 @@
     </select>
     <select id="selectModelsInfo" resultType="map">
         SELECT *
-        FROM LEARN_HIST
-        WHERE project_id = #{project_id}
+        FROM (SELECT *
+                FROM LEARN_HIST L
+                INNER JOIN ALGORITHM_INFO A
+                ON A.alg_id = L.learn_alg_id
+            ) AS T
+        WHERE T.project_id = #{project_id}
+    </select>
+    <select id="selectProjectsInfo" resultType="map">
+        SELECT *
+        FROM PROJECT_INFO
+    </select>
+    <select id="selectWorkflowInfo" resultType="map">
+        SELECT *
+        FROM PROJECT_INFO
     </select>
 
 
