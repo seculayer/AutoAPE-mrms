@@ -12,12 +12,11 @@ fi
 source "$BASE_DIR"/.libs
 
 CLASSPATH=$CLASSPATH:automl-mrms-1.0.0.jar
-JAVA_HOME=/usr/lib/jvm/zulu-11
 RUN_PATH=./
 
 JAVA_OPTS="-server"
 JAVA_OPTS="${JAVA_OPTS} -Xms1G -Xmx1G"
 JAVA_OPTS="${JAVA_OPTS} -DAPP=MRMServer -Dfile.encoding=UTF-8"
 
-export LANG CLASSPATH JAVA_HOME RUN_PATH
+export LANG CLASSPATH RUN_PATH
 "${JAVA_HOME}"/bin/java $JAVA_OPTS -classpath $CLASSPATH com.seculayer.mrms.MRMServerMain
