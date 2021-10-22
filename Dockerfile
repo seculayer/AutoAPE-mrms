@@ -28,4 +28,9 @@ RUN chmod +x /eyeCloudAI/app/ape/mrms/mrms.sh
 COPY --from=builder "$app/target/lib" /eyeCloudAI/app/ape/mrms/lib
 COPY --from=builder "$app/target/automl-mrms-1.0.0.jar" /eyeCloudAI/app/ape/mrms
 
+RUN groupadd -g 1000 aiuser
+RUN useradd -r -u 1000 -g aiuser aiuser
+RUN chown -R aiuser:aiuser /eyeCloudAI
+USER aiuser
+
 CMD ["/eyeCloudAI/app/ape/mrms/mrms.sh"]
