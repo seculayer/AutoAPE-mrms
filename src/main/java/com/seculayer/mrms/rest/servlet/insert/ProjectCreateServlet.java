@@ -1,5 +1,7 @@
-package com.seculayer.mrms.rest.servlet;
+package com.seculayer.mrms.rest.servlet.insert;
 
+import com.seculayer.mrms.db.ProjectManageDAO;
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 
@@ -8,41 +10,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
-public class UpdateSttusServlet extends ServletHandlerAbstract {
-    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/status_update/learn";
+public class ProjectCreateServlet extends ServletHandlerAbstract {
+    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/project_create";
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletResponse.setContentType("text/json; charset=utf-8");
-        PrintWriter out = httpServletResponse.getWriter();
+    private ProjectManageDAO projManageDAO = new ProjectManageDAO();
 
-        logger.debug("###################################################################");
-        logger.debug("In doGet");
-        out.println("In doGet");
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        logger.debug("###################################################################");
-    }
+    @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
 
         logger.debug("###################################################################");
-        logger.debug("In doPost - update status");
+        logger.debug("In doPost - get status cd");
 
         try {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
+            this.projManageDAO.insertProjectInfo(map);
             logger.debug(map.toString());
 
-            commonDAO.updateSttusCd(map);
+            List<Map<String, Object>> projectList = MRMServerManager.getInstance().getProjectIdList();
+            projectList.add(map);
+            logger.info("Cnt of Managing Projects are {} : {}", projectList.size(), projectList.toString());
             out.println("1");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
 
         logger.debug("###################################################################");
-
     }
 }

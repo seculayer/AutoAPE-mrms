@@ -1,6 +1,5 @@
-package com.seculayer.mrms.rest.servlet;
+package com.seculayer.mrms.rest.servlet.select;
 
-import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -12,28 +11,25 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
-public class GetWorkflowInfoServlet extends ServletHandlerAbstract {
-    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_workflow_info";
+public class GetVarFuncListServlet extends ServletHandlerAbstract {
+    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_cvt_fn";
 
-    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
         ObjectMapper mapper = new ObjectMapper();
 
         logger.debug("###################################################################");
-        logger.debug("In doPost - get workflow info");
+        logger.debug("In doGet - get var func list");
 
         try {
-            Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
-            logger.debug(map.toString());
-
-            Map<String, Object> rst = commonDAO.selectWorkflowInfo(map);
-
-            String jsonStr = mapper.writeValueAsString(rst);
+            List<Map<String, Object>> funcMap = commonDAO.selectVarFuncList();
+            String jsonStr = mapper.writeValueAsString(funcMap);
+            logger.debug(jsonStr);
             out.println(jsonStr);
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
-            logger.error(e.toString());
+            e.printStackTrace();
             out.println("error");
         }
         logger.debug("###################################################################");

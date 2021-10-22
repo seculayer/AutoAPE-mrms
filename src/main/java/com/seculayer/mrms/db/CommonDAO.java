@@ -105,6 +105,24 @@ public class CommonDAO {
         }
     }
 
+
+    // insert
+    public void insertDataset(Map<String, Object> map) {
+        try(SqlSession session = factory.openSession()) {
+            session.insert("CommonMapper.insertDataset", map);
+            session.commit();
+        }
+    }
+
+
+    // delete
+    public void deleteDataset(Map<String, Object> map) {
+        try(SqlSession session = factory.openSession()) {
+            session.delete("CommonMapper.deleteDataset", map);
+            session.commit();
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println(new CommonDAO().selectVarFuncList().toString());
     }

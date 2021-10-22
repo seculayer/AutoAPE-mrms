@@ -21,13 +21,41 @@
         WHERE learn_hist_no = #{hist_no}
     </select>
     <select id="selectModelsInfo" resultType="map">
-        SELECT *
-        FROM (SELECT *
-                FROM LEARN_HIST L
-                INNER JOIN ALGORITHM_INFO A
-                ON A.alg_id = L.learn_alg_id
-            ) AS T
-        WHERE T.project_id = #{project_id}
+        SELECT
+            CAST(LH.learn_hist_no AS CHAR) AS project_id
+             , CAST(LH.param_id AS CHAR) AS param_id
+             , CAST(LH.learn_alg_id AS CHAR) AS learn_alg_id
+             , CAST(LH.data_process_id AS CHAR) AS data_process_id
+             , CAST(LH.project_id AS CHAR) AS project_id
+             , LH.learn_sttus_cd
+             , LH.start_time
+             , LH.end_time
+             , LH.ml_result_json
+             , LH.ml_score
+             , LH.eps
+             , LH.issue_task_idx
+             , LH.message
+             , MPI.param_json
+             , MAI.alg_json
+             , AAI.metadata_json
+             , AAI.alg_type
+             , AAI.alg_json
+             , AI.alg_nm
+             , AI.alg_cls
+             , AI.alg_type
+             , AI.dist_yn
+             , AI.alg_cont
+             , AI.alg_ver
+             , AI.proc_id
+             , AI.proc_dt
+             , AI.lib_type
+             , AI.user_made_yn
+        FROM LEARN_HIST LH
+                 INNER JOIN ML_PARAM_INFO MPI ON LH.param_id = MPI.param_id
+                 INNER JOIN ML_ALGORITHM_INFO MAI ON LH.learn_alg_id = MAI.learn_alg_id
+                 INNER JOIN ALG_ANAL_INFO AAI ON MAI.alg_anal_id = AAI.alg_anal_id
+                 INNER JOIN ALGORITHM_INFO AI ON AAI.alg_id = AI.alg_id
+        WHERE project_id = #{project_id}
     </select>
     <select id="selectProjectsInfo" resultType="map">
         SELECT *
@@ -65,4 +93,31 @@
         SET    end_time = #{curr_time}
         WHERE  learn_hist_no = #{hist_no}
     </update>
+
+
+    <!-- Insert -->
+    <insert id="insertDataset" parameterType="map">
+        INSERT INTO DATASET (dataset_id,
+                             dataset_format,
+                             n_cols,
+                             dataset_size,
+                             n_rows,
+                             status_cd,
+                             format_json)
+        VALUES (#{dataset_id},
+                #{dataset_format},
+                #{n_cols},
+                #{dataset_size},
+                #{n_rows},
+                #{status_cd},
+                #{format_json}
+                )
+    </insert>
+
+
+    <!-- Delete -->
+    <delete id="deleteDataset" parameterType="map">
+        DELETE FROM DATASET
+        WHERE dataset_id = #{dataset_id}
+    </delete>
 </mapper>

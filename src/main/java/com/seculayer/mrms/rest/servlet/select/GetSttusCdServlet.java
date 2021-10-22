@@ -1,4 +1,4 @@
-package com.seculayer.mrms.rest.servlet;
+package com.seculayer.mrms.rest.servlet.select;
 
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
@@ -10,28 +10,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-public class UpdateEpsServlet extends ServletHandlerAbstract {
-    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/eps_update";
+public class GetSttusCdServlet extends ServletHandlerAbstract {
+    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_sttus_cd";
 
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
 
         logger.debug("###################################################################");
-        logger.debug("In doPost - update eps");
+        logger.debug("In doPost - get status cd");
 
         try {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
             logger.debug(map.toString());
-            commonDAO.updateEps(map);
-            out.println("1");
+            Map<String, Object> sttusCd = commonDAO.selectSttusCd(map);
+
+            out.print(sttusCd.get("learn_sttus_cd").toString());
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        }catch (Exception e){
-            logger.error(e.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
             out.println("error");
         }
-
         logger.debug("###################################################################");
-
     }
 }
