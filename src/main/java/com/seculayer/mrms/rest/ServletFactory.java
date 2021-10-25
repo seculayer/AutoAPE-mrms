@@ -18,37 +18,42 @@ import java.util.Objects;
 public class ServletFactory {
     private static List<Class<?>> scan(){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        String path = Constants.REST_PACKAGES.replace('.', '/');
+//        String path = Constants.REST_PACKAGES.replace('.', '/');
 
         List<Class<?>> classes = new ArrayList<Class<?>>();
-        try {
-            URL res = classLoader.getResource(path);
-            File packDir;
-            if (res.toString().contains("jar")) {
-                URL jar = ServletFactory.class.getProtectionDomain().getCodeSource().getLocation();
-                Path jarFile = Paths.get(jar.toString().substring("file:".length()));
-                FileSystem fs = FileSystems.newFileSystem(jarFile, null);
-                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
-                for(Path p: directoryStream) {
-                    String classPath = p.toString();
-                    if (classPath.endsWith(".class")) {
-                        String className = classPath.substring(0, classPath.length() - 6).replace("/", ".");
-                        classes.add(classLoader.loadClass(className));
-                    }
-                }
-            } else {
-                packDir = new File(Objects.requireNonNull(res.getFile()));
-                for (File file : Objects.requireNonNull(packDir.listFiles())) {
-                    if (file.getName().endsWith(".class")) {
-                        String className = Constants.REST_PACKAGES + '.' + file.getName().substring(0, file.getName().length() - 6);
-                        classes.add(classLoader.loadClass(className));
-                    }
-                }
-            }
+        for (String subPack : Constants.REST_SUB_PACKS){
+            String path = (Constants.REST_PACKAGES + "." + subPack).replace('.', '/');
 
-        } catch (Exception e){
-            e.printStackTrace();
+            try {
+                URL res = classLoader.getResource(path);
+                File packDir;
+                if (res.toString().contains("jar")) {
+                    URL jar = ServletFactory.class.getProtectionDomain().getCodeSource().getLocation();
+                    Path jarFile = Paths.get(jar.toString().substring("file:".length()));
+                    FileSystem fs = FileSystems.newFileSystem(jarFile, null);
+                    DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
+                    for(Path p: directoryStream) {
+                        String classPath = p.toString();
+                        if (classPath.endsWith(".class")) {
+                            String className = classPath.substring(0, classPath.length() - 6).replace("/", ".");
+                            classes.add(classLoader.loadClass(className));
+                        }
+                    }
+                } else {
+                    packDir = new File(Objects.requireNonNull(res.getFile()));
+                    for (File file : Objects.requireNonNull(packDir.listFiles())) {
+                        if (file.getName().endsWith(".class")) {
+                            String className = Constants.REST_PACKAGES + "." + subPack + "." + file.getName().substring(0, file.getName().length() - 6);
+                            classes.add(classLoader.loadClass(className));
+                        }
+                    }
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
+
         return classes;
     }
 
