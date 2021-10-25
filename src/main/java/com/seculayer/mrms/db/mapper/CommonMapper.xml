@@ -55,7 +55,7 @@
                  INNER JOIN ML_ALGORITHM_INFO MAI ON LH.learn_alg_id = MAI.learn_alg_id
                  INNER JOIN ALG_ANAL_INFO AAI ON MAI.alg_anal_id = AAI.alg_anal_id
                  INNER JOIN ALGORITHM_INFO AI ON AAI.alg_id = AI.alg_id
-        WHERE project_id = #{project_id}
+        WHERE LH.project_id = #{project_id}
     </select>
     <select id="selectProjectsInfo" resultType="map">
         SELECT *
