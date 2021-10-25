@@ -1,4 +1,4 @@
-package com.seculayer.mrms.rest.servlet;
+package com.seculayer.mrms.rest.servlet.etc;
 
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 
