@@ -1,6 +1,9 @@
 package com.seculayer.mrms.managers;
 
-import com.seculayer.mrms.checker.ProjectStatusChecker;
+import com.seculayer.mrms.checker.DACheifScheduleChecker;
+import com.seculayer.mrms.checker.ProjectCompleteChecker;
+import com.seculayer.mrms.checker.RcmdScheduleChecker;
+import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.kubernetes.KubernetesManager;
 import com.seculayer.mrms.rest.HTTPServerManager;
@@ -17,14 +20,14 @@ public class MRMServerManager {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final Configuration conf = new Configuration(false);
 
+    private static final ScheduleQueue daCheifScheduleQueue = new ScheduleQueue();
+    private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
+
     // REST server
     private HTTPServerManager httpServer;
 
     // kube Manager
     private KubernetesManager kubeManager;
-
-    // project list
-    private List<Map<String, Object>> projectIdList;
 
     private MRMServerManager(){}
 
@@ -54,8 +57,6 @@ public class MRMServerManager {
             // Kubernetes Manager
             kubeManager = KubernetesManager.getInstance();
             kubeManager.initialize();
-
-            projectIdList = new ArrayList<>();
 
             this.initSchedule();
         } catch (Exception e) {
@@ -92,8 +93,10 @@ public class MRMServerManager {
     }
 
     private void initScheduleCheckers(Timer timer, long delay, long period){
-        if (conf.getBoolean("use.learning.schedule", false)) {
-            timer.scheduleAtFixedRate(new ProjectStatusChecker(), delay, period * 1000);
+        if (conf.getBoolean("use.learning.schedule", true)) {
+            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new DACheifScheduleChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
         }
     }
 
@@ -105,7 +108,6 @@ public class MRMServerManager {
         }
     }
 
-    public List<Map<String, Object>> getProjectIdList() {
-        return projectIdList;
-    }
+    public final ScheduleQueue getDACheifScheduleQueue() { return daCheifScheduleQueue; }
+    public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
 }

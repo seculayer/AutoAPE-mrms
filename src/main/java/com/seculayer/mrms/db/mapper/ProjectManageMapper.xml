@@ -6,7 +6,7 @@
     <insert id="insertProjectInfo" parameterType="map">
         INSERT INTO PROJECT_INFO
         (	project_id
-        ,	project_purpose
+        ,	project_purpose_cd
         ,	dataset_id
         ,   status
         ,   start_time
@@ -19,10 +19,15 @@
             ,	#{start_time}
             )
     </insert>
-    <select id="selectLearningProject" resultType="map">
+    <select id="selectLearningModel" resultType="map">
         SELECT learn_hist_no, status
         FROM LEARN_HIST
         WHERE project_id = #{project_id}
+    </select>
+    <select id="selectProjectSchedule" parameterType="string" resultType="map">
+        SELECT *
+        FROM PROJECT_INFO
+        WHERE status = #{status}
     </select>
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO

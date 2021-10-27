@@ -21,10 +21,19 @@ public class ProjectManageDAO {
         }
     }
 
-    public List<Map<String, Object>> selectLearningProjectList(Map<String, Object> map) {
+    public List<Map<String, Object>> selectLearningModelList(Map<String, Object> map) {
         List<Map<String, Object>> rst;
         try (SqlSession session = factory.openSession()) {
-            rst = session.selectList(mapperName + "selectLearningProject", map);
+            rst = session.selectList(mapperName + "selectLearningModel", map);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectProjectSchedule(String status) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectProjectSchedule", status);
         }
 
         return rst;

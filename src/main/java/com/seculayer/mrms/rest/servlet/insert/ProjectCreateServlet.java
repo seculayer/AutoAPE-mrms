@@ -30,9 +30,6 @@ public class ProjectCreateServlet extends ServletHandlerAbstract {
             this.projManageDAO.insertProjectInfo(map);
             logger.debug(map.toString());
 
-            List<Map<String, Object>> projectList = MRMServerManager.getInstance().getProjectIdList();
-            projectList.add(map);
-            logger.info("Cnt of Managing Projects are {} : {}", projectList.size(), projectList.toString());
             out.println("1");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {

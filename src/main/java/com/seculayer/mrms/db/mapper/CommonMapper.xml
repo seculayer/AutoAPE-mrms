@@ -65,6 +65,16 @@
         SELECT *
         FROM PROJECT_INFO
     </select>
+    <select id="selectDatasetInfo" parameterType="string" resultType="map">
+        SELECT *
+        FROM DATASET
+        WHERE dataset_id = #{dataset_id}
+    </select>
+    <select id="selectDASchedule" parameterType="string" resultType="map">
+        SELECT *
+        FROM DATASET
+        WHERE status_cd = #{status}
+    </select>
 
 
     <!-- Update -->
@@ -92,6 +102,11 @@
         UPDATE LEARN_HIST
         SET    end_time = #{curr_time}
         WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateDAStatus" parameterType="map">
+        UPDATE DATASET
+        SET    status_cd = #{status_cd}
+        WHERE  dataset_id = #{dataset_id}
     </update>
 
 

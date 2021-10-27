@@ -69,6 +69,26 @@ public class CommonDAO {
         return rstMap;
     }
 
+    public Map<String, Object> selectDatasetInfo(String dataset_id){
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDatasetInfo", dataset_id);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectDASchedule(String status) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectDASchedule", status);
+        }
+
+        return rst;
+    }
+
+
+
     // Update
     public void updateSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
@@ -101,6 +121,13 @@ public class CommonDAO {
     public void updateEndTime(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateEndTime", map);
+            session.commit();
+        }
+    }
+
+    public void updateDAStatus(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateDAStatus", map);
             session.commit();
         }
     }
