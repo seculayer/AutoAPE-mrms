@@ -30,7 +30,7 @@ public class ServletFactory {
                 if (res.toString().contains("jar")) {
                     URL jar = ServletFactory.class.getProtectionDomain().getCodeSource().getLocation();
                     Path jarFile = Paths.get(jar.toString().substring("file:".length()));
-                    FileSystem fs = FileSystems.newFileSystem(jarFile, null);
+                    FileSystem fs = FileSystems.newFileSystem(jarFile, (ClassLoader) null);
                     DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
                     for(Path p: directoryStream) {
                         String classPath = p.toString();
