@@ -22,7 +22,7 @@ public class RcmdScheduleChecker extends Checker {
         for (Map<String, Object> schd : rcmdReqProjectList) {
             try {
                 rcmdScheduleQueue.push(schd);
-                logger.info("Data Analyze schedule queue size - {}", rcmdScheduleQueue.size());
+                logger.info("Recommender schedule queue size - {}", rcmdScheduleQueue.size());
             } catch (Exception e) {
                 logger.warn("{}, error-{}", schd, e.getMessage());
             }
