@@ -7,7 +7,7 @@ import com.seculayer.mrms.info.DACheifInfo;
 import java.io.IOException;
 import java.util.Map;
 
-public class DACheifRequest extends Request{
+public class DAChiefRequest extends Request{
     CommonDAO dao = new CommonDAO();
 
     @Override

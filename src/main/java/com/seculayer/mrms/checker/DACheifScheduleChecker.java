@@ -3,7 +3,7 @@ package com.seculayer.mrms.checker;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
-import com.seculayer.mrms.request.DACheifRequest;
+import com.seculayer.mrms.request.DAChiefRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class DACheifScheduleChecker extends Checker {
     private static final ScheduleQueue daCheifScheduleQueue = MRMServerManager.getInstance().getDACheifScheduleQueue();
 
     public DACheifScheduleChecker(){
-        super.req(new DACheifRequest()
+        super.req(new DAChiefRequest()
                 .queue(daCheifScheduleQueue));
     }
 
