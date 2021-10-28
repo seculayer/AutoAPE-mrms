@@ -12,18 +12,15 @@ import com.seculayer.mrms.db.CommonDAO;
 //import com.seculayer.mrms.kubernetes.yaml.job.VerifyJob;
 //import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
 import com.seculayer.mrms.checker.ScheduleQueue;
-import com.seculayer.mrms.info.DACheifInfo;
+import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.InfoAbstract;
-import com.seculayer.mrms.kubernetes.yaml.job.DACheifJob;
+import com.seculayer.mrms.kubernetes.yaml.job.DAJob;
 import io.kubernetes.client.openapi.ApiException;
-import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Deployment;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1Status;
-import jdk.jshell.spi.ExecutionControl;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,26 +63,21 @@ abstract public class Request extends Thread {
     abstract public String makeKey(Map<String, Object> schedule);
 
     // Job
-    protected void makeDAJob(DACheifInfo daCheifInfo){
+    public static void makeDAJob(DAInfo daInfo, String jobType, int workerIdx){
         try{
-            this.createJob(this.makeJob(daCheifInfo, Constants.JOB_TYPE_DA, 0));
+            Request.createJob(Request.makeJob(daInfo, jobType, workerIdx));
         }
         catch (Exception e){
             e.printStackTrace();
         }
-//        try{
-//            this.createService(this.makeService(daCheifInfo, Constants.JOB_TYPE_DA, 0));
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
     }
 
-    protected V1Job makeJob(InfoAbstract info, String jobType, int workerIdx){
+    protected static V1Job makeJob(InfoAbstract info, String jobType, int workerIdx){
         switch (jobType){
-            case Constants.JOB_TYPE_DA:
-                return new DACheifJob()
+            case Constants.JOB_TYPE_DA_CHIEF: case Constants.JOB_TYPE_DA_WORKER:
+                return new DAJob()
                         .info(info)
+                        .jobType(jobType)
                         .workerIdx(workerIdx)
                         .make();
 //            case Constants.JOB_TYPE_RCMD:
@@ -98,31 +90,32 @@ abstract public class Request extends Thread {
         }
     }
 
-//    protected V1Service makeService(InfoAbstract info, String jobType, int workerIdx){
-//        switch (jobType){
-//            case Constants.JOB_TYPE_DA: //case Constants.JOB_TYPE_RCMD:
-//                return new DACheifService()
+    protected static V1Service makeService(InfoAbstract info, String jobType, int workerIdx){
+        switch (jobType){
+            case Constants.JOB_TYPE_RCMD:
+                return null;
+//                return new RCMDService()
 //                        .info(info)
 //                        .workerIdx(workerIdx)
 //                        .prefix(jobType)
 //                        .make();
-//            default:
-//                throw new NotImplementedException();
-//        }
-//    }
+            default:
+                throw new NotImplementedException();
+        }
+    }
 
     // Kubernetes API call
-    protected V1Job createJob(V1Job job) throws ApiException {
+    protected static V1Job createJob(V1Job job) throws ApiException {
         BatchV1Api api = new BatchV1Api();
         return api.createNamespacedJob(namespace, job, null, null, null);
     }
 
-    protected V1Service createService(V1Service service) throws ApiException {
+    protected static V1Service createService(V1Service service) throws ApiException {
         CoreV1Api api = new CoreV1Api();
         return api.createNamespacedService(namespace, service, null, null, null);
     }
 
-    protected V1Status deleteService(V1Service service) throws ApiException {
+    protected static V1Status deleteService(V1Service service) throws ApiException {
         if (service.getMetadata() == null)
             return null;
         CoreV1Api api = new CoreV1Api();

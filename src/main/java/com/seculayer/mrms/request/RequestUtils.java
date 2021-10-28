@@ -5,8 +5,7 @@ package com.seculayer.mrms.request;
 //import com.seculayer.ape.mlms.info.LearnInfo;
 //import com.seculayer.ape.mlms.info.VerifyInfo;
 import com.seculayer.mrms.db.CommonDAO;
-import com.seculayer.mrms.db.ProjectManageDAO;
-import com.seculayer.mrms.info.DACheifInfo;
+import com.seculayer.mrms.info.DAInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +18,10 @@ public class RequestUtils {
 
     private static final CommonDAO dao = new CommonDAO();
 
-    public static DACheifInfo createDACheifInfo(Map<String, Object> schd) throws IOException {
+    public static DAInfo createDAInfo(Map<String, Object> schd) throws IOException {
         Map<String, Object> datasetVal = dao.selectDatasetInfo(schd.get("dataset_id").toString());
 
-        DACheifInfo daCheifInfo = new DACheifInfo(schd.get("dataset_id").toString());
+        DAInfo daCheifInfo = new DAInfo(schd.get("dataset_id").toString());
         daCheifInfo.init(datasetVal);
         logger.info(daCheifInfo.toString());
 

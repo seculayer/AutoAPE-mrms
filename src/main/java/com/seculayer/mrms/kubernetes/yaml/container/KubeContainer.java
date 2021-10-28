@@ -2,7 +2,7 @@ package com.seculayer.mrms.kubernetes.yaml.container;
 
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
-import com.seculayer.mrms.info.DACheifInfo;
+import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.InfoAbstract;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
@@ -89,7 +89,6 @@ public abstract class KubeContainer {
     protected List<V1VolumeMount> makeDaVolumeMounts(){
         List<V1VolumeMount> volumeMounts = new ArrayList<>();
 
-        volumeMounts.add(KubeUtil.getVolumeMountFromPath("division", "/eyeCloudAI/data/processing/ape/division"));
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("temp", "/eyeCloudAI/data/processing/ape/temp"));
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
         return volumeMounts;
@@ -105,8 +104,8 @@ public abstract class KubeContainer {
 
     protected String getProcessKey(){
         switch(this.jobType){
-            case Constants.JOB_TYPE_DA:
-                return ((DACheifInfo)this.info).getDatasetId();
+            case Constants.JOB_TYPE_DA_CHIEF:
+                return ((DAInfo)this.info).getDatasetId();
             default:
                 return "0";
         }

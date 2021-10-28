@@ -39,6 +39,15 @@ public class ProjectManageDAO {
         return rst;
     }
 
+    public Map<String, Object> selectDataAnalsId(String datasetID) {
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDataAnalsId", datasetID);
+        }
+
+        return rst;
+    }
+
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);

@@ -1,18 +1,17 @@
 package com.seculayer.mrms.kubernetes.yaml.job;
 
-import com.seculayer.mrms.common.Constants;
-import com.seculayer.mrms.info.DACheifInfo;
+import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
-import com.seculayer.mrms.kubernetes.yaml.container.KubeContainer;
-import io.kubernetes.client.openapi.models.*;
+import io.kubernetes.client.openapi.models.V1Container;
+import io.kubernetes.client.openapi.models.V1Job;
+import io.kubernetes.client.openapi.models.V1Volume;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DACheifJob extends KubeJob {
-    private static final String prefix = Constants.JOB_TYPE_DA;
+public class DAJob extends KubeJob {
 
     @Override
     protected List<String> makeConfigMapName() {
@@ -21,7 +20,7 @@ public class DACheifJob extends KubeJob {
 
     @Override
     public V1Job make() {
-        this.metaname = String.format("%s-%s-%s", prefix, ((DACheifInfo)this.info).getDatasetId(), this.workerIdx);
+        this.metaname = String.format("%s-%s-%s", jobType, ((DAInfo)this.info).getDatasetId(), this.workerIdx);
         this.labels = this.makeLabels();
         this.containers = this.makeContainers();
         this.volumes = this.makeVolumes();
@@ -47,6 +46,6 @@ public class DACheifJob extends KubeJob {
 
     @Override
     protected List<V1Container> makeContainers() {
-        return this.daContainers(prefix);
+        return this.daContainers(jobType);
     }
 }

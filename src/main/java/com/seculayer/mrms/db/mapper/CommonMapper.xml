@@ -75,6 +75,11 @@
         FROM DATASET
         WHERE status_cd = #{status}
     </select>
+    <select id="selectDataAnlsInfo" resultType="map">
+        SELECT *
+        FROM DATA_ANLS_INFO
+        WHERE dataset_id = #{dataset_id}
+    </select>
 
 
     <!-- Update -->

@@ -11,7 +11,8 @@ public class Constants {
 
     public static final String KUBE_EYECLOUDAI_NAMESPACE = "apeautoml";
 
-    public static final String JOB_TYPE_DA = "data-analyze";
+    public static final String JOB_TYPE_DA_CHIEF = "da-chief";
+    public static final String JOB_TYPE_DA_WORKER = "da-worker";
     public static final String JOB_TYPE_RCMD = "recommend";
 
     public static final String STATUS_DA_REQ = "5";

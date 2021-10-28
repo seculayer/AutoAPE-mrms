@@ -3,10 +3,10 @@ package com.seculayer.mrms.info;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class DACheifInfo extends InfoAbstract {
+public class DAInfo extends InfoAbstract {
+    // Common
     protected String datasetID = "";
     protected String datasetFormat = "1";
     protected String datasetSize = "0";
@@ -14,7 +14,7 @@ public class DACheifInfo extends InfoAbstract {
     protected String nRows = "0";
     protected Map<String, Object> formatJSON = null;
 
-    public DACheifInfo(String key) { super(key); }
+    public DAInfo(String key) { super(key); }
 
     @Override
     public void init(Map<String, Object> map) {

@@ -7,14 +7,14 @@
         INSERT INTO PROJECT_INFO
         (	project_id
         ,	project_purpose_cd
-        ,	dataset_id
+        ,	data_analysis_id
         ,   status
         ,   start_time
         )
         VALUES
             (	#{project_id}
             ,	#{project_purpose_cd}
-            ,	#{dataset_id}
+            ,	#{data_analysis_id}
             ,	#{status}
             ,	#{start_time}
             )
@@ -29,6 +29,13 @@
         FROM PROJECT_INFO
         WHERE status = #{status}
     </select>
+    <select id="selectDataAnalsId" parameterType="string" resultType="map">
+        SELECT data_analysis_id
+        FROM DATA_ANLS_INFO
+        WHERE dataset_id = #{dataset_id}
+    </select>
+
+
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO
         SET    status = #{status}

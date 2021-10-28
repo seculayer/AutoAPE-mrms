@@ -1,9 +1,6 @@
 package com.seculayer.mrms.managers;
 
-import com.seculayer.mrms.checker.DACheifScheduleChecker;
-import com.seculayer.mrms.checker.ProjectCompleteChecker;
-import com.seculayer.mrms.checker.RcmdScheduleChecker;
-import com.seculayer.mrms.checker.ScheduleQueue;
+import com.seculayer.mrms.checker.*;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.kubernetes.KubernetesManager;
 import com.seculayer.mrms.rest.HTTPServerManager;
@@ -20,7 +17,7 @@ public class MRMServerManager {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final Configuration conf = new Configuration(false);
 
-    private static final ScheduleQueue daCheifScheduleQueue = new ScheduleQueue();
+    private static final ScheduleQueue daScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
 
     // REST server
@@ -95,7 +92,7 @@ public class MRMServerManager {
     private void initScheduleCheckers(Timer timer, long delay, long period){
         if (conf.getBoolean("use.learning.schedule", true)) {
             timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
-            timer.scheduleAtFixedRate(new DACheifScheduleChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new DAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
         }
     }
@@ -108,6 +105,6 @@ public class MRMServerManager {
         }
     }
 
-    public final ScheduleQueue getDACheifScheduleQueue() { return daCheifScheduleQueue; }
+    public final ScheduleQueue getDAScheduleQueue() { return daScheduleQueue; }
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
 }

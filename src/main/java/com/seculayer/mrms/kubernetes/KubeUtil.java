@@ -108,7 +108,6 @@ public class KubeUtil {
 
     public static List<V1Volume> daVolumes(){
         List<V1Volume> volumes = new ArrayList<>();
-        volumes.add(KubeUtil.getV1VolumeEmptyDir("division"));
         volumes.add(KubeUtil.getV1VolumeEmptyDir("temp"));
         volumes.add(KubeUtil.getV1VolumeFromHostPathFile("tz", "/usr/share/zoneinfo/Asia/Seoul"));
         return volumes;

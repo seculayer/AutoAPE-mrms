@@ -4,7 +4,7 @@ import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.info.InfoAbstract;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
-import com.seculayer.mrms.kubernetes.yaml.container.DAChiefContainer;
+import com.seculayer.mrms.kubernetes.yaml.container.DAContainer;
 import io.kubernetes.client.openapi.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,14 +84,14 @@ public abstract class KubeJob {
     protected List<V1Volume> makeVolumes(){ return KubeUtil.volumes(); }
 
     // ml common kubernetes objects
-    protected List<V1Container> daContainers(String prefix){
+    protected List<V1Container> daContainers(String jobType){
         List<V1Container> containers = new ArrayList<>();
         containers.add(
-                new DAChiefContainer()
+                new DAContainer()
                 .info(this.info)
                 .workerIdx(workerIdx)
                 .configMapList(this.configMapList)
-                .jobType(prefix)
+                .jobType(jobType)
                 .make()
         );
 

@@ -1,8 +1,8 @@
-package com.seculayer.mrms.rest.servlet.insert;
+package com.seculayer.mrms.rest.servlet.select;
 
-import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,31 +11,29 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-public class ProjectCreateServlet extends ServletHandlerAbstract {
-    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/project_create";
+public class GetDatasetInfoServlet extends ServletHandlerAbstract {
+    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_dataset_info";
 
-    private ProjectManageDAO projManageDAO = new ProjectManageDAO();
-
-    @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
+        ObjectMapper mapper = new ObjectMapper();
 
         logger.debug("###################################################################");
-        logger.debug("In doPost - get status cd");
+        logger.debug("In doPost - get dataset info");
 
         try {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
-            String datasetID = map.get("dataset_id").toString();
-            String dataAnalsID = projManageDAO.selectDataAnalsId(datasetID).get("data_analysis_id").toString();
-            map.put("data_analysis_id", dataAnalsID);
-
-            this.projManageDAO.insertProjectInfo(map);
             logger.debug(map.toString());
+            String datasetID = map.get("dataset_id").toString();
+            Map<String, Object> rst = commonDAO.selectDatasetInfo(datasetID);
 
-            out.println("1");
+            String jsonStr = mapper.writeValueAsString(rst);
+            out.println(jsonStr);
+
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.toString());
             out.println("error");
         }
 

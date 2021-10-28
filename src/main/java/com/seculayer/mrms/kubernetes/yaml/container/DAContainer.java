@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DAChiefContainer extends KubeContainer {
+public class DAContainer extends KubeContainer {
 
-    public DAChiefContainer() {
+    public DAContainer() {
         this.name = "da";
         this.image = registryURL + "/automl-da:"
                         + Constants.IMAGE_VERSION;
@@ -51,9 +51,22 @@ public class DAChiefContainer extends KubeContainer {
     @Override
     protected List<String> makeCommands() {
         List<String> commands = new ArrayList<>();
-        commands.add("/bin/bash");
-        commands.add("./da.sh");
-        commands.add(this.getProcessKey());
+        switch (jobType) {
+            case Constants.JOB_TYPE_DA_CHIEF:
+                commands.add("/bin/bash");
+                commands.add("./da.sh");
+                commands.add(this.getProcessKey());
+                commands.add("chief");
+                return commands;
+            case Constants.JOB_TYPE_DA_WORKER:
+                commands.add("/bin/bash");
+                commands.add("./da.sh");
+                commands.add(this.getProcessKey());
+                commands.add("worker");
+                commands.add(Integer.toString(workerIdx));
+                return commands;
+            default:
+        }
 
         return commands;
     }

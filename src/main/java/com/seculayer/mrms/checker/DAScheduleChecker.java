@@ -3,17 +3,17 @@ package com.seculayer.mrms.checker;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
-import com.seculayer.mrms.request.DAChiefRequest;
+import com.seculayer.mrms.request.DARequest;
 
 import java.util.List;
 import java.util.Map;
 
-public class DACheifScheduleChecker extends Checker {
+public class DAScheduleChecker extends Checker {
     private CommonDAO dao = new CommonDAO();
-    private static final ScheduleQueue daCheifScheduleQueue = MRMServerManager.getInstance().getDACheifScheduleQueue();
+    private static final ScheduleQueue daCheifScheduleQueue = MRMServerManager.getInstance().getDAScheduleQueue();
 
-    public DACheifScheduleChecker(){
-        super.req(new DAChiefRequest()
+    public DAScheduleChecker(){
+        super.req(new DARequest()
                 .queue(daCheifScheduleQueue));
     }
 
