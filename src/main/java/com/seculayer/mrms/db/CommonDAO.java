@@ -158,6 +158,12 @@ public class CommonDAO {
             session.commit();
         }
     }
+    public void insertDataAnlsInfo(Map<String, Object> map) {
+        try(SqlSession session = factory.openSession()) {
+            session.insert("CommonMapper.insertDataAnlsInfo", map);
+            session.commit();
+        }
+    }
 
 
     // delete
