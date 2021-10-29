@@ -21,6 +21,7 @@ public class Constants {
 
     public static final String STATUS_DA_REQ = "5";
     public static final String STATUS_DA_ING = "6";
+    public static final String STATUS_DA_COMPLETE = "7";
     public static final String STATUS_DA_ERROR = "8";
 
     public static final String STATUS_PROJECT_RCMD_REQ = "3";

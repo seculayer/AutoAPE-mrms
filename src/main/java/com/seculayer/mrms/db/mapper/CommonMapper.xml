@@ -141,13 +141,11 @@
     <insert id="insertDataAnlsInfo" parameterType="map">
         INSERT INTO DATA_ANLS_INFO (data_analysis_id,
                              metadata_json,
-                             label_yn,
                              dist_file_cnt,
                              analysis_file_nm,
                              dataset_id)
         VALUES (#{data_analysis_id},
                 #{metadata_json},
-                #{label_yn},
                 #{dist_file_cnt},
                 #{analysis_file_nm},
                 #{dataset_id},
