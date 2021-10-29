@@ -14,13 +14,12 @@ import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.InfoAbstract;
+import com.seculayer.mrms.info.RcmdInfo;
 import com.seculayer.mrms.kubernetes.yaml.job.DAJob;
+import com.seculayer.mrms.kubernetes.yaml.job.RcmdJob;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
-import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Job;
-import io.kubernetes.client.openapi.models.V1Service;
-import io.kubernetes.client.openapi.models.V1Status;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +65,15 @@ abstract public class Request extends Thread {
     public static void makeDAJob(DAInfo daInfo, String jobType, int workerIdx){
         try{
             Request.createJob(Request.makeJob(daInfo, jobType, workerIdx));
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        catch (Exception e){
+    }
+
+    public void makeRcmdJob(RcmdInfo rcmdInfo, String jobType, int workerIdx) {
+        try{
+            Request.createJob(Request.makeJob(rcmdInfo, jobType, workerIdx));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -80,25 +86,12 @@ abstract public class Request extends Thread {
                         .jobType(jobType)
                         .workerIdx(workerIdx)
                         .make();
-//            case Constants.JOB_TYPE_RCMD:
-//                return new RCMDJob()
-//                        .info(info)
-//                        .workerIdx(workerIdx)
-//                        .make();
-            default:
-                throw new NotImplementedException();
-        }
-    }
-
-    protected static V1Service makeService(InfoAbstract info, String jobType, int workerIdx){
-        switch (jobType){
-            case Constants.JOB_TYPE_RCMD:
-                return null;
-//                return new RCMDService()
-//                        .info(info)
-//                        .workerIdx(workerIdx)
-//                        .prefix(jobType)
-//                        .make();
+            case Constants.JOB_TYPE_DPRS: case Constants.JOB_TYPE_MARS: case Constants.JOB_TYPE_HPRS:
+                return new RcmdJob()
+                        .info(info)
+                        .jobType(jobType)
+                        .workerIdx(workerIdx)
+                        .make();
             default:
                 throw new NotImplementedException();
         }
@@ -108,17 +101,5 @@ abstract public class Request extends Thread {
     protected static V1Job createJob(V1Job job) throws ApiException {
         BatchV1Api api = new BatchV1Api();
         return api.createNamespacedJob(namespace, job, null, null, null);
-    }
-
-    protected static V1Service createService(V1Service service) throws ApiException {
-        CoreV1Api api = new CoreV1Api();
-        return api.createNamespacedService(namespace, service, null, null, null);
-    }
-
-    protected static V1Status deleteService(V1Service service) throws ApiException {
-        if (service.getMetadata() == null)
-            return null;
-        CoreV1Api api = new CoreV1Api();
-        return api.deleteNamespacedService(service.getMetadata().getName(), namespace, null, null, null, null, null, null);
     }
 }

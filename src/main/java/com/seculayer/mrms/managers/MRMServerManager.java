@@ -91,7 +91,7 @@ public class MRMServerManager {
 
     private void initScheduleCheckers(Timer timer, long delay, long period){
         if (conf.getBoolean("use.learning.schedule", true)) {
-            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
+//            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new DAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
         }

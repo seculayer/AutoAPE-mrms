@@ -6,6 +6,7 @@ package com.seculayer.mrms.request;
 //import com.seculayer.ape.mlms.info.VerifyInfo;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.info.DAInfo;
+import com.seculayer.mrms.info.RcmdInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,13 +20,21 @@ public class RequestUtils {
     private static final CommonDAO dao = new CommonDAO();
 
     public static DAInfo createDAInfo(Map<String, Object> schd) throws IOException {
-        Map<String, Object> datasetVal = dao.selectDatasetInfo(schd.get("dataset_id").toString());
+        Map<String, Object> datasetInfo = dao.selectDatasetInfo(schd.get("dataset_id").toString());
 
         DAInfo daCheifInfo = new DAInfo(schd.get("dataset_id").toString());
-        daCheifInfo.init(datasetVal);
+        daCheifInfo.init(datasetInfo);
         logger.info(daCheifInfo.toString());
 
         return daCheifInfo;
+    }
+
+    public static RcmdInfo createRcmdInfo(Map<String, Object> schd) throws IOException {
+        RcmdInfo rcmdInfo = new RcmdInfo(schd.get("project_id").toString());
+        rcmdInfo.init(schd);
+        logger.info(rcmdInfo.toString());
+
+        return rcmdInfo;
     }
 
 //    public static LearnInfo createLearnInfo(Map<String, Object> schedule, String key) throws IOException {

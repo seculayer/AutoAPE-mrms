@@ -12,14 +12,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DAContainer extends KubeContainer {
+public class RcmdContainer extends KubeContainer {
 
-    public DAContainer(String jobType) {
+    public RcmdContainer(String jobType) {
         super(jobType);
+        this.name = jobType;
 
-        this.name = "da";
-        this.image = registryURL + "/automl-da:"
-                        + Constants.IMAGE_VERSION;
+        switch (jobType) {
+            case Constants.JOB_TYPE_DPRS:
+                this.image = registryURL + "/automl-dprs:"
+                                + Constants.IMAGE_VERSION;
+                break;
+            case Constants.JOB_TYPE_MARS:
+                this.image = registryURL + "/automl-mars:"
+                    + Constants.IMAGE_VERSION;
+                break;
+            case Constants.JOB_TYPE_HPRS:
+                this.image = registryURL + "/automl-hprs:"
+                    + Constants.IMAGE_VERSION;
+                break;
+        }
     }
     @Override
     public V1Container make() {
@@ -29,13 +41,13 @@ public class DAContainer extends KubeContainer {
     @Override
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
-//        configMapNameList.add("da-conf");
+//        configMapNameList.add(jobType + "-conf");
         return configMapNameList;
     }
 
     @Override
     protected List<V1VolumeMount> makeVolumeMounts(){
-        List<V1VolumeMount> volumeMounts = super.makeDaVolumeMounts();
+        List<V1VolumeMount> volumeMounts = super.makeRcmdVolumeMounts();
         for (KubeConfigMap configMap : this.configMapList){
             volumeMounts.add(configMap.getVolumeMount());
         }
@@ -54,18 +66,20 @@ public class DAContainer extends KubeContainer {
     protected List<String> makeCommands() {
         List<String> commands = new ArrayList<>();
         switch (jobType) {
-            case Constants.JOB_TYPE_DA_CHIEF:
+            case Constants.JOB_TYPE_DPRS:
                 commands.add("/bin/bash");
-                commands.add("./da.sh");
+                commands.add("./dprs.sh");
                 commands.add(this.getProcessKey());
-                commands.add("chief");
                 return commands;
-            case Constants.JOB_TYPE_DA_WORKER:
+            case Constants.JOB_TYPE_MARS:
                 commands.add("/bin/bash");
-                commands.add("./da.sh");
+                commands.add("./mars.sh");
                 commands.add(this.getProcessKey());
-                commands.add("worker");
-                commands.add(Integer.toString(workerIdx));
+                return commands;
+            case Constants.JOB_TYPE_HPRS:
+                commands.add("/bin/bash");
+                commands.add("./hprs.sh");
+                commands.add(this.getProcessKey());
                 return commands;
             default:
         }
@@ -75,8 +89,6 @@ public class DAContainer extends KubeContainer {
 
     @Override
     protected List<V1ContainerPort> makePorts() {
-        List<V1ContainerPort> ports = new ArrayList<>();
-
-        return ports;
+        return null;
     }
 }

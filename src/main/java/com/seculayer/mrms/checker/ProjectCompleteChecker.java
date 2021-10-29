@@ -11,7 +11,7 @@ public class ProjectCompleteChecker extends Checker {
 
     @Override
     public void doCheck() throws CheckerException {
-        List<Map<String, Object>> recommendingProjectList = dao.selectProjectSchedule(Constants.STATUS_RCMD_REQ);
+        List<Map<String, Object>> recommendingProjectList = dao.selectProjectSchedule(Constants.STATUS_PROJECT_LEARN_ING);
 
         for (Map<String, Object> idMap : recommendingProjectList) {
             List<Map<String, Object>> schedules = dao.selectLearningModelList(idMap);
@@ -19,7 +19,7 @@ public class ProjectCompleteChecker extends Checker {
 
             int tmpCnt = 0;
             for (Map<String, Object> schd: schedules) {
-                if (schd.get("status").toString().equals(Constants.STATUS_COMPLETE)) {
+                if (schd.get("status").toString().equals(Constants.STATUS_PROJECT_COMPLETE)) {
                     tmpCnt++;
                 }
             }

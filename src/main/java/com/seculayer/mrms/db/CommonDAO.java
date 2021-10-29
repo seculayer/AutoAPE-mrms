@@ -96,6 +96,15 @@ public class CommonDAO {
         return rst;
     }
 
+    public Map<String, Object> selectDataAnlsInfoWithDataAnalsID(String dataAnalsID) {
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDataAnlsInfoWithDataAnalsID", dataAnalsID);
+        }
+
+        return rst;
+    }
+
 
 
     // Update

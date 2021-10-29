@@ -113,6 +113,13 @@ public class KubeUtil {
         return volumes;
     }
 
+    public static List<V1Volume> rcmdVolumes(){
+        List<V1Volume> volumes = new ArrayList<>();
+        volumes.add(KubeUtil.getV1VolumeEmptyDir("temp"));
+        volumes.add(KubeUtil.getV1VolumeFromHostPathFile("tz", "/usr/share/zoneinfo/Asia/Seoul"));
+        return volumes;
+    }
+
     public static V1VolumeMount getVolumeMountFromPath(String name, String path){
         return new V1VolumeMount()
                 .name(name)

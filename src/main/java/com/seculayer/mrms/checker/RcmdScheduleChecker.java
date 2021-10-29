@@ -18,7 +18,7 @@ public class RcmdScheduleChecker extends Checker {
     }
     @Override
     public void doCheck() throws CheckerException {
-        List<Map<String, Object>> rcmdReqProjectList = dao.selectProjectSchedule(Constants.STATUS_RCMD_REQ);
+        List<Map<String, Object>> rcmdReqProjectList = dao.selectProjectSchedule(Constants.STATUS_PROJECT_RCMD_REQ);
         for (Map<String, Object> schd : rcmdReqProjectList) {
             try {
                 rcmdScheduleQueue.push(schd);

@@ -5,6 +5,7 @@ import com.seculayer.mrms.info.InfoAbstract;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.kubernetes.yaml.container.DAContainer;
+import com.seculayer.mrms.kubernetes.yaml.container.RcmdContainer;
 import io.kubernetes.client.openapi.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,11 +88,23 @@ public abstract class KubeJob {
     protected List<V1Container> daContainers(String jobType){
         List<V1Container> containers = new ArrayList<>();
         containers.add(
-                new DAContainer()
+                new DAContainer(jobType)
                 .info(this.info)
                 .workerIdx(workerIdx)
                 .configMapList(this.configMapList)
-                .jobType(jobType)
+                .make()
+        );
+
+        return containers;
+    }
+
+    protected List<V1Container> rcmdContainers(String jobType){
+        List<V1Container> containers = new ArrayList<>();
+        containers.add(
+            new RcmdContainer(jobType)
+                .info(this.info)
+                .workerIdx(workerIdx)
+                .configMapList(this.configMapList)
                 .make()
         );
 

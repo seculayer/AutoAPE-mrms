@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DAInfo extends InfoAbstract {
-    // Common
     protected String datasetID = "";
     protected String datasetFormat = "1";
     protected String datasetSize = "0";

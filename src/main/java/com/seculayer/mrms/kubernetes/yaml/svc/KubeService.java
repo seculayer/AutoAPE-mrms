@@ -21,14 +21,7 @@ public abstract class KubeService {
     protected List<V1ServicePort> ports;
     protected Map<String, String> selector;
 
-
     public KubeService() {}
-
-    protected String prefix = "learn";
-    public KubeService prefix(String prefix) {
-        this.prefix = prefix;
-        return this;
-    }
 
     protected InfoAbstract info;
     public KubeService info(InfoAbstract info){
@@ -39,6 +32,12 @@ public abstract class KubeService {
     protected int workerIdx = 0;
     public KubeService workerIdx(int workerIdx){
         this.workerIdx = workerIdx;
+        return this;
+    }
+
+    protected String jobType;
+    public KubeService jobType(String jobType){
+        this.jobType = jobType;
         return this;
     }
 

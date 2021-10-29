@@ -80,6 +80,11 @@
         FROM DATA_ANLS_INFO
         WHERE dataset_id = #{dataset_id}
     </select>
+    <select id="selectDataAnlsInfoWithDataAnalsID" resultType="map">
+        SELECT *
+        FROM DATA_ANLS_INFO
+        WHERE data_analysis_id = #{data_analysis_id}
+    </select>
 
 
     <!-- Update -->

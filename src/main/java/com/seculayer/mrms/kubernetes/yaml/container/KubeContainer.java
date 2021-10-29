@@ -4,6 +4,7 @@ import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.InfoAbstract;
+import com.seculayer.mrms.info.RcmdInfo;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import io.kubernetes.client.custom.Quantity;
@@ -22,6 +23,11 @@ public abstract class KubeContainer {
 
     protected String name;
     protected String image;
+    protected String jobType;
+
+    public KubeContainer(String jobType){
+        this.jobType = jobType;
+    }
 
     protected CommonDAO commonDao = new CommonDAO();
 
@@ -40,12 +46,6 @@ public abstract class KubeContainer {
     protected List<KubeConfigMap> configMapList;
     public KubeContainer configMapList(List<KubeConfigMap> configMapList){
         this.configMapList = KubeUtil.getKubeConfMapList(configMapList, this.makeConfigMapName());
-        return this;
-    }
-
-    protected String jobType = "learn";
-    public KubeContainer jobType(String jobType){
-        this.jobType = jobType;
         return this;
     }
 
@@ -93,6 +93,13 @@ public abstract class KubeContainer {
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
         return volumeMounts;
     }
+    protected List<V1VolumeMount> makeRcmdVolumeMounts(){
+        List<V1VolumeMount> volumeMounts = new ArrayList<>();
+
+        volumeMounts.add(KubeUtil.getVolumeMountFromPath("temp", "/eyeCloudAI/data/processing/ape/temp"));
+        volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
+        return volumeMounts;
+    }
     protected abstract Map<String, Quantity> makeLimits();
     protected abstract List<String> makeCommands();
     protected List<V1EnvVar> makeEnv(){
@@ -106,6 +113,8 @@ public abstract class KubeContainer {
         switch(this.jobType){
             case Constants.JOB_TYPE_DA_CHIEF:
                 return ((DAInfo)this.info).getDatasetId();
+            case Constants.JOB_TYPE_DPRS: case Constants.JOB_TYPE_MARS: case Constants.JOB_TYPE_HPRS:
+                return ((RcmdInfo)this.info).getProjectID();
             default:
                 return "0";
         }
