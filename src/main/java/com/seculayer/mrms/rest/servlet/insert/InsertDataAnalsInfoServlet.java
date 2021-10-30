@@ -19,6 +19,32 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/insert_data_anls_info";
 
     @Override
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        PrintWriter out = httpServletResponse.getWriter();
+        logger.debug("###################################################################");
+        logger.debug("In doPost - insert data analysis info");
+
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("dataset_id", httpServletRequest.getParameter("dataset_id"));
+
+            Map<String, Object> rstMap = this.readDaResult(map);
+            commonDAO.insertDataAnlsInfo(rstMap);
+            logger.debug(rstMap.toString());
+
+            map.put("status_cd", Constants.STATUS_DA_COMPLETE);
+            commonDAO.updateDAStatus(map);
+
+            out.println("1");
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            out.println("error");
+        }
+    }
+
+    @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         PrintWriter out = httpServletResponse.getWriter();
 
