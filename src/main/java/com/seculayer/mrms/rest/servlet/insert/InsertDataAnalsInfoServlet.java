@@ -1,6 +1,7 @@
 package com.seculayer.mrms.rest.servlet.insert;
 
 import com.seculayer.mrms.common.Constants;
+import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
@@ -14,6 +15,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/insert_data_anls_info";
@@ -76,11 +78,14 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
         File file = new File(MRMServerManager.getInstance().getConfiguration().get("ape.features.dir"), fileName);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()))){
-            Map<String, Object> daResult = JsonUtil.getMapFromString(reader);
+            String jsonStr = JsonUtil.getJSONString(reader);
+            Map<String, Object> daResult = JsonUtil.strToMap(jsonStr);
+
             rstMap.put("dataset_id", map.get("dataset_id").toString());
-            rstMap.put("metadata_json", daResult);
+            rstMap.put("metadata_json", jsonStr);
             rstMap.put("analysis_file_nm", fileName);
             rstMap.put("dist_file_cnt", ((List<?>) daResult.get("file_list")).size());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

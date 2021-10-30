@@ -86,7 +86,6 @@
         WHERE data_analysis_id = #{data_analysis_id}
     </select>
 
-
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
@@ -139,6 +138,10 @@
                 )
     </insert>
     <insert id="insertDataAnlsInfo" parameterType="map">
+        <selectKey keyProperty="data_analysis_id" resultType="long"
+                   order="BEFORE">
+            SELECT UUID_SHORT()
+        </selectKey>
         INSERT INTO DATA_ANLS_INFO (data_analysis_id,
                              metadata_json,
                              dist_file_cnt,
@@ -148,7 +151,7 @@
                 #{metadata_json},
                 #{dist_file_cnt},
                 #{analysis_file_nm},
-                #{dataset_id},
+                #{dataset_id}
                 )
     </insert>
 

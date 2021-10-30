@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JsonUtil {
-    public static Map<String, Object> getMapFromString(BufferedReader reader) throws IOException {
-        Map<String, Object> result = new HashMap<String, Object>();
-
+    public static String getJSONString(BufferedReader reader) throws IOException {
         String line;
         StringBuilder mapStr = new StringBuilder();
         try {
@@ -23,7 +21,12 @@ public class JsonUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return JsonUtil.strToMap(mapStr.toString());
+        return mapStr.toString();
+    }
+
+    public static Map<String, Object> getMapFromString(BufferedReader reader) throws IOException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        return JsonUtil.strToMap(JsonUtil.getJSONString(reader).toString());
     }
 
     public static Map<String, Object> strToMap(String data) throws IOException {

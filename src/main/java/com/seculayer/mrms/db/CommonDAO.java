@@ -105,8 +105,6 @@ public class CommonDAO {
         return rst;
     }
 
-
-
     // Update
     public void updateSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
@@ -175,6 +173,7 @@ public class CommonDAO {
     }
 
     public static void main(String[] args) {
+
         System.out.println(new CommonDAO().selectVarFuncList().toString());
     }
 }

@@ -8,8 +8,8 @@ COPY ./pom.xml ./pom.xml
 
 RUN mvn dependency:go-offline -B
 
-COPY ./src "$app/src"
 COPY ./conf "$app/conf"
+COPY ./src "$app/src"
 
 RUN mvn package
 
