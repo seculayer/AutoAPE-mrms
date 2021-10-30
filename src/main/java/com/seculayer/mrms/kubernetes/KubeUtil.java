@@ -45,7 +45,6 @@ public class KubeUtil {
         for (String metaname : metanameList){
             V1ConfigMap tempConfigMap = KubeUtil.getConfigMap(metaname, allConfigMapList);
             configMapList.add(KubeConfigMapFactory.get(tempConfigMap));
-
         }
 
         return configMapList;
@@ -128,7 +127,7 @@ public class KubeUtil {
 
     public static List<String> mlConfigMapNames(){
         List<String> configMapNameList = new ArrayList<>();
-//        configMapNameList.add("da-conf");
+        configMapNameList.add("da-conf");
 
         return configMapNameList;
     }

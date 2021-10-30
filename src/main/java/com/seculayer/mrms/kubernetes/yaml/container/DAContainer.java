@@ -29,7 +29,7 @@ public class DAContainer extends KubeContainer {
     @Override
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
-//        configMapNameList.add("da-conf");
+        configMapNameList.add("da-conf");
         return configMapNameList;
     }
 
