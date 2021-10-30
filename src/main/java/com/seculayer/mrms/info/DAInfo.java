@@ -52,5 +52,5 @@ public class DAInfo extends InfoAbstract {
         return null;
     }
 
-    public String getDatasetId() { return datasetID; }
+    public String getDatasetId() { return key; }
 }

@@ -24,19 +24,16 @@ public class DAWorkerReqServlet extends ServletHandlerAbstract {
         logger.info("###################################################################");
         try {
             String id = httpServletRequest.getParameter("id");
-            String numWorkers = httpServletRequest.getParameter("num_worker");
+            int numWorkers = Integer.parseInt(httpServletRequest.getParameter("num_worker"));
             logger.info(
                     "In doGet - create Data Analyze Workers, dataset_id: {}, num_workers: {}",
                     id, numWorkers
             );
             // DAWorker Start
             // ---------------------------------------------
-            Map<String, Object> scd = new HashMap<>();
-            // Todo : worker들 info list 생성
-            List<DAInfo> daWorkerInfoList = new ArrayList<>();
-
-            for (int i=0; i<daWorkerInfoList.size(); i++) {
-                Request.makeDAJob(daWorkerInfoList.get(i), Constants.JOB_TYPE_DA_WORKER, i);
+            DAInfo workerDaInfo = new DAInfo(id);
+            for (int i=0; i<numWorkers; i++) {
+                Request.makeDAJob(workerDaInfo, Constants.JOB_TYPE_DA_WORKER, i);
             }
 
             // ---------------------------------------------
