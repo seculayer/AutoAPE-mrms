@@ -2,6 +2,7 @@ package com.seculayer.mrms.info;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,14 @@ public class DAInfo extends InfoAbstract {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected File infoFile() {
+        if (this.infoFile == null){
+            infoFile = new File(outputDir, "DA_" + this.key + ".job");
+        }
+        return infoFile;
     }
 
     @Override

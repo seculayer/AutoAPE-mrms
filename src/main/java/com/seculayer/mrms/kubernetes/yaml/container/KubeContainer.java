@@ -111,7 +111,7 @@ public abstract class KubeContainer {
 
     protected String getProcessKey(){
         switch(this.jobType){
-            case Constants.JOB_TYPE_DA_CHIEF:
+            case Constants.JOB_TYPE_DA_CHIEF: case Constants.JOB_TYPE_DA_WORKER:
                 return ((DAInfo)this.info).getDatasetId();
             case Constants.JOB_TYPE_DPRS: case Constants.JOB_TYPE_MARS: case Constants.JOB_TYPE_HPRS:
                 return ((RcmdInfo)this.info).getProjectID();
