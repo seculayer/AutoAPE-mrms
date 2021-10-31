@@ -2,6 +2,7 @@ package com.seculayer.mrms.info;
 
 import com.seculayer.mrms.db.CommonDAO;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,14 @@ public class RcmdInfo extends InfoAbstract {
         dataAnalysisID = map.get("data_analysis_id").toString();
         startTime = map.get("start_time").toString();
         dataAnalsInfo = commonDAO.selectDataAnlsInfoWithDataAnalsID(dataAnalysisID);
+    }
+
+    @Override
+    protected File infoFile() {
+        if (this.infoFile == null){
+            infoFile = new File(outputDir, "RCMD_" + this.key + ".job");
+        }
+        return infoFile;
     }
 
     @Override

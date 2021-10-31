@@ -31,6 +31,8 @@ public class RcmdContainer extends KubeContainer {
                 this.image = registryURL + "/automl-hprs:"
                     + Constants.IMAGE_VERSION;
                 break;
+            default:
+                this.image = "NoImage";
         }
     }
     @Override
