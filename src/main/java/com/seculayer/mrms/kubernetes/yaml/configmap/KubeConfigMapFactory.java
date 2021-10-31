@@ -11,6 +11,10 @@ public class KubeConfigMapFactory {
                 return new DAConfigMap().configMap(configMap);
             case "dprs-conf":
                 return new DPRSConfigMap().configMap(configMap);
+            case "mars-conf":
+                return new MARSConfigMap().configMap(configMap);
+            case "hprs-conf":
+                return new HPRSConfigMap().configMap(configMap);
             default:
                 return null;
         }

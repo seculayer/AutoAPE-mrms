@@ -43,9 +43,8 @@ public class RcmdContainer extends KubeContainer {
     @Override
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
-        if ("dprs".equals(this.jobType)) {
-            configMapNameList.add(this.jobType + "-conf");
-        }
+        configMapNameList.add(this.jobType + "-conf");
+
         return configMapNameList;
     }
 

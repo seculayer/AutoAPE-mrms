@@ -129,6 +129,8 @@ public class KubeUtil {
         List<String> configMapNameList = new ArrayList<>();
         configMapNameList.add("da-conf");
         configMapNameList.add("dprs-conf");
+        configMapNameList.add("mars-conf");
+        configMapNameList.add("hprs-conf");
 
         return configMapNameList;
     }

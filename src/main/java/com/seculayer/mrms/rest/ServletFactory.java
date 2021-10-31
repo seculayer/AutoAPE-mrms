@@ -75,4 +75,8 @@ public class ServletFactory {
     public static Map<String, Object> getBodyFromJSON(HttpServletRequest httpServletRequest) throws IOException {
         return JsonUtil.getMapFromString(httpServletRequest.getReader());
     }
+
+    public static List<Map<String, Object>> getBodyFromListJSON(HttpServletRequest httpServletRequest) throws IOException {
+        return JsonUtil.getListMapFromString(httpServletRequest.getReader());
+    }
 }
