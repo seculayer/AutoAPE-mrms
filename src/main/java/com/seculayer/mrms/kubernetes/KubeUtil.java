@@ -128,6 +128,7 @@ public class KubeUtil {
     public static List<String> mlConfigMapNames(){
         List<String> configMapNameList = new ArrayList<>();
         configMapNameList.add("da-conf");
+        configMapNameList.add("dprs-conf");
 
         return configMapNameList;
     }
