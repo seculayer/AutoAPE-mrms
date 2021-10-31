@@ -9,8 +9,8 @@ public class KubeConfigMapFactory {
         switch (metaname){
             case "da-conf":
                 return new DAConfigMap().configMap(configMap);
-            case "rcmd-conf":
-                return null;
+            case "dprs-conf":
+                return new DPRSConfigMap().configMap(configMap);
             default:
                 return null;
         }
