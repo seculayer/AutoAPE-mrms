@@ -72,16 +72,19 @@ public class RcmdContainer extends KubeContainer {
                 commands.add("/bin/bash");
                 commands.add("./dprs.sh");
                 commands.add(this.getProcessKey());
+                commands.add(Integer.toString(this.workerIdx));
                 return commands;
             case Constants.JOB_TYPE_MARS:
                 commands.add("/bin/bash");
                 commands.add("./mars.sh");
                 commands.add(this.getProcessKey());
+                commands.add(Integer.toString(this.workerIdx));
                 return commands;
             case Constants.JOB_TYPE_HPRS:
                 commands.add("/bin/bash");
                 commands.add("./hprs.sh");
                 commands.add(this.getProcessKey());
+                commands.add(Integer.toString(this.workerIdx));
                 return commands;
             default:
         }
