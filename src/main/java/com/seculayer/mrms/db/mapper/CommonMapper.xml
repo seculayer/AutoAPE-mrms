@@ -25,7 +25,7 @@
             CAST(LH.learn_hist_no AS CHAR) AS project_id
              , CAST(LH.param_id AS CHAR) AS param_id
              , CAST(LH.learn_alg_id AS CHAR) AS learn_alg_id
-             , CAST(LH.data_process_id AS CHAR) AS data_process_id
+             , CAST(LH.dp_analysis_id AS CHAR) AS dp_analysis_id
              , CAST(LH.project_id AS CHAR) AS project_id
              , LH.learn_sttus_cd
              , LH.start_time
@@ -52,7 +52,7 @@
              , AI.user_made_yn
         FROM LEARN_HIST LH
                  INNER JOIN ML_PARAM_INFO MPI ON LH.param_id = MPI.param_id
-                 INNER JOIN ML_ALGORITHM_INFO MAI ON LH.learn_alg_id = MAI.learn_alg_id
+                 INNER JOIN ALG_ANAL_INFO MAI ON LH.alg_id = MAI.alg_id
                  INNER JOIN ALG_ANAL_INFO AAI ON MAI.alg_anal_id = AAI.alg_anal_id
                  INNER JOIN ALGORITHM_INFO AI ON AAI.alg_id = AI.alg_id
         WHERE LH.project_id = #{project_id}

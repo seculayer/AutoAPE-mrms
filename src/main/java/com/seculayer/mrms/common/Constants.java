@@ -26,6 +26,7 @@ public class Constants {
 
     public static final String STATUS_PROJECT_RCMD_REQ = "3";
     public static final String STATUS_PROJECT_RCMD_ING = "4";
+    public static final String STATUS_PROJECT_LEARN_REQ = "6";
     public static final String STATUS_PROJECT_LEARN_ING = "7";
     public static final String STATUS_PROJECT_COMPLETE = "8";
     public static final String STATUS_PROJECT_ERROR = "9";

@@ -11,9 +11,10 @@ public class GetUUIDServlet extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_uuid";
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletResponse.setContentType("text/json; charset=utf-8");
         String uuid = commonDAO.selectUUID();
 
-        httpServletResponse.getWriter().print(uuid);
+        httpServletResponse.getWriter().println(uuid);
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
     }
 }

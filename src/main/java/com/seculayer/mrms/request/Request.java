@@ -12,6 +12,7 @@ import com.seculayer.mrms.db.CommonDAO;
 //import com.seculayer.mrms.kubernetes.yaml.job.VerifyJob;
 //import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
 import com.seculayer.mrms.checker.ScheduleQueue;
+import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.InfoAbstract;
 import com.seculayer.mrms.info.RcmdInfo;
@@ -35,6 +36,7 @@ abstract public class Request extends Thread {
     // schedule
     protected ScheduleQueue queue;
     protected CommonDAO commonDAO = new CommonDAO();
+    protected ProjectManageDAO projectDAO = new ProjectManageDAO();
 
     protected boolean isTerminate = false;
 

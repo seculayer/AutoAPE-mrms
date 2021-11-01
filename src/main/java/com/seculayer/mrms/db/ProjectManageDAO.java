@@ -42,20 +42,6 @@ public class ProjectManageDAO {
         }
     }
 
-    public void insertDataProcessInfo(Map<String, Object> map) {
-        try (SqlSession session = factory.openSession()) {
-            session.insert(mapperName + "insertDataProcessInfo", map);
-            session.commit();
-        }
-    }
-
-    public void insertMLAlgorithmInfo(Map<String, Object> map) {
-        try (SqlSession session = factory.openSession()) {
-            session.insert(mapperName + "insertMLAlgorithmInfo", map);
-            session.commit();
-        }
-    }
-
     public void insertMLParamInfo(List<Map<String, Object>> listMap) {
         try (SqlSession session = factory.openSession()) {
             for (Map<String, Object> map : listMap) {
@@ -111,6 +97,14 @@ public class ProjectManageDAO {
         List<Map<String, Object>> rst;
         try (SqlSession session = factory.openSession()) {
             rst = session.selectList(mapperName + "selectParamInfo", alg_id);
+        }
+
+        return rst;
+    }
+    public List<Map<String, Object>> selectMLParamInfo(Map<String, Object> map) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectParamInfo", map);
         }
 
         return rst;
