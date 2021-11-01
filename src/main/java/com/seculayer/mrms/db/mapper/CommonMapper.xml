@@ -61,6 +61,11 @@
         SELECT *
         FROM PROJECT_INFO
     </select>
+    <select id="selectProjectsStatusCode" resultType="String">
+        SELECT status
+        FROM PROJECT_INFO
+        WHERE project_id=#{project_id}
+    </select>
     <select id="selectWorkflowInfo" resultType="map">
         SELECT *
         FROM PROJECT_INFO
