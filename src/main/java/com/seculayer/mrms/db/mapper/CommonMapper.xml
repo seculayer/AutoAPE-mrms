@@ -66,6 +66,11 @@
         FROM PROJECT_INFO
         WHERE project_id=#{project_id}
     </select>
+    <select id="selectProjectInfo" resultType="String">
+        SELECT *
+        FROM PROJECT_INFO
+        WHERE project_id=#{project_id}
+    </select>
     <select id="selectWorkflowInfo" resultType="map">
         SELECT *
         FROM PROJECT_INFO

@@ -1,5 +1,7 @@
 package com.seculayer.mrms.info;
 
+import com.seculayer.mrms.db.CommonDAO;
+import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.util.JsonUtil;
 
@@ -26,6 +28,9 @@ public class LearnInfo extends InfoAbstract {
     protected Map<String, Object> algAnlsInfo = null;
     protected Map<String, Object> mlParamInfo = null;
 
+    protected CommonDAO commonDAO = new CommonDAO();
+    protected ProjectManageDAO projectDAO = new ProjectManageDAO();
+
     public LearnInfo(String key) {
         super(key);
     }
@@ -35,6 +40,8 @@ public class LearnInfo extends InfoAbstract {
         learnHistNo = map.get("learn_hist_no").toString();
         projectID = map.get("project_id").toString();
         learnStartTime = map.get("start_time").toString();
+//        Map<String, Object> daMap = new HashMap<>().put("data_analysis_id", commonDAO.selectP)
+//        daAnlsInfo = commonDAO.selectDataAnlsInfoWithDataAnalsID()
 
     }
 
