@@ -105,6 +105,14 @@ public class CommonDAO {
         return rst;
     }
 
+    public String selectUUID(){
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectUUID");
+        }
+        return rst;
+    }
+
     // Update
     public void updateSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {

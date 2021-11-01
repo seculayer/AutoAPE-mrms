@@ -20,10 +20,10 @@
             )
     </insert>
     <insert id="insertDPAnlsInfo" parameterType="map">
-        <selectKey keyProperty="dp_analysis_id" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
+<!--        <selectKey keyProperty="dp_analysis_id" resultType="long"-->
+<!--                   order="BEFORE">-->
+<!--            SELECT UUID_SHORT()-->
+<!--        </selectKey>-->
         INSERT INTO DP_ANLS_INFO
         (	dp_analysis_id
         ,	data_analysis_json
@@ -36,10 +36,10 @@
         )
     </insert>
     <insert id="insertAlgAnlsInfo" parameterType="map">
-        <selectKey keyProperty="alg_anal_id" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
+<!--        <selectKey keyProperty="alg_anal_id" resultType="long"-->
+<!--                   order="BEFORE">-->
+<!--            SELECT UUID_SHORT()-->
+<!--        </selectKey>-->
         INSERT INTO ALG_ANAL_INFO
         (	alg_anal_id
         ,	alg_id
@@ -56,10 +56,10 @@
         )
     </insert>
     <insert id="insertDataProcessInfo" parameterType="map">
-        <selectKey keyProperty="data_process_id" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
+<!--        <selectKey keyProperty="data_process_id" resultType="long"-->
+<!--                   order="BEFORE">-->
+<!--            SELECT UUID_SHORT()-->
+<!--        </selectKey>-->
         INSERT INTO DATA_PROCESS_INFO
         (	data_process_id
         ,	project_id
@@ -74,10 +74,10 @@
         )
     </insert>
     <insert id="insertMLAlgorithmInfo" parameterType="map">
-        <selectKey keyProperty="learn_alg_id" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
+<!--        <selectKey keyProperty="learn_alg_id" resultType="long"-->
+<!--                   order="BEFORE">-->
+<!--            SELECT UUID_SHORT()-->
+<!--        </selectKey>-->
         INSERT INTO ML_ALGORITHM_INFO
         (	learn_alg_id
         ,   data_process_id
@@ -96,10 +96,10 @@
         )
     </insert>
     <insert id="insertMLParamInfo" parameterType="map">
-        <selectKey keyProperty="param_id" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
+<!--        <selectKey keyProperty="param_id" resultType="long"-->
+<!--                   order="BEFORE">-->
+<!--            SELECT UUID_SHORT()-->
+<!--        </selectKey>-->
         INSERT INTO ML_PARAM_INFO
         (	param_id
         ,   learn_alg_id

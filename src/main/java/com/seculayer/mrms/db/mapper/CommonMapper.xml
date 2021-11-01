@@ -86,6 +86,10 @@
         WHERE data_analysis_id = #{data_analysis_id}
     </select>
 
+    <select id="selectUUID" resultType="string">
+        SELECT UUID_SHORT()
+    </select>
+
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
