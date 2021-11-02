@@ -20,7 +20,7 @@ public class MLPSContainer extends KubeContainer {
         super(jobType);
 
         this.name = "mlps";
-        this.image = registryURL + "/mlps:"
+        this.image = registryURL + "/automl-mlps:"
             + Constants.MLPS_IMAGE_VERSION;
     }
 
