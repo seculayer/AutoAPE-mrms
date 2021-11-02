@@ -21,15 +21,15 @@ public class RcmdContainer extends KubeContainer {
         switch (jobType) {
             case Constants.JOB_TYPE_DPRS:
                 this.image = registryURL + "/automl-dprs:"
-                                + Constants.IMAGE_VERSION;
+                                + Constants.DPRS_IMAGE_VERSION;
                 break;
             case Constants.JOB_TYPE_MARS:
                 this.image = registryURL + "/automl-mars:"
-                    + Constants.IMAGE_VERSION;
+                    + Constants.MARS_IMAGE_VERSION;
                 break;
             case Constants.JOB_TYPE_HPRS:
                 this.image = registryURL + "/automl-hprs:"
-                    + Constants.IMAGE_VERSION;
+                    + Constants.HPRS_IMAGE_VERSION;
                 break;
             default:
                 this.image = "NoImage";

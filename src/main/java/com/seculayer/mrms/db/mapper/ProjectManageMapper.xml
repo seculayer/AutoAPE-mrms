@@ -20,10 +20,6 @@
             )
     </insert>
     <insert id="insertDPAnlsInfo" parameterType="map">
-<!--        <selectKey keyProperty="dp_analysis_id" resultType="long"-->
-<!--                   order="BEFORE">-->
-<!--            SELECT UUID_SHORT()-->
-<!--        </selectKey>-->
         INSERT INTO DP_ANLS_INFO
         (	dp_analysis_id
         ,   project_id
@@ -38,10 +34,6 @@
         )
     </insert>
     <insert id="insertAlgAnlsInfo" parameterType="map">
-<!--        <selectKey keyProperty="alg_anal_id" resultType="long"-->
-<!--                   order="BEFORE">-->
-<!--            SELECT UUID_SHORT()-->
-<!--        </selectKey>-->
         INSERT INTO ALG_ANAL_INFO
         (	alg_anal_id
         ,   project_id
@@ -64,10 +56,6 @@
         )
     </insert>
     <insert id="insertMLParamInfo" parameterType="map">
-        <selectKey keyProperty="param_id" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
         INSERT INTO ML_PARAM_INFO
         (	param_id
         ,   alg_id
@@ -86,23 +74,25 @@
         )
     </insert>
     <insert id="insertLearnHist" parameterType="map">
-        <selectKey keyProperty="learn_hist_no" resultType="long"
-                   order="BEFORE">
-            SELECT UUID_SHORT()
-        </selectKey>
         INSERT INTO LEARN_HIST
         (	learn_hist_no
         ,   param_id
-        ,   learn_alg_id
-        ,   data_process_id
+        ,   alg_anal_id
+        ,   alg_id
+        ,   dp_analysis_id
         ,	project_id
+        ,   learn_sttus_cd
+        ,   start_time
         )
         VALUES
         (	#{learn_hist_no}
         ,   #{param_id}
-        ,   #{learn_alg_id}
-        ,   #{data_process_id}
+        ,   #{alg_anal_id}
+        ,   #{alg_id}
+        ,   #{dp_analysis_id}
         ,	#{project_id}
+        ,   #{learn_sttus_cd}
+        ,   #{start_time}
         )
     </insert>
 
@@ -130,10 +120,25 @@
         FROM ALGORITHM_PARAM
         WHERE alg_id = #{alg_id}
     </select>
+    <select id="selectMLParamInfoList" parameterType="string" resultType="map">
+        SELECT *
+        FROM ML_PARAM_INFO
+        WHERE project_id = #{project_id}
+    </select>
+    <select id="selectDpAnlsInfo" resultType="map">
+        SELECT *
+        FROM DP_ANLS_INFO
+        WHERE dp_analysis_id = #{dp_analysis_id}
+        AND project_id = #{project_id}
+    </select>
+
     <select id="selectMLParamInfo" parameterType="string" resultType="map">
         SELECT *
         FROM ML_PARAM_INFO
         WHERE project_id = #{project_id}
+        AND dp_analysis_id = #{dp_analysis_id}
+        AND alg_anal_id = #{alg_anal_id}
+        AND param_id = #{param_id}
     </select>
 
 

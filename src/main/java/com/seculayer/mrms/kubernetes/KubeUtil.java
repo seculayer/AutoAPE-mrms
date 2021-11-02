@@ -131,6 +131,7 @@ public class KubeUtil {
         configMapNameList.add("dprs-conf");
         configMapNameList.add("mars-conf");
         configMapNameList.add("hprs-conf");
+        configMapNameList.add("mlps-conf");
 
         return configMapNameList;
     }

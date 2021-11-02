@@ -24,7 +24,7 @@
         SELECT
             CAST(LH.learn_hist_no AS CHAR) AS project_id
              , CAST(LH.param_id AS CHAR) AS param_id
-             , CAST(LH.learn_alg_id AS CHAR) AS learn_alg_id
+             , CAST(LH.alg_id AS CHAR) AS alg_id
              , CAST(LH.dp_analysis_id AS CHAR) AS dp_analysis_id
              , CAST(LH.project_id AS CHAR) AS project_id
              , LH.learn_sttus_cd
@@ -100,6 +100,23 @@
         SELECT UUID_SHORT()
     </select>
 
+    <select id="selectDataAnlsID" resultType="map">
+        SELECT *
+        FROM DATA_ANLS_INFO
+        WHERE data_analysis_id = (
+            SELECT data_analysis_id
+            FROM PROJECT_INFO
+            WHERE project_id = #{project_id}
+        )
+    </select>
+
+    <select id="selectAlgInfo" resultType="map">
+        SELECT *
+        FROM ALGORITHM_INFO
+        WHERE alg_id = #{alg_id}
+    </select>
+
+
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
@@ -168,7 +185,6 @@
                 #{dataset_id}
                 )
     </insert>
-
 
     <!-- Delete -->
     <delete id="deleteDataset" parameterType="map">
