@@ -44,7 +44,7 @@
         ,	metadata_json
         ,   alg_type
         ,   alg_json
-        ,   alg_cls
+        ,   algorithm_code
         )
         VALUES
         (	#{alg_anal_id}
@@ -54,7 +54,7 @@
         ,	#{metadata_json}
         ,	#{alg_type}
         ,	#{alg_json}
-        ,	#{alg_cls}
+        ,	#{algorithm_code}
         )
     </insert>
     <insert id="insertMLParamInfo" parameterType="map">

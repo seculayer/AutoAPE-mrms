@@ -3,6 +3,7 @@ package com.seculayer.mrms.info;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.db.ProjectManageDAO;
+import com.seculayer.mrms.managers.MRMServerManager;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
@@ -57,7 +58,24 @@ public class LearnInfo extends InfoAbstract {
         mlParamInfo = projectDAO.selectMLParamInfo(map);
         algInfo = commonDAO.selectAlgInfo(map);
 
+        String projectPurpose = commonDAO.selectProjectInfo(projectID).get("project_purpose_cd").toString();
+        switch (projectPurpose){
+            case "2":
+                algInfo.put("algorithm_type", "Regressor");
+                break;
+            case "7":
+                algInfo.put("algorithm_type", "OD");
+                break;
+            default:
+                algInfo.put("algorithm_type", "Classifier");
+        }
+
         algInfo.put("learning", "Y");
+        algInfo.put("alg_sn", "0");
+        algInfo.put("global_sn", "0");
+        algInfo.put("global_step", MRMServerManager.getInstance().getConfiguration().get("global_steps", "10"));
+        algInfo.put("method_type", "Basic");
+        algInfo.put("model_nm", learnHistNo);
         daAnlsInfo.put("fields", dpAnlsInfo);
 
         eduPer = 80;
@@ -73,7 +91,12 @@ public class LearnInfo extends InfoAbstract {
             List<?> fileList = ((List<?>) metadataJson.get("file_list"));
             this.setNumWorker(fileList.size());
 
-            algInfo.put("params", mapper.readValue(mlParamInfo.get("param_json").toString(), Map.class));
+            Map<String, Object> params = mapper.readValue(mlParamInfo.get("param_json").toString(), Map.class);
+            params.put("early_key", "0");
+            params.put("early_type", "0");
+            params.put("early_value", "10");
+            params.put("minsteps", "10");
+            algInfo.put("params", params);
 
             List<?> dpAnlsJson = mapper.readValue(dpAnlsInfo.get("data_analysis_json").toString(), List.class);
             daAnlsInfo.put("fields", dpAnlsJson);
@@ -111,9 +134,9 @@ public class LearnInfo extends InfoAbstract {
     public synchronized boolean isGpuUse(Map<String, Object> algInfo){
         switch (algInfo.get("lib_type").toString()){
             case Constants.LIB_TYPE_TFV1: case Constants.LIB_TYPE_KERAS: case Constants.LIB_TYPE_TFV2:
-                return gpuUseExceptions(algInfo.get("alg_cls").toString(), true);
+                return gpuUseExceptions(algInfo.get("algorithm_code").toString(), true);
             default:
-                return gpuUseExceptions(algInfo.get("alg_cls").toString(), false);
+                return gpuUseExceptions(algInfo.get("algorithm_code").toString(), false);
         }
     }
 

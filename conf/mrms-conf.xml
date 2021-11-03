@@ -19,4 +19,9 @@
         <value>0</value>
         <description>Gi</description>
     </property>
+    <property>
+        <name>global_steps</name>
+        <value>10</value>
+        <description>epoch</description>
+    </property>
 </configuration>

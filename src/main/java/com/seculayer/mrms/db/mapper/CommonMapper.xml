@@ -41,7 +41,7 @@
              , MAI.alg_type
              , MAI.alg_json
              , AI.alg_nm
-             , AI.alg_cls
+             , AI.algorithm_code
              , AI.alg_type
              , AI.dist_yn
              , AI.alg_cont
@@ -65,7 +65,7 @@
         FROM PROJECT_INFO
         WHERE project_id=#{project_id}
     </select>
-    <select id="selectProjectInfo" resultType="String">
+    <select id="selectProjectInfo" parameterType="string" resultType="map">
         SELECT *
         FROM PROJECT_INFO
         WHERE project_id=#{project_id}
