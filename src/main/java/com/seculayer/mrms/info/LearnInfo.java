@@ -3,15 +3,9 @@ package com.seculayer.mrms.info;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.db.ProjectManageDAO;
-import com.seculayer.mrms.managers.MRMServerManager;
-import com.seculayer.util.JsonUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +59,7 @@ public class LearnInfo extends InfoAbstract {
         algInfo.put("learning", "Y");
         daAnlsInfo.put("fields", dpAnlsInfo);
 
-        eduPer = 0.8;
+        eduPer = 80;
         sampleTypeCd = "1";
         gpuUse = this.isGpuUse(algInfo);
 
@@ -93,6 +87,7 @@ public class LearnInfo extends InfoAbstract {
         map.put("edu_per", eduPer);
         map.put("num_worker", numWorker);
         map.put("gpu_use", gpuUse);
+        map.put("sample_type_cd", sampleTypeCd);
 
         return map;
     }
@@ -128,5 +123,6 @@ public class LearnInfo extends InfoAbstract {
     public int getNumWorker() { return numWorker; }
     public boolean getGpuUse() { return gpuUse; }
     public String getLearnHistNo() { return learnHistNo; }
+    public Map<String, Object> getAlgInfo() { return algInfo; }
 
 }

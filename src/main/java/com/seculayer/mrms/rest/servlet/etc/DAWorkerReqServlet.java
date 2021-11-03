@@ -21,11 +21,11 @@ public class DAWorkerReqServlet extends ServletHandlerAbstract {
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
-        logger.info("###################################################################");
+        logger.debug("###################################################################");
         try {
             String id = httpServletRequest.getParameter("id");
             int numWorkers = Integer.parseInt(httpServletRequest.getParameter("num_worker"));
-            logger.info(
+            logger.debug(
                     "In doGet - create Data Analyze Workers, dataset_id: {}, num_workers: {}",
                     id, numWorkers
             );
@@ -43,6 +43,6 @@ public class DAWorkerReqServlet extends ServletHandlerAbstract {
             out.println("error");
         }
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        logger.info("###################################################################");
+        logger.debug("###################################################################");
     }
 }

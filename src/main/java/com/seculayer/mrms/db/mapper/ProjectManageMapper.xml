@@ -10,6 +10,7 @@
         ,	data_analysis_id
         ,   status
         ,   start_time
+        ,   project_target_field
         )
         VALUES
             (	#{project_id}
@@ -17,6 +18,7 @@
             ,	#{data_analysis_id}
             ,	#{status}
             ,	#{start_time}
+            ,   #{project_target_field}
             )
     </insert>
     <insert id="insertDPAnlsInfo" parameterType="map">

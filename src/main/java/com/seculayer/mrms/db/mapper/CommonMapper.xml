@@ -22,7 +22,7 @@
     </select>
     <select id="selectModelsInfo" resultType="map">
         SELECT
-            CAST(LH.learn_hist_no AS CHAR) AS project_id
+            CAST(LH.learn_hist_no AS CHAR) AS learn_hist_no
              , CAST(LH.param_id AS CHAR) AS param_id
              , CAST(LH.alg_id AS CHAR) AS alg_id
              , CAST(LH.dp_analysis_id AS CHAR) AS dp_analysis_id
@@ -37,9 +37,9 @@
              , LH.message
              , MPI.param_json
              , MAI.alg_json
-             , AAI.metadata_json
-             , AAI.alg_type
-             , AAI.alg_json
+             , MAI.metadata_json
+             , MAI.alg_type
+             , MAI.alg_json
              , AI.alg_nm
              , AI.alg_cls
              , AI.alg_type
@@ -52,9 +52,8 @@
              , AI.user_made_yn
         FROM LEARN_HIST LH
                  INNER JOIN ML_PARAM_INFO MPI ON LH.param_id = MPI.param_id
-                 INNER JOIN ALG_ANAL_INFO MAI ON LH.alg_id = MAI.alg_id
-                 INNER JOIN ALG_ANAL_INFO AAI ON MAI.alg_anal_id = AAI.alg_anal_id
-                 INNER JOIN ALGORITHM_INFO AI ON AAI.alg_id = AI.alg_id
+                 INNER JOIN ALG_ANAL_INFO MAI ON LH.alg_anal_id = MAI.alg_anal_id
+                 INNER JOIN ALGORITHM_INFO AI ON MAI.alg_id = AI.alg_id
         WHERE LH.project_id = #{project_id}
     </select>
     <select id="selectProjectsInfo" resultType="map">

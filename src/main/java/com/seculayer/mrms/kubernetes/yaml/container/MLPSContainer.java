@@ -2,11 +2,13 @@ package com.seculayer.mrms.kubernetes.yaml.container;
 
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.info.LearnInfo;
+import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.managers.MRMServerManager;
 import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1ContainerPort;
+import io.kubernetes.client.openapi.models.V1EnvVar;
 import io.kubernetes.client.openapi.models.V1VolumeMount;
 
 import java.util.ArrayList;
@@ -84,6 +86,32 @@ public class MLPSContainer extends KubeContainer {
         }
         commands.add(this.jobType);
         return commands;
+    }
+
+    @Override
+    protected List<V1EnvVar> makeEnv() {
+        String key = this.getProcessKey();
+
+        int numWorker = ((LearnInfo) this.info).getNumWorker();
+
+        List<V1EnvVar> envList = super.makeEnv();
+        if (Constants.JOB_TYPE_LEARN.equals(this.jobType) && "Y".equals(((LearnInfo) this.info).getAlgInfo().get("dist_yn").toString())){
+            // learning - distributed support
+            envList.add(new V1EnvVar()
+                .name("TF_CONFIG")
+                .value(KubeUtil.generateTFConfig(jobType, key, numWorker, workerIdx)));
+        } else {
+            envList.add(new V1EnvVar()
+                .name("TF_CONFIG")
+                .value(KubeUtil.generateTFConfigSingle(jobType, key, workerIdx)));
+        }
+
+        if (!((LearnInfo) this.info).getGpuUse()) {
+            envList.add(new V1EnvVar()
+                .name("CUDA_VISIBLE_DEVICES")
+                .value("-1"));
+        }
+        return envList;
     }
 
     @Override

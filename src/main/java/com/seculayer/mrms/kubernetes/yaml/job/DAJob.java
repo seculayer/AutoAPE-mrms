@@ -7,6 +7,7 @@ import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1Volume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,10 @@ public class DAJob extends KubeJob {
 
     @Override
     protected List<String> makeConfigMapName() {
-        return KubeUtil.mlConfigMapNames();
+        List<String> configMapNameList = new ArrayList<>();
+        configMapNameList.add("da-conf");
+
+        return configMapNameList;
     }
 
     @Override

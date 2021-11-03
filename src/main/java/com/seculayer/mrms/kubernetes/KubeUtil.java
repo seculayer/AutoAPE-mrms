@@ -5,15 +5,19 @@ import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMapFactory;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KubeUtil {
     static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    public static final int TF_CONTAINER_PORT = 9304;
 
     // Kubernetes Pod Utils
     public static V1ConfigMapList getAllConfigMapList(String namespace){
@@ -125,15 +129,79 @@ public class KubeUtil {
                 .mountPath(path);
     }
 
-    public static List<String> mlConfigMapNames(){
-        List<String> configMapNameList = new ArrayList<>();
-        configMapNameList.add("da-conf");
-        configMapNameList.add("dprs-conf");
-        configMapNameList.add("mars-conf");
-        configMapNameList.add("hprs-conf");
-        configMapNameList.add("mlps-conf");
+    public static String generateTFConfig(String prefix, String key, int numWorker, int workerIdx){
+        //---- TF Config
+        Map<String, Object> tfConfig = new HashMap<>();
 
-        return configMapNameList;
+        //--- make Cluster
+        Map<String, Object> cluster = new HashMap<>();
+
+        //-- make worker
+        List<String> worker = new ArrayList<>();
+        for (int i = 0; i < numWorker; i++){
+            String workerName;
+            workerName = String.format(
+                "%s:%s",
+                KubeUtil.makeWorkerName(prefix, key, i),
+                KubeUtil.TF_CONTAINER_PORT
+            );
+            worker.add(workerName);
+        }
+
+        cluster.put("worker", worker);
+        tfConfig.put("cluster", cluster);
+
+        //--- make task
+        Map<String, Object> task = new HashMap<>();
+        task.put("type", "worker");
+        task.put("index", String.valueOf(workerIdx));
+
+        tfConfig.put("task", task);
+
+        try {
+            return new JSONObject(tfConfig).toString();
+        } catch(Exception e){
+            return "";
+        }
+    }
+
+    public static String generateTFConfigSingle(String prefix, String key, int workerIdx){
+        //---- TF Config
+        Map<String, Object> tfConfig = new HashMap<>();
+
+        //--- make Cluster
+        Map<String, Object> cluster = new HashMap<>();
+
+        //-- make worker
+        List<String> worker = new ArrayList<>();
+        String workerName;
+        workerName = String.format(
+            "%s:%s",
+            KubeUtil.makeWorkerName(prefix, key, workerIdx),
+            KubeUtil.TF_CONTAINER_PORT
+        );
+        worker.add(workerName);
+
+        cluster.put("worker", worker);
+        tfConfig.put("cluster", cluster);
+
+        //--- make task
+        Map<String, Object> task = new HashMap<>();
+        task.put("type", "worker");
+        task.put("index", String.valueOf(0));
+
+        tfConfig.put("task", task);
+
+        try {
+            return new JSONObject(tfConfig).toString();
+        } catch(Exception e){
+            return "";
+        }
+
+    }
+
+    private static String makeWorkerName(String prefix, String key, int workerIdx) {
+        return String.format("%s-%s-%s", prefix, key, workerIdx);
     }
 
     public static void main(String[] args) {

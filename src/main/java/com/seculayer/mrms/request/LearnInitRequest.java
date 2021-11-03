@@ -39,9 +39,8 @@ public class LearnInitRequest extends Request {
 
     @Override
     public String makeKey(Map<String, Object> schedule) {
-        String projectID = schedule.get("project_id").toString();
         String learnHistNo = schedule.get("learn_hist_no").toString();
-        return String.format("%s_%s",projectID, learnHistNo);
+        return String.format("%s_%s", Constants.JOB_TYPE_LEARN, learnHistNo);
     }
 
     private Map<String, Object> makeLearnHistMap(Map<String, Object> mlParam) {

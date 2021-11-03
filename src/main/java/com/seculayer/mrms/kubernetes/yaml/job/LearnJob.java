@@ -1,12 +1,12 @@
 package com.seculayer.mrms.kubernetes.yaml.job;
 
 import com.seculayer.mrms.info.LearnInfo;
-import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1Volume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,10 @@ import java.util.Map;
 public class LearnJob extends KubeJob {
     @Override
     protected List<String> makeConfigMapName() {
-        return KubeUtil.mlConfigMapNames();
+        List<String> configMapNameList = new ArrayList<>();
+        configMapNameList.add("mlps-conf");
+
+        return configMapNameList;
     }
 
     @Override
