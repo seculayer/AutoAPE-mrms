@@ -143,6 +143,12 @@
         AND param_id = #{param_id}
     </select>
 
+    <select id="selectTargetField" resultType="string">
+        SELECT project_target_field
+        FROM PROJECT_INFO
+        WHERE project_id = #{project_id}
+    </select>
+
 
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO

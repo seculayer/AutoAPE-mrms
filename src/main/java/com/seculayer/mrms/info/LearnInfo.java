@@ -26,6 +26,7 @@ public class LearnInfo extends InfoAbstract {
     protected Map<String, Object> mlParamInfo = null;
     protected Map<String, Object> algInfo = null;
     protected boolean gpuUse = false;
+    protected String targetField = "";
 
     protected CommonDAO commonDAO = new CommonDAO();
     protected ProjectManageDAO projectDAO = new ProjectManageDAO();
@@ -62,6 +63,8 @@ public class LearnInfo extends InfoAbstract {
         eduPer = 80;
         sampleTypeCd = "1";
         gpuUse = this.isGpuUse(algInfo);
+        targetField = projectDAO.selectTargetField(map);
+
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -71,6 +74,9 @@ public class LearnInfo extends InfoAbstract {
             this.setNumWorker(fileList.size());
 
             algInfo.put("params", mapper.readValue(mlParamInfo.get("param_json").toString(), Map.class));
+
+            List<?> dpAnlsJson = mapper.readValue(dpAnlsInfo.get("data_analysis_json").toString(), List.class);
+            daAnlsInfo.put("fields", dpAnlsJson);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,6 +94,7 @@ public class LearnInfo extends InfoAbstract {
         map.put("num_worker", numWorker);
         map.put("gpu_use", gpuUse);
         map.put("sample_type_cd", sampleTypeCd);
+        map.put("project_target_field", targetField);
 
         return map;
     }

@@ -149,6 +149,15 @@ public class ProjectManageDAO {
         return rst;
     }
 
+    public String selectTargetField(Map<String, Object> map) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectTargetField", map);
+        }
+
+        return rst;
+    }
+
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);
