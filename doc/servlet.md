@@ -7,3 +7,5 @@
 |/mrms/get_sttus_cd|POST|-|{"hist_no": (String)}|- success : Status(String) </br> - error : "error" |Get Learning Status Code|
 |/mrms/status_update/learn|POST|-|{"hist_no": (String), </br> "task_idx": (String),  </br> "learn_sttus_cd": (String),  </br> "message": (String)}|- success : "1" </br> - error : "error" |Update Learning Status Code|
 |/mrms/eps_update|POST|-|{"eps"" : (String), </br> "hist_no" : (String)}|- success : "1" </br> - error : "error" |Update EPS(Events Per Second)|
+|/mrms/learn_result_update|POST|-|{"result": (JSON Format String), </br> "hist_no": (String)}|- success : "1" </br> - error : "error" |Update Learn Result|
+
