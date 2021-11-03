@@ -19,6 +19,7 @@ public class MRMServerManager {
 
     private static final ScheduleQueue daScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
+    private static final ScheduleQueue learnInitScheduleQueue = new ScheduleQueue();
 
     // REST server
     private HTTPServerManager httpServer;
@@ -94,6 +95,7 @@ public class MRMServerManager {
 //            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new DAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new LearnInitScheduleChecker(), delay, period * 1000);
         }
     }
 
@@ -107,4 +109,5 @@ public class MRMServerManager {
 
     public final ScheduleQueue getDAScheduleQueue() { return daScheduleQueue; }
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
+    public final ScheduleQueue getLearnInitScheduleQueue() { return learnInitScheduleQueue; }
 }

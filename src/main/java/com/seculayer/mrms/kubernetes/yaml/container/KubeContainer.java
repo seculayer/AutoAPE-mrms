@@ -4,6 +4,7 @@ import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.InfoAbstract;
+import com.seculayer.mrms.info.LearnInfo;
 import com.seculayer.mrms.info.RcmdInfo;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
@@ -115,6 +116,8 @@ public abstract class KubeContainer {
                 return ((DAInfo)this.info).getDatasetId();
             case Constants.JOB_TYPE_DPRS: case Constants.JOB_TYPE_MARS: case Constants.JOB_TYPE_HPRS:
                 return ((RcmdInfo)this.info).getProjectID();
+            case Constants.JOB_TYPE_LEARN:
+                return ((LearnInfo)this.info).getLearnHistNo();
             default:
                 return "0";
         }

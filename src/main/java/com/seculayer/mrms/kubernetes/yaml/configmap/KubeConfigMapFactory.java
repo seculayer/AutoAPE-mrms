@@ -15,6 +15,8 @@ public class KubeConfigMapFactory {
                 return new MARSConfigMap().configMap(configMap);
             case "hprs-conf":
                 return new HPRSConfigMap().configMap(configMap);
+            case "mlps-conf":
+                return new MLPSConfigMap().configMap(configMap);
             default:
                 return null;
         }

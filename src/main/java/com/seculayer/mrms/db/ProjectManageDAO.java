@@ -2,6 +2,7 @@ package com.seculayer.mrms.db;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,14 @@ public class ProjectManageDAO {
 
     public void insertDPAnlsInfo(List<Map<String, Object>> listMap) {
         try (SqlSession session = factory.openSession()) {
+            ObjectMapper mapper = new ObjectMapper();
             for (Map<String, Object> map : listMap) {
-                map.replace("data_analysis_json", map.get("data_analysis_json").toString());
+                try {
+                    String daJsonStr = mapper.writeValueAsString(map.get("data_analysis_json"));
+                    map.replace("data_analysis_json", daJsonStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 session.insert(mapperName + "insertDPAnlsInfo", map);
             }
             session.commit();
@@ -33,33 +40,32 @@ public class ProjectManageDAO {
 
     public void insertAlgAnlsInfo(List<Map<String, Object>> listMap) {
         try (SqlSession session = factory.openSession()) {
+            ObjectMapper mapper = new ObjectMapper();
             for (Map<String, Object> map : listMap) {
-                map.replace("metadata_json", map.get("metadata_json").toString());
-                map.replace("alg_json", map.get("alg_json").toString());
+                try {
+                    String metadataJsonStr = mapper.writeValueAsString(map.get("metadata_json"));
+                    map.replace("metadata_json", metadataJsonStr);
+                    String algJsonStr = mapper.writeValueAsString(map.get("alg_json"));
+                    map.replace("alg_json", algJsonStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 session.insert(mapperName + "insertAlgAnlsInfo", map);
             }
             session.commit();
         }
     }
 
-    public void insertDataProcessInfo(Map<String, Object> map) {
-        try (SqlSession session = factory.openSession()) {
-            session.insert(mapperName + "insertDataProcessInfo", map);
-            session.commit();
-        }
-    }
-
-    public void insertMLAlgorithmInfo(Map<String, Object> map) {
-        try (SqlSession session = factory.openSession()) {
-            session.insert(mapperName + "insertMLAlgorithmInfo", map);
-            session.commit();
-        }
-    }
-
     public void insertMLParamInfo(List<Map<String, Object>> listMap) {
         try (SqlSession session = factory.openSession()) {
+            ObjectMapper mapper = new ObjectMapper();
             for (Map<String, Object> map : listMap) {
-                map.replace("param_json", map.get("param_json").toString());
+                try {
+                    String paramJsonStr = mapper.writeValueAsString(map.get("param_json"));
+                    map.replace("param_json", paramJsonStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 session.insert(mapperName + "insertMLParamInfo", map);
             }
             session.commit();
@@ -111,6 +117,33 @@ public class ProjectManageDAO {
         List<Map<String, Object>> rst;
         try (SqlSession session = factory.openSession()) {
             rst = session.selectList(mapperName + "selectParamInfo", alg_id);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectMLParamInfoList(Map<String, Object> map) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectMLParamInfoList", map);
+        }
+
+        return rst;
+    }
+
+    public Map<String, Object> selectDpAnlsInfo(Map<String, Object> map) {
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDpAnlsInfo", map);
+        }
+
+        return rst;
+    }
+
+    public Map<String, Object> selectMLParamInfo(Map<String, Object> map) {
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectMLParamInfo", map);
         }
 
         return rst;

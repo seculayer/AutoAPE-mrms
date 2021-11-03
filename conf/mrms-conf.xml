@@ -9,4 +9,14 @@
         <name>kubernetes.log.debug.yn</name>
         <value>N</value>
     </property>
+    <property>
+        <name>kube.pod.cpu.limit</name>
+        <value>1200</value>
+        <description>m</description>
+    </property>
+    <property>
+        <name>kube.pod.memory.limit</name>
+        <value>0</value>
+        <description>Gi</description>
+    </property>
 </configuration>

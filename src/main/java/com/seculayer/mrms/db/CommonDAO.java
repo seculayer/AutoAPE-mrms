@@ -120,6 +120,23 @@ public class CommonDAO {
         return rst;
     }
 
+    public Map<String, Object> selectDataAnlsID(Map<String, Object> map){
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDataAnlsID", map);
+        }
+        return rst;
+    }
+
+    public Map<String, Object> selectAlgInfo(Map<String, Object> map) {
+        Map<String ,Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectAlgInfo", map);
+        }
+        return rst;
+    }
+
+
     // Update
     public void updateSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {

@@ -19,7 +19,7 @@ public class DAContainer extends KubeContainer {
 
         this.name = "da";
         this.image = registryURL + "/automl-da:"
-                        + Constants.IMAGE_VERSION;
+                        + Constants.DA_IMAGE_VERSION;
     }
     @Override
     public V1Container make() {
