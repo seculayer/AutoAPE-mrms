@@ -8,4 +8,4 @@
 |/mrms/status_update/learn|POST|-|{"hist_no": (String), </br> "task_idx": (String),  </br> "learn_sttus_cd": (String),  </br> "message": (String)}|- success : "1" </br> - error : "error" |Update Learning Status Code|
 |/mrms/eps_update|POST|-|{"eps"" : (String), </br> "hist_no" : (String)}|- success : "1" </br> - error : "error" |Update EPS(Events Per Second)|
 |/mrms/learn_result_update|POST|-|{"result": (JSON Format String), </br> "hist_no": (String)}|- success : "1" </br> - error : "error" |Update Learn Result|
-
+|/mrms/results/learn|POST|-|{"hist_no": (String) </br> "task_idx": (String), </br> "global_sn": (String), </br> "rst_type": (String),< br> "result: (List)}|- success : "1" </br> - error : "error" |get Learn Results|
