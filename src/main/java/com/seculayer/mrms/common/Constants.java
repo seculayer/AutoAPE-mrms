@@ -41,6 +41,7 @@ public class Constants {
     public static final String STATUS_PROJECT_ERROR = "9";
 
     public static final String STATUS_LEARN_HIST_INIT = "1";
+    public static final String STATUS_LEARN_COMPLETE = "6";
 
     public static final String LIB_TYPE_TFV1 = "1";
     public static final String LIB_TYPE_KERAS = "2";

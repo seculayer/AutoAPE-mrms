@@ -19,13 +19,14 @@ public class ProjectCompleteChecker extends Checker {
 
             int tmpCnt = 0;
             for (Map<String, Object> schd: schedules) {
-                if (schd.get("status").toString().equals(Constants.STATUS_PROJECT_COMPLETE)) {
+                if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_COMPLETE)) {
                     tmpCnt++;
                 }
             }
 
             if (cntModel == tmpCnt) {
                 // 완료 상태 업데이트
+                idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
                 dao.updateStatus(idMap);
             }
         }

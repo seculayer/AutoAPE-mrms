@@ -96,6 +96,7 @@ public class MRMServerManager {
             timer.scheduleAtFixedRate(new DAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new LearnInitScheduleChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
         }
     }
 
