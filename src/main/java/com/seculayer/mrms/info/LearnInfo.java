@@ -4,9 +4,15 @@ import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
+import com.seculayer.util.JsonUtil;
+import com.seculayer.util.StringUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +38,7 @@ public class LearnInfo extends InfoAbstract {
     protected CommonDAO commonDAO = new CommonDAO();
     protected ProjectManageDAO projectDAO = new ProjectManageDAO();
 
+    public LearnInfo() {}
     public LearnInfo(String key) {
         super(key);
     }
@@ -124,6 +131,28 @@ public class LearnInfo extends InfoAbstract {
 
     @Override
     public Map<String, Object> loadInfo(String key) {
+        File file = new File(outputDir, "learn_" + key + ".job");
+
+        try {
+            Map<String, Object> map = JsonUtil.strToMap(
+                JsonUtil.getJSONString(new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()))));
+
+            this.learnHistNo = StringUtil.get(map.get("learn_hist_no"));
+            this.key = StringUtil.get(map.get("key"));
+            this.projectID = StringUtil.get(map.get("project_id"));
+            this.daAnlsInfo = (Map<String, Object>) map.get("datasets");
+            this.algInfo = (Map<String, Object>) map.get("algorithms");
+            this.eduPer = StringUtil.getDouble(map.get("edu_per"));
+            this.numWorker = StringUtil.getInt(map.get("num_worker"));
+            this.gpuUse = StringUtil.getBoolean(map.get("gpu_use"));
+            this.sampleTypeCd = StringUtil.get(map.get("sample_type_cd"));
+            this.targetField = StringUtil.get(map.get("project_target_field"));
+            logger.debug("load learn info : {}", key);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 

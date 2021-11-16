@@ -20,7 +20,7 @@ public class ServletFactory {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 //        String path = Constants.REST_PACKAGES.replace('.', '/');
 
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
         for (String subPack : Constants.REST_SUB_PACKS){
             String path = (Constants.REST_PACKAGES + "." + subPack).replace('.', '/');
 
@@ -30,13 +30,15 @@ public class ServletFactory {
                 if (res.toString().contains("jar")) {
                     URL jar = ServletFactory.class.getProtectionDomain().getCodeSource().getLocation();
                     Path jarFile = Paths.get(jar.toString().substring("file:".length()));
-                    FileSystem fs = FileSystems.newFileSystem(jarFile, (ClassLoader) null);
+                    FileSystem fs = FileSystems.newFileSystem(jarFile, null);
                     DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
                     for(Path p: directoryStream) {
                         String classPath = p.toString();
                         if (classPath.endsWith(".class")) {
                             String className = classPath.substring(0, classPath.length() - 6).replace("/", ".");
-                            classes.add(classLoader.loadClass(className));
+                            Class<?> servletClass = ServletFactory.classLoad(classLoader, className);
+                            if (servletClass != null)
+                                classes.add(servletClass);
                         }
                     }
                 } else {
@@ -44,7 +46,9 @@ public class ServletFactory {
                     for (File file : Objects.requireNonNull(packDir.listFiles())) {
                         if (file.getName().endsWith(".class")) {
                             String className = Constants.REST_PACKAGES + "." + subPack + "." + file.getName().substring(0, file.getName().length() - 6);
-                            classes.add(classLoader.loadClass(className));
+                            Class<?> servletClass = ServletFactory.classLoad(classLoader, className);
+                            if (servletClass != null)
+                                classes.add(servletClass);
                         }
                     }
                 }
@@ -55,6 +59,13 @@ public class ServletFactory {
         }
 
         return classes;
+    }
+
+    public static Class<?> classLoad(ClassLoader classLoader, String className){
+        try {
+            return classLoader.loadClass(className);
+        } catch (Exception e){}
+        return null;
     }
 
     public static ServletHandler createServletHandler(){

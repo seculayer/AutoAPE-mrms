@@ -1,19 +1,21 @@
 package com.seculayer.mrms.kubernetes;
 
+import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMapFactory;
+import com.seculayer.util.StringUtil;
 import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
+import io.kubernetes.client.proto.V1;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class KubeUtil {
     static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -204,6 +206,40 @@ public class KubeUtil {
         return String.format("%s-%s-%s", prefix, key, workerIdx);
     }
 
+    public static String getJobLogs(String jobName, String containerName, boolean tail){
+        try {
+            CoreV1Api coreV1Api = new CoreV1Api();
+
+            V1PodList podList = coreV1Api.listNamespacedPod(
+                Constants.KUBE_EYECLOUDAI_NAMESPACE, "true", null,null, null,
+                null, null, null, null, null
+            );
+
+            for (V1Pod pod : podList.getItems()){
+                String podName = StringUtil.get(Objects.requireNonNull(pod.getMetadata()).getName());
+                if (podName.contains(jobName)){
+                    Integer tailVal;
+                    if (tail) {
+                        tailVal = 100;
+                    } else{
+                        tailVal = null;
+                    }
+                    return coreV1Api.readNamespacedPodLog(
+                        podName, Constants.KUBE_EYECLOUDAI_NAMESPACE, containerName, false,
+                        null, null, "true", false,
+                        null, tailVal, null
+                    );
+                }
+            }
+
+            return "";
+
+        } catch(ApiException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return "";
+    }
     public static void main(String[] args) {
         KubernetesManager.getInstance().initialize();
         String namespace = "apeautoml";
