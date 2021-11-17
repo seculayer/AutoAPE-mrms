@@ -68,6 +68,8 @@ public abstract class KubeJob {
                 .kind("Job")
                 .metadata(new V1ObjectMeta().name(this.metaname).labels(this.labels))
                 .spec(new V1JobSpec()
+                        // apply to >= Kubernetes v1.21
+                        .ttlSecondsAfterFinished(0)
                         .template(new V1PodTemplateSpec()
                                 .metadata(new V1ObjectMeta().labels(this.labels))
                                 .spec(new V1PodSpec()

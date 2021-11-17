@@ -24,10 +24,10 @@ import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Job;
-import io.kubernetes.client.openapi.models.V1Service;
-import io.kubernetes.client.openapi.models.V1Status;
+import io.kubernetes.client.openapi.models.*;
+import io.kubernetes.client.proto.V1;
 import org.apache.commons.lang.NotImplementedException;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,10 +152,43 @@ abstract public class Request extends Thread {
         return api.createNamespacedService(namespace, service, null, null, null);
     }
 
-    protected V1Status deleteService(V1Service service) throws ApiException {
-        if (service.getMetadata() == null)
-            return null;
+    public static V1Status deleteService(String serviceName) {
         CoreV1Api api = new CoreV1Api();
-        return api.deleteNamespacedService(service.getMetadata().getName(), namespace, null, null, null, null, null, null);
+
+        try {
+            return api.deleteNamespacedService(serviceName, namespace, null, null, null, true, null, new V1DeleteOptions());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static V1Status deleteJob(String jobName) {
+        BatchV1Api api = new BatchV1Api();
+
+        try {
+            return api.deleteNamespacedJob(jobName, namespace, null, null, null, true, null, new V1DeleteOptions());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static V1Status deletePod(String podName) {
+        CoreV1Api api = new CoreV1Api();
+
+        try {
+            return api.deleteNamespacedPod(podName, namespace, null, null, null, true, null, new V1DeleteOptions());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static V1PodList getPodList() {
+        CoreV1Api api = new CoreV1Api();
+        try {
+            return api.listNamespacedPod(namespace, null, null, null, null, null, null, null, null, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new V1PodList();
+        }
     }
 }
