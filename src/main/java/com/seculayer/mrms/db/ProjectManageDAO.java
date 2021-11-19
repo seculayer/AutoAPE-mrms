@@ -122,10 +122,10 @@ public class ProjectManageDAO {
         return rst;
     }
 
-    public List<Map<String, Object>> selectMLParamInfoList(Map<String, Object> map) {
+    public List<Map<String, Object>> selectLearnReqList(Map<String, Object> map) {
         List<Map<String, Object>> rst;
         try (SqlSession session = factory.openSession()) {
-            rst = session.selectList(mapperName + "selectMLParamInfoList", map);
+            rst = session.selectList(mapperName + "selectLearnReqList", map);
         }
 
         return rst;
@@ -161,6 +161,13 @@ public class ProjectManageDAO {
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);
+            session.commit();
+        }
+    }
+
+    public void updateUsedYN(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateUsedYN", map);
             session.commit();
         }
     }

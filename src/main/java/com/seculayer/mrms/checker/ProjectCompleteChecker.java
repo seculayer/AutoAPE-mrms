@@ -3,6 +3,7 @@ package com.seculayer.mrms.checker;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.LearnInfo;
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.request.Request;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 public class ProjectCompleteChecker extends Checker {
     private ProjectManageDAO dao = new ProjectManageDAO();
+    private static final Map<String, Object> modelResourceMap = MRMServerManager.getInstance().getModelResourceMap();
 
     @Override
     public void doCheck() throws CheckerException {
@@ -33,6 +35,7 @@ public class ProjectCompleteChecker extends Checker {
                 idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
                 dao.updateStatus(idMap);
                 this.deleteKubeResources(idMap, schedules);
+                this.deleteResourceMonitoring(schedules);
             }
         }
     }
@@ -80,5 +83,13 @@ public class ProjectCompleteChecker extends Checker {
             e.printStackTrace();
         }
 
+    }
+
+    public void deleteResourceMonitoring(List<Map<String, Object>> modelList) {
+        for (Map<String, Object> modelMap : modelList) {
+            String histNo = modelMap.get("learn_hist_no").toString();
+
+            modelResourceMap.remove(histNo);
+        }
     }
 }

@@ -13,20 +13,22 @@ public class LearnInitRequest extends Request {
 
     @Override
     public void doRequest(Map<String, Object> schedule) throws RequestException, IOException {
-        List<Map<String, Object>> mlParamList = projectDAO.selectMLParamInfoList(schedule);
+        List<Map<String, Object>> learHistReqList = projectDAO.selectLearnReqList(schedule);
 
         try {
-            for (Map<String, Object> mlParam : mlParamList) {
-                Map<String, Object> map = this.makeLearnHistMap(mlParam);
-                String key = this.makeKey(mlParam);
+            for (Map<String, Object> req : learHistReqList) {
+                String key = this.makeKey(req);
 
-                projectDAO.insertLearnHist(map);
+                projectDAO.updateUsedYN(req);
 
                 LearnInfo learnInfo = new LearnInfo(key);
-                learnInfo.init(mlParam);
+                learnInfo.init(req);
                 learnInfo.writeInfo();
 
                 this.makeLearnJob(learnInfo, learnInfo.getNumWorker());
+
+                req = this.setLearnHist(req);
+                commonDAO.updateSttusCd(req);
             }
 
             schedule.put("status", Constants.STATUS_PROJECT_LEARN_ING);
@@ -43,11 +45,12 @@ public class LearnInitRequest extends Request {
         return String.format("%s_%s", Constants.JOB_TYPE_LEARN, learnHistNo);
     }
 
-    private Map<String, Object> makeLearnHistMap(Map<String, Object> mlParam) {
-        mlParam.put("learn_hist_no", commonDAO.selectUUID());
-        mlParam.put("learn_sttus_cd", "1");
-        mlParam.put("start_time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+    public Map<String, Object> setLearnHist(Map<String, Object> map) {
+        map.replace("learn_sttus_cd", "2");
+        map.put("task_idx", "0");
+        map.put("message", "-");
+        map.put("hist_no", map.get("learn_hist_no"));
 
-        return mlParam;
+        return map;
     }
 }

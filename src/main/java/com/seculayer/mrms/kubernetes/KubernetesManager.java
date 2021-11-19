@@ -43,7 +43,7 @@ public class KubernetesManager {
     private void inOfClusterConfig() throws IOException {
         ApiClient client = ClientBuilder.cluster().build();
         String debugYN = MRMServerManager.getInstance().getConfiguration().get("kubernetes.log.debug.yn", "N");
-        if ("Y".equals(debugYN) || "y".equals(debugYN)) {
+        if ("y".equals(debugYN.toLowerCase())) {
             client.setDebugging(true);
         }
         Configuration.setDefaultApiClient(client);
@@ -55,7 +55,7 @@ public class KubernetesManager {
         ClientBuilder clientBuilder = ClientBuilder.kubeconfig(kubeConfig);
         ApiClient client = clientBuilder.build();
         String debugYN = MRMServerManager.getInstance().getConfiguration().get("kubernetes.log.debug.yn", "N");
-        if ("Y".equals(debugYN) || "y".equals(debugYN)) {
+        if ("y".equals(debugYN.toLowerCase())) {
             client.setDebugging(true);
         }
         Configuration.setDefaultApiClient(client);

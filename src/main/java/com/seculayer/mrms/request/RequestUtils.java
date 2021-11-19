@@ -24,7 +24,7 @@ public class RequestUtils {
 
         DAInfo daCheifInfo = new DAInfo(schd.get("dataset_id").toString());
         daCheifInfo.init(datasetInfo);
-        logger.info(daCheifInfo.toString());
+        logger.debug(daCheifInfo.toString());
 
         return daCheifInfo;
     }
@@ -32,7 +32,7 @@ public class RequestUtils {
     public static RcmdInfo createRcmdInfo(Map<String, Object> schd) throws IOException {
         RcmdInfo rcmdInfo = new RcmdInfo(schd.get("project_id").toString());
         rcmdInfo.init(schd);
-        logger.info(rcmdInfo.toString());
+        logger.debug(rcmdInfo.toString());
 
         return rcmdInfo;
     }

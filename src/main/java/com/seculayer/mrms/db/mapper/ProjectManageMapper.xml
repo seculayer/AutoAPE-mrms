@@ -122,10 +122,11 @@
         FROM ALGORITHM_PARAM
         WHERE alg_id = #{alg_id}
     </select>
-    <select id="selectMLParamInfoList" parameterType="string" resultType="map">
+    <select id="selectLearnReqList" parameterType="string" resultType="map">
         SELECT *
-        FROM ML_PARAM_INFO
+        FROM LEARN_HIST
         WHERE project_id = #{project_id}
+        AND learn_sttus_cd = '1'
     </select>
     <select id="selectDpAnlsInfo" resultType="map">
         SELECT *
@@ -154,5 +155,11 @@
         UPDATE PROJECT_INFO
         SET    status = #{status}
         WHERE  project_id = #{project_id}
+    </update>
+
+    <update id="updateUsedYN" parameterType="map">
+        UPDATE ML_PARAM_INFO
+        SET    used_yn = 'Y'
+        WHERE  param_id = #{param_id}
     </update>
 </mapper>

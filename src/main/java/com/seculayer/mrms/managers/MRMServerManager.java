@@ -21,6 +21,8 @@ public class MRMServerManager {
     private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue learnInitScheduleQueue = new ScheduleQueue();
 
+    private static final Map<String, Object> modelResourceMap = new HashMap<>();
+
     // REST server
     private HTTPServerManager httpServer;
 
@@ -111,4 +113,5 @@ public class MRMServerManager {
     public final ScheduleQueue getDAScheduleQueue() { return daScheduleQueue; }
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
     public final ScheduleQueue getLearnInitScheduleQueue() { return learnInitScheduleQueue; }
+    public final Map<String, Object> getModelResourceMap() { return modelResourceMap; }
 }
