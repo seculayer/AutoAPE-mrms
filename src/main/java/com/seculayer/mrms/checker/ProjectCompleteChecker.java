@@ -23,14 +23,14 @@ public class ProjectCompleteChecker extends Checker {
             List<Map<String, Object>> schedules = dao.selectLearningModelList(idMap);
             int cntModel = schedules.size();
 
-            int tmpCnt = 0;
+            int completeCnt = 0;
             for (Map<String, Object> schd: schedules) {
                 if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_COMPLETE)) {
-                    tmpCnt++;
+                    completeCnt++;
                 }
             }
 
-            if (cntModel == tmpCnt) {
+            if (cntModel == completeCnt) {
                 // 완료 상태 업데이트
                 idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
                 dao.updateStatus(idMap);
@@ -53,9 +53,9 @@ public class ProjectCompleteChecker extends Checker {
 
             for (V1Pod item : podList.getItems()) {
                 String podName = item.getMetadata().getName();
-                if (podName.contains(String.format("dprs-%s-0",projectID)) ||
-                        podName.contains(String.format("hprs-%s-0",projectID)) ||
-                        podName.contains(String.format("mars-%s-0",projectID))) {
+                if (podName.contains(String.format("dprs-%s-0", projectID)) ||
+                        podName.contains(String.format("hprs-%s-0", projectID)) ||
+                        podName.contains(String.format("mars-%s-0", projectID))) {
                     Request.deletePod(podName);
                 }
             }
