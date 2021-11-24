@@ -22,12 +22,12 @@ public class SendLearnResultServlet extends ServletHandlerAbstract {
         try {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
             logger.debug(map.toString());
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

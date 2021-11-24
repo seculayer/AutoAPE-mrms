@@ -27,11 +27,12 @@ public class GetProjectSttusCdServlet extends ServletHandlerAbstract {
             String status = commonDAO.selectProjectsStatusCode(map);
 
             out.print(status);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
+
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

@@ -1,49 +1,41 @@
-package com.seculayer.mrms.rest.servlet.delete;
+package com.seculayer.mrms.checker;
 
+import com.seculayer.mrms.common.Constants;
+import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.request.Request;
-import com.seculayer.mrms.rest.ServletHandlerAbstract;
 import com.seculayer.util.JsonUtil;
+import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
-public class DelDatasetJobServlet extends ServletHandlerAbstract {
-    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/delete_dataset_job";
-
+public class DACompleteChecker extends Checker {
+    private CommonDAO dao = new CommonDAO();
 
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletResponse.setContentType("text/json; charset=utf-8");
-        PrintWriter out = httpServletResponse.getWriter();
+    public void doCheck() throws CheckerException {
+        List<Map<String, Object>> reqList = dao.selectDASchedule(Constants.STATUS_DA_RM_REQ);
 
-        logger.debug("###################################################################");
-        logger.debug("In doGet - Delete DA Job");
-
-        try {
-            String datasetID = httpServletRequest.getParameter("dataset_id");
-            logger.debug("In doGet - dataset_id : {}", datasetID);
+        for (Map<String, Object> req: reqList) {
+            String datasetID = req.get("dataset_id").toString();
 
             this.deleteDAJob(datasetID);
-            out.println("1");
-        } catch (Exception e) {
-            e.printStackTrace();
-            out.println("error");
+            req.replace("status_cd", Constants.STATUS_DA_COMPLETE);
+            dao.updateDAStatus(req);
         }
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        logger.debug("###################################################################");
     }
 
     private void deleteDAJob(String datasetID) {
         String outputDir = MRMServerManager.getInstance().getConfiguration().get("ape.features.dir");
-        File file = new File(outputDir, "DA_META_" + datasetID + ".meta");
+        File file = new File(outputDir, "DA_META_" + datasetID + ".info");
         Map<String, Object> map = null;
         int numWorker = 1;
         try {

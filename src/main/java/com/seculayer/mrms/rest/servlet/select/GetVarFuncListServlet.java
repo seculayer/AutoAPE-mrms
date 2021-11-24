@@ -27,11 +27,12 @@ public class GetVarFuncListServlet extends ServletHandlerAbstract {
             String jsonStr = mapper.writeValueAsString(funcMap);
             logger.debug(jsonStr);
             out.println(jsonStr);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
+
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

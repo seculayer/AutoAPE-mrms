@@ -28,12 +28,12 @@ public class ModelResourceServlet extends ServletHandlerAbstract {
 
             modelResourceMap.put(learnHistNo, map);
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

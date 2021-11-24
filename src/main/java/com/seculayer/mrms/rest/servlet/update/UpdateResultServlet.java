@@ -25,12 +25,12 @@ public class UpdateResultServlet extends ServletHandlerAbstract {
             logger.debug(map.toString());
             commonDAO.updateLearnResult(map);
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         }catch (Exception e){
             logger.error(e.toString());
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

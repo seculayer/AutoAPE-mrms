@@ -33,12 +33,12 @@ public class ProjectCreateServlet extends ServletHandlerAbstract {
             logger.debug(map.toString());
 
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

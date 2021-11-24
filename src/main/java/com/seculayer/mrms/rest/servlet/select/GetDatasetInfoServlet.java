@@ -31,12 +31,12 @@ public class GetDatasetInfoServlet extends ServletHandlerAbstract {
             String jsonStr = mapper.writeValueAsString(rst);
             out.println(jsonStr);
 
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             logger.error(e.toString());
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

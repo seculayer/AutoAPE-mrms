@@ -27,12 +27,12 @@ public class InsertMLParamInfoServlet extends ServletHandlerAbstract {
             logger.debug(listMap.toString());
 
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

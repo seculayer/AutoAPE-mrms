@@ -38,12 +38,13 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
             commonDAO.updateDAStatus(map);
 
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
         } catch (Exception e){
             e.printStackTrace();
             out.println("error");
         }
+
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override
@@ -63,12 +64,12 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
             commonDAO.updateDAStatus(map);
 
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
 
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 
@@ -82,7 +83,7 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
             Map<String, Object> daResult = JsonUtil.strToMap(jsonStr);
 
             rstMap.put("dataset_id", map.get("dataset_id").toString());
-            rstMap.put("metadata_json", jsonStr);
+            rstMap.put("metadata_json", "{}");
             rstMap.put("analysis_file_nm", fileName);
             rstMap.put("dist_file_cnt", ((List<?>) daResult.get("file_list")).size());
 

@@ -26,11 +26,12 @@ public class GetSttusCdServlet extends ServletHandlerAbstract {
             Map<String, Object> sttusCd = commonDAO.selectSttusCd(map);
 
             out.print(sttusCd.get("learn_sttus_cd").toString());
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
             out.println("error");
         }
+
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }

@@ -35,11 +35,12 @@ public class UpdateTimeServlet extends ServletHandlerAbstract {
             }
 
             out.println("1");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             logger.error(e.toString());
             out.println("error");
         }
+
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
     }
 }
