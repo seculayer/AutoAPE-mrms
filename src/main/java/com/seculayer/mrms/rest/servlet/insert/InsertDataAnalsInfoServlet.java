@@ -83,7 +83,7 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
             Map<String, Object> daResult = JsonUtil.strToMap(jsonStr);
 
             rstMap.put("dataset_id", map.get("dataset_id").toString());
-            rstMap.put("metadata_json", "{}");
+            rstMap.put("metadata_json", jsonStr);
             rstMap.put("analysis_file_nm", fileName);
             rstMap.put("dist_file_cnt", ((List<?>) daResult.get("file_list")).size());
 
