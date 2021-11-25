@@ -59,6 +59,7 @@ public class DAContainer extends KubeContainer {
                 commands.add("./da.sh");
                 commands.add(this.getProcessKey());
                 commands.add("chief");
+                commands.add("0");
                 return commands;
             case Constants.JOB_TYPE_DA_WORKER:
                 commands.add("/bin/bash");
