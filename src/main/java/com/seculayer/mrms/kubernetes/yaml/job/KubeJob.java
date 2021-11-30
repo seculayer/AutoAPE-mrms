@@ -7,6 +7,7 @@ import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.kubernetes.yaml.container.DAContainer;
 import com.seculayer.mrms.kubernetes.yaml.container.MLPSContainer;
 import com.seculayer.mrms.kubernetes.yaml.container.RcmdContainer;
+import com.seculayer.mrms.managers.MRMServerManager;
 import io.kubernetes.client.openapi.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public abstract class KubeJob {
                 .metadata(new V1ObjectMeta().name(this.metaname).labels(this.labels))
                 .spec(new V1JobSpec()
                         // apply to >= Kubernetes v1.21
-                        .ttlSecondsAfterFinished(0)
+                        .ttlSecondsAfterFinished(MRMServerManager.getInstance().getConfiguration().getInt("remove_ttl_time", 30))
                         .template(new V1PodTemplateSpec()
                                 .metadata(new V1ObjectMeta().labels(this.labels))
                                 .spec(new V1PodSpec()
