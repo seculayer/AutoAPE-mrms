@@ -21,7 +21,12 @@
     </property>
     <property>
         <name>global_steps</name>
-        <value>10</value>
+        <value>50</value>
         <description>epoch</description>
+    </property>
+    <property>
+        <name>remove_ttl_time</name>
+        <value>60</value>
+        <description>seconds(integer)</description>
     </property>
 </configuration>
