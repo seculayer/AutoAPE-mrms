@@ -24,17 +24,28 @@ public class ProjectCompleteChecker extends Checker {
             int cntModel = schedules.size();
 
             int completeCnt = 0;
+            int errorCnt = 0;
             for (Map<String, Object> schd: schedules) {
                 if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_COMPLETE)) {
                     completeCnt++;
                 }
+                else if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_ERROR)) {
+                    errorCnt++;
+                }
             }
 
-            if (cntModel == completeCnt) {
+            if (cntModel == completeCnt && errorCnt == 0) {
                 // 완료 상태 업데이트
                 idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
                 dao.updateStatus(idMap);
-                this.deleteKubeResources(idMap, schedules);
+                // In case Kubernetes < v1.22, It must enable
+                // this.deleteKubeResources(idMap, schedules);
+                this.deleteResourceMonitoring(schedules);
+            }
+            else if (errorCnt > 0) {
+                idMap.replace("status", Constants.STATUS_PROJECT_ERROR);
+                dao.updateStatus(idMap);
+
                 this.deleteResourceMonitoring(schedules);
             }
         }

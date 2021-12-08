@@ -27,7 +27,8 @@ public class DACompleteChecker extends Checker {
         for (Map<String, Object> req: reqList) {
             String datasetID = req.get("dataset_id").toString();
 
-            this.deleteDAJob(datasetID);
+            // In case Kubernetes < v1.22, It must enable
+            // this.deleteDAJob(datasetID);
             req.replace("status_cd", Constants.STATUS_DA_COMPLETE);
             dao.updateDAStatus(req);
         }
