@@ -2,8 +2,12 @@
 <?xml-stylesheet type="text/xsl"  href="configuration.xsl"?>
 <configuration>
     <property>
-        <name>ape.features.dir</name>
-        <value>/eyeCloudAI/data/processing/ape/division</value>
+        <name>ape.job.dir</name>
+        <value>/eyeCloudAI/data/processing/ape/jobs</value>
+    </property>
+    <property>
+        <name>ape.da.dir</name>
+        <value>/eyeCloudAI/data/processing/ape/da</value>
     </property>
     <property>
         <name>kubernetes.log.debug.yn</name>
