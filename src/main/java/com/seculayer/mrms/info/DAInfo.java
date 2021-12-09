@@ -1,5 +1,6 @@
 package com.seculayer.mrms.info;
 
+import com.seculayer.mrms.managers.MRMServerManager;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class DAInfo extends InfoAbstract {
     @Override
     protected File infoFile() {
         if (this.infoFile == null){
-            infoFile = new File(outputDir, "DA_" + this.key + ".job");
+            infoFile = new File(outputDir + "/" + datasetID, "DA_" + this.key + ".job");
         }
         return infoFile;
     }

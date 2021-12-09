@@ -45,7 +45,7 @@ public class LearnInfo extends InfoAbstract {
 
     protected File infoFile() {
         if (this.infoFile == null){
-            infoFile = new File(outputDir, this.key + ".job");
+            infoFile = new File(outputDir + "/" + projectID, this.key + ".job");
         }
         return infoFile;
     }

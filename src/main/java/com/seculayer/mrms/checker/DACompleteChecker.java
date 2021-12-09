@@ -5,9 +5,10 @@ import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.request.Request;
 import com.seculayer.util.JsonUtil;
-import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
+
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,14 +30,25 @@ public class DACompleteChecker extends Checker {
 
             // In case Kubernetes < v1.22, It must enable
             // this.deleteDAJob(datasetID);
+            this.removeInitFoler(datasetID);
             req.replace("status_cd", Constants.STATUS_DA_COMPLETE);
             dao.updateDAStatus(req);
         }
     }
 
+    private void removeInitFoler(String datasetID) {
+        String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + datasetID;
+        File f = new File(folderPath);
+        try {
+            FileUtils.cleanDirectory(f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void deleteDAJob(String datasetID) {
-        String outputDir = MRMServerManager.getInstance().getConfiguration().get("ape.features.dir");
-        File file = new File(outputDir, "DA_META_" + datasetID + ".info");
+        String outputDir = MRMServerManager.getInstance().getConfiguration().get("ape.da.dir");
+        File file = new File(outputDir + "/" + datasetID, "DA_META_" + datasetID + ".info");
         Map<String, Object> map = null;
         int numWorker = 1;
         try {

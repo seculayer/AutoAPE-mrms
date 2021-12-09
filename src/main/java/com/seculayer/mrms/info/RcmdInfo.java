@@ -30,7 +30,7 @@ public class RcmdInfo extends InfoAbstract {
     @Override
     protected File infoFile() {
         if (this.infoFile == null){
-            infoFile = new File(outputDir, "RCMD_" + this.key + ".job");
+            infoFile = new File(outputDir + "/" + projectID, "RCMD_" + this.key + ".job");
         }
         return infoFile;
     }

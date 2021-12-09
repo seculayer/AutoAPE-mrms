@@ -76,7 +76,7 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
     private Map<String, Object> readDaResult(Map<String, Object> map) {
         Map<String, Object> rstMap = new HashMap<>();
         String fileName = String.format("DA_META_%s.info", map.get("dataset_id").toString());
-        File file = new File(MRMServerManager.getInstance().getConfiguration().get("ape.features.dir"), fileName);
+        File file = new File(MRMServerManager.getInstance().getConfiguration().get("ape.da.dir") + "/" + map.get("dataset_id"), fileName);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()))){
             String jsonStr = JsonUtil.getJSONString(reader);

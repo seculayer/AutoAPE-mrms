@@ -16,7 +16,7 @@ public abstract class InfoAbstract {
     protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     public InfoAbstract() {}
     protected File infoFile = null;
-    protected String outputDir = MRMServerManager.getInstance().getConfiguration().get("ape.features.dir");
+    protected String outputDir = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir");
 
     protected String key = "";
     public InfoAbstract(String key){
@@ -40,7 +40,12 @@ public abstract class InfoAbstract {
     public void writeInfo() throws IOException {
         BufferedOutputStream outputStream = null;
         try {
-            String path = infoFile().getPath();
+            File _infoFile = infoFile();
+            String path = _infoFile.getPath();
+            File dir_path = _infoFile.getParentFile();
+            if (!dir_path.exists()) {
+                dir_path.mkdirs();
+            }
             outputStream = new BufferedOutputStream(new FileOutputStream(path));
 
             JSONObject jsonData = new JSONObject();
