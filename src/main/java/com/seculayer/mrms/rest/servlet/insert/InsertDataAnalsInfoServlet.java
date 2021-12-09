@@ -34,9 +34,6 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
             commonDAO.insertDataAnlsInfo(rstMap);
             logger.debug(rstMap.toString());
 
-            map.put("status_cd", Constants.STATUS_DA_COMPLETE);
-            commonDAO.updateDAStatus(map);
-
             out.println("1");
 
         } catch (Exception e){
@@ -59,9 +56,6 @@ public class InsertDataAnalsInfoServlet extends ServletHandlerAbstract {
             Map<String, Object> rstMap = this.readDaResult(map);
             commonDAO.insertDataAnlsInfo(rstMap);
             logger.debug(rstMap.toString());
-
-            map.put("status_cd", Constants.STATUS_DA_COMPLETE);
-            commonDAO.updateDAStatus(map);
 
             out.println("1");
         } catch (Exception e) {

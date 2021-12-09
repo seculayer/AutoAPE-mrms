@@ -30,17 +30,18 @@ public class DACompleteChecker extends Checker {
 
             // In case Kubernetes < v1.22, It must enable
             // this.deleteDAJob(datasetID);
-            this.removeInitFoler(datasetID);
+            this.removeInitFolder(datasetID);
             req.replace("status_cd", Constants.STATUS_DA_COMPLETE);
             dao.updateDAStatus(req);
         }
     }
 
-    private void removeInitFoler(String datasetID) {
+    private void removeInitFolder(String datasetID) {
         String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + datasetID;
         File f = new File(folderPath);
         try {
             FileUtils.cleanDirectory(f);
+            f.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
