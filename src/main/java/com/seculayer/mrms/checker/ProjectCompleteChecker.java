@@ -7,7 +7,9 @@ import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.request.Request;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,7 @@ public class ProjectCompleteChecker extends Checker {
                 dao.updateStatus(idMap);
                 this.deleteKubeResources(idMap, schedules);
                 this.deleteResourceMonitoring(schedules);
+                this.removeJobFolder(idMap);
             }
             else if (errorCnt > 0) {
                 idMap.replace("status", Constants.STATUS_PROJECT_ERROR);
@@ -47,6 +50,18 @@ public class ProjectCompleteChecker extends Checker {
                 this.deleteKubeResources(idMap, schedules);
                 this.deleteResourceMonitoring(schedules);
             }
+        }
+    }
+
+    public void removeJobFolder(Map<String, Object> idMap) {
+        String projectID = idMap.get("project_id").toString();
+        String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + projectID;
+        File f = new File(folderPath);
+        try {
+            FileUtils.cleanDirectory(f);
+            f.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -58,7 +73,7 @@ public class ProjectCompleteChecker extends Checker {
         try {
             // In case Kubernetes < v1.22, It must enable
 //            this.deleteRCMDJob(projectID, podList);
-            this.deleteLearnJob(modelList, podList);
+            this.deleteLearnJob(modelList, podList);  // for service delete
         } catch (Exception e) {
             e.printStackTrace();
         }

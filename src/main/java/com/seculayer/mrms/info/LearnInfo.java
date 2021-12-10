@@ -131,7 +131,7 @@ public class LearnInfo extends InfoAbstract {
 
     @Override
     public Map<String, Object> loadInfo(String key) {
-        File file = new File(outputDir, "learn_" + key + ".job");
+        File file = new File(outputDir + "/" + projectID, "learn_" + key + ".job");
 
         try {
             Map<String, Object> map = JsonUtil.strToMap(

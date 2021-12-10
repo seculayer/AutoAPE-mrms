@@ -158,6 +158,15 @@ public class ProjectManageDAO {
         return rst;
     }
 
+    public String selectProjectID(String histNo) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectProjectID", histNo);
+        }
+
+        return rst;
+    }
+
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);

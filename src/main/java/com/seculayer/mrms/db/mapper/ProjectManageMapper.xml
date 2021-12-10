@@ -150,6 +150,12 @@
         WHERE project_id = #{project_id}
     </select>
 
+    <select id="selectProjectID" parameterType="string" resultType="string">
+        SELECT project_id
+        FROM LEARN_HIST
+        WHERE learn_hist_no = #{histNo}
+    </select>
+
 
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO
