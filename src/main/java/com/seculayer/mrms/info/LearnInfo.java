@@ -42,6 +42,10 @@ public class LearnInfo extends InfoAbstract {
     public LearnInfo(String key) {
         super(key);
     }
+    public LearnInfo(String key, String projectID) {
+        super(key);
+        this.projectID = projectID;
+    }
 
     protected File infoFile() {
         if (this.infoFile == null){

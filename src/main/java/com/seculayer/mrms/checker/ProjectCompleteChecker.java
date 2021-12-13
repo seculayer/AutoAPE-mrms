@@ -3,13 +3,17 @@ package com.seculayer.mrms.checker;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.LearnInfo;
+import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.request.Request;
+import com.seculayer.util.JsonUtil;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +34,11 @@ public class ProjectCompleteChecker extends Checker {
             for (Map<String, Object> schd: schedules) {
                 if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_COMPLETE)) {
                     completeCnt++;
+                    this.updateLearnLog(idMap, schd);
                 }
                 else if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_ERROR)) {
                     errorCnt++;
+                    this.updateLearnLog(idMap, schd);
                 }
             }
 
@@ -51,6 +57,30 @@ public class ProjectCompleteChecker extends Checker {
                 this.deleteResourceMonitoring(schedules);
             }
         }
+    }
+
+    public void updateLearnLog(Map<String, Object> idMap, Map<String, Object> schd) {
+        String projectID = idMap.get("project_id").toString();
+        String histNo = schd.get("learn_hist_no").toString();
+        boolean tail = false;
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            LearnInfo learnInfo = new LearnInfo(histNo, projectID);
+            learnInfo.loadInfo(histNo);
+
+            for (int idx = 0; idx < learnInfo.getNumWorker(); idx++) {
+                String log = KubeUtil.getJobLogs("learn-" + histNo + "-" + idx, "mlps", tail);
+                System.out.println(log);
+                map.put("worker_" + idx, log);
+            }
+            JSONObject jsonData = JsonUtil.mapToJson(map);
+            schd.put("logs", jsonData.toString());
+            dao.updateLearnLog(schd);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void removeJobFolder(Map<String, Object> idMap) {
@@ -73,7 +103,7 @@ public class ProjectCompleteChecker extends Checker {
         try {
             // In case Kubernetes < v1.22, It must enable
 //            this.deleteRCMDJob(projectID, podList);
-            this.deleteLearnJob(modelList, podList);  // for service delete
+            this.deleteLearnJob(projectID, modelList, podList);  // for service delete
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,10 +124,10 @@ public class ProjectCompleteChecker extends Checker {
         }
     }
 
-    public void deleteLearnJob(List<Map<String, Object>> modelList, V1PodList podList) {
+    public void deleteLearnJob(String projectID, List<Map<String, Object>> modelList, V1PodList podList) {
         for(Map<String, Object> model: modelList) {
             String modelHistNo = model.get("learn_hist_no").toString();
-            LearnInfo loadedInfo = new LearnInfo(modelHistNo);
+            LearnInfo loadedInfo = new LearnInfo(modelHistNo, projectID);
             loadedInfo.loadInfo(modelHistNo);
             int numWorker = loadedInfo.getNumWorker();
 

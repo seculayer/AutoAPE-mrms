@@ -156,6 +156,12 @@
         WHERE learn_hist_no = #{histNo}
     </select>
 
+    <select id="selectLearnLog" parameterType="string" resultType="string">
+        SELECT logs
+        FROM LEARN_HIST
+        WHERE learn_hist_no = #{histNo}
+    </select>
+
 
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO
@@ -167,5 +173,11 @@
         UPDATE ML_PARAM_INFO
         SET    used_yn = 'Y'
         WHERE  param_id = #{param_id}
+    </update>
+
+    <update id="updateLearnLog" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    logs = #{logs}
+        WHERE  learn_hist_no = #{learn_hist_no}
     </update>
 </mapper>

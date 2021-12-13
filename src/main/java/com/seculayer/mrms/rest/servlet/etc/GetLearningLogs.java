@@ -22,25 +22,21 @@ public class GetLearningLogs extends ServletHandlerAbstract{
         httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
 
+        logger.debug("###################################################################");
+        logger.debug("In doGet - get learning logs");
+
         String id = httpServletRequest.getParameter("id");
         boolean tail = StringUtil.getBoolean(httpServletRequest.getParameter("tail"));
 
-        Map<String, Object> map = new HashMap<>();
-
         try {
-            LearnInfo learnInfo = new LearnInfo();
-            learnInfo.loadInfo(id);
-
-            for (int idx = 0; idx < learnInfo.getNumWorker(); idx++) {
-                String log = KubeUtil.getJobLogs("learn-" + id + "-" + idx, "mlps", tail);
-                System.out.println(log);
-                map.put("worker_" + idx, log);
-            }
-            JSONObject jsonData = JsonUtil.mapToJson(map);
-            out.println(jsonData);
-
-        } catch (Exception e){
+            String logs = projectDAO.selectLearnLog(id);
+            out.println(logs);
+        } catch (Exception e) {
             e.printStackTrace();
+            out.println("error");
         }
+
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+        logger.debug("###################################################################");
     }
 }

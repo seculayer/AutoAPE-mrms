@@ -167,6 +167,15 @@ public class ProjectManageDAO {
         return rst;
     }
 
+    public String selectLearnLog(String histNo) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectLearnLog", histNo);
+        }
+
+        return rst;
+    }
+
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);
@@ -177,6 +186,13 @@ public class ProjectManageDAO {
     public void updateUsedYN(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateUsedYN", map);
+            session.commit();
+        }
+    }
+
+    public void updateLearnLog(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateLearnLog", map);
             session.commit();
         }
     }
