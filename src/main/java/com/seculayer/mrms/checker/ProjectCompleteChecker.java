@@ -71,7 +71,6 @@ public class ProjectCompleteChecker extends Checker {
 
             for (int idx = 0; idx < learnInfo.getNumWorker(); idx++) {
                 String log = KubeUtil.getJobLogs("learn-" + histNo + "-" + idx, "mlps", tail);
-                System.out.println(log);
                 map.put("worker_" + idx, log);
             }
             JSONObject jsonData = JsonUtil.mapToJson(map);
