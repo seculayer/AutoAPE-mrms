@@ -146,6 +146,15 @@ public class CommonDAO {
         return rst;
     }
 
+    public String selectDatasetFormat(String dataAnalsID) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDatasetFormat", dataAnalsID);
+        }
+
+        return rst;
+    }
+
 
     // Update
     public void updateSttusCd(Map<String, Object> map){

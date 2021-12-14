@@ -29,6 +29,7 @@ public class LearnInfo extends InfoAbstract {
     protected int numWorker;
     protected String sampleTypeCd = "";
     protected Map<String, Object> daAnlsInfo = null;
+    protected String datasetFormat = "";
     protected Map<String, Object> dpAnlsInfo = null;
     protected Map<String, Object> mlParamInfo = null;
     protected Map<String, Object> algInfo = null;
@@ -65,6 +66,7 @@ public class LearnInfo extends InfoAbstract {
         dpAnalysisID = map.get("dp_analysis_id").toString();
 
         daAnlsInfo = commonDAO.selectDataAnlsID(map);
+        datasetFormat = commonDAO.selectDatasetFormat(daAnlsInfo.get("data_analysis_id").toString());
         dpAnlsInfo = projectDAO.selectDpAnlsInfo(map);
         mlParamInfo = projectDAO.selectMLParamInfo(map);
         algInfo = commonDAO.selectAlgInfo(map);
@@ -129,6 +131,7 @@ public class LearnInfo extends InfoAbstract {
         map.put("gpu_use", gpuUse);
         map.put("sample_type_cd", sampleTypeCd);
         map.put("project_target_field", targetField);
+        map.put("dataset_format", datasetFormat);
 
         return map;
     }
@@ -152,6 +155,7 @@ public class LearnInfo extends InfoAbstract {
             this.gpuUse = StringUtil.getBoolean(map.get("gpu_use"));
             this.sampleTypeCd = StringUtil.get(map.get("sample_type_cd"));
             this.targetField = StringUtil.get(map.get("project_target_field"));
+            this.datasetFormat = StringUtil.get(map.get("dataset_format"));
             logger.debug("load learn info : {}", key);
         } catch (Exception e){
             e.printStackTrace();
