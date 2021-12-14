@@ -13,15 +13,15 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
-public class GetFieldUnique extends ServletHandlerAbstract {
-    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_field_unique";
+public class GetFieldWord extends ServletHandlerAbstract {
+    public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_field_word";
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletResponse.setContentType("text/json; charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
 
         logger.debug("###################################################################");
-        logger.debug("In doGet - get field unique");
+        logger.debug("In doGet - get field word");
 
         boolean flag = false;
         String datasetID = httpServletRequest.getParameter("dataset_id");
@@ -35,8 +35,8 @@ public class GetFieldUnique extends ServletHandlerAbstract {
             for (Map<String, Object> map: listMap) {
                 if (map.get("field_nm").toString().equals(fieldName)) {
                     Map<String, Object> statistics = (Map<String, Object>) map.get("statistics");
-                    if (statistics.containsKey("unique")) {
-                        Map<String, Object> word = (Map<String, Object>) statistics.get("unique");
+                    if (statistics.containsKey("word")) {
+                        Map<String, Object> word = (Map<String, Object>) statistics.get("word");
                         JSONObject wordJson = JsonUtil.mapToJson(word);
                         out.println(wordJson);
                         flag = true;

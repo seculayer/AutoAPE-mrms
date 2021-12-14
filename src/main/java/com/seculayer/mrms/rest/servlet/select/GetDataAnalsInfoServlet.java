@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
 public class GetDataAnalsInfoServlet extends ServletHandlerAbstract {
@@ -27,11 +28,21 @@ public class GetDataAnalsInfoServlet extends ServletHandlerAbstract {
             logger.debug(map.toString());
 
             Map<String, Object> rst = commonDAO.selectDataAnlsInfo(map);
+            Map<String, Object> metadataJson = mapper.readValue(rst.get("metadata_json").toString(), Map.class);
+            List<Object> metaList = (List<Object>) metadataJson.get("meta");
+            for (Object meta: metaList) {
+                Map<String, Object> metaMap = (Map<String, Object>) meta;
+                Map<String, Object> statistics = (Map<String, Object>) metaMap.get("statistics");
+                statistics.remove("word");
+                statistics.remove("unique");
+            }
+            rst.put("metadata_json", mapper.writeValueAsString(metadataJson));
+
             String jsonStr = mapper.writeValueAsString(rst);
             out.println(jsonStr);
 
         } catch (Exception e) {
-            logger.error(e.toString());
+            e.printStackTrace();
             out.println("error");
         }
 
