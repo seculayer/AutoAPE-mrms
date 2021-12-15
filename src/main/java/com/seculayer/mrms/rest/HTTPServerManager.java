@@ -7,14 +7,13 @@ import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.HashSessionIdManager;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.lang.invoke.MethodHandles;
 import java.util.Random;
 
 public class HTTPServerManager {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger logger = LogManager.getLogger();
     private static final Configuration conf = MRMServerManager.getInstance().getConfiguration();
 
     private final Server server;

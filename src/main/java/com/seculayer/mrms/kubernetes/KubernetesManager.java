@@ -5,15 +5,14 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 
 public class KubernetesManager {
-    static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    static Logger logger = LogManager.getLogger();
 
     public KubernetesManager(){ }
 

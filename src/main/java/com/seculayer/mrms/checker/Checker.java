@@ -1,14 +1,13 @@
 package com.seculayer.mrms.checker;
 
 import com.seculayer.mrms.request.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.lang.invoke.MethodHandles;
 import java.util.TimerTask;
 
 abstract public class Checker extends TimerTask {
-    protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected Logger logger = LogManager.getLogger();
     protected Request req = null;
 
     // builder pattern

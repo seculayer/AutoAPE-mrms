@@ -2,23 +2,24 @@ package com.seculayer.util.conf;
 
 
 import com.seculayer.util.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 public class LogConfiguration extends Configuration {
-  static Logger log = Logger.getLogger(LogConfiguration.class);
+  static Logger log = LogManager.getLogger(LogConfiguration.class);
 
   private String chukwaHome, chukwaConf;
-  
+
   public String getChukwaHome() {
     return chukwaHome;
   }
-  
+
   public String getChukwaConf() {
     return chukwaConf;
   }
-  
+
   public LogConfiguration() {
     this(true);
   }

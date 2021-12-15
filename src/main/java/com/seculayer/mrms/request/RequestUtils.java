@@ -7,15 +7,14 @@ package com.seculayer.mrms.request;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.info.DAInfo;
 import com.seculayer.mrms.info.RcmdInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.Map;
 
 public class RequestUtils {
-    protected static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected static Logger logger = LogManager.getLogger();
 
     private static final CommonDAO dao = new CommonDAO();
 

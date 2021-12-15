@@ -10,16 +10,15 @@ import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.models.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class KubeContainer {
-    private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private Logger logger = LogManager.getLogger();
     protected static final String registryURL = "registry.seculayer.com:31500/ape";
 
     protected String name;

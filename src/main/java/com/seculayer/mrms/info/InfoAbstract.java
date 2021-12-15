@@ -2,18 +2,17 @@ package com.seculayer.mrms.info;
 
 import com.seculayer.mrms.managers.MRMServerManager;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.Map;
 
 public abstract class InfoAbstract {
-    protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected Logger logger = LogManager.getLogger();
     public InfoAbstract() {}
     protected File infoFile = null;
     protected String outputDir = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir");

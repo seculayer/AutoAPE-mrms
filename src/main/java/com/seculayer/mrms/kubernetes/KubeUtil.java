@@ -11,14 +11,13 @@ import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.proto.V1;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 public class KubeUtil {
-    static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    static Logger logger = LogManager.getLogger();
     public static final int TF_CONTAINER_PORT = 9304;
 
     // Kubernetes Pod Utils

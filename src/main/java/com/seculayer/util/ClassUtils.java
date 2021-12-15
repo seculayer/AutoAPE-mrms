@@ -18,7 +18,8 @@
 
 package com.seculayer.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,12 +32,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassUtils {
-  static Logger log = Logger.getLogger(ClassUtils.class);
-  
+  static Logger log = LogManager.getLogger(ClassUtils.class);
+
   /**
    * Attempts to list all the classes in the specified package as determined
    * by the context class loader
-   * 
+   *
    * @param pckgname
    *            the package name to search
    * @return a list of classes that exist within that package
@@ -120,6 +121,6 @@ public class ClassUtils {
 
     return classList;
   }
-  
+
 
 }

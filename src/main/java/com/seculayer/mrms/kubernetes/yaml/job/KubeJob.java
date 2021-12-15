@@ -9,16 +9,15 @@ import com.seculayer.mrms.kubernetes.yaml.container.MLPSContainer;
 import com.seculayer.mrms.kubernetes.yaml.container.RcmdContainer;
 import com.seculayer.mrms.managers.MRMServerManager;
 import io.kubernetes.client.openapi.models.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class KubeJob {
-    private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private Logger logger = LogManager.getLogger();
     protected List<KubeConfigMap> configMapList;
 
     protected String metaname;

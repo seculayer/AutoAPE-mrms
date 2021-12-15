@@ -28,15 +28,14 @@ import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.proto.V1;
 import org.apache.commons.lang.NotImplementedException;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.Map;
 
 abstract public class Request extends Thread {
-    protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected Logger logger = LogManager.getLogger();
     protected static final String namespace = Constants.KUBE_EYECLOUDAI_NAMESPACE;
 
     // schedule

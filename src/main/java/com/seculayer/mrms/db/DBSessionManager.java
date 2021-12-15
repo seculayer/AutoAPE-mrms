@@ -4,17 +4,16 @@ import com.seculayer.util.cipher.AES256;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.Reader;
-import java.lang.invoke.MethodHandles;
 import java.util.Properties;
 
 public class DBSessionManager {
-    static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    static Logger logger = LogManager.getLogger();
     private static SqlSessionFactory sqlSession = null;
 
     static {

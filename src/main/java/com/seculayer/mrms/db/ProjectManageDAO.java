@@ -3,15 +3,14 @@ package com.seculayer.mrms.db;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Map;
 
 public class ProjectManageDAO {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger logger = LogManager.getLogger();
     private static final SqlSessionFactory factory = DBSessionManager.getSqlSession();
     private static String mapperName = "ProjectManageMapper.";
 
