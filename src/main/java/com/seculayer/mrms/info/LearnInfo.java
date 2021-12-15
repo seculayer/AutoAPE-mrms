@@ -91,7 +91,7 @@ public class LearnInfo extends InfoAbstract {
         algInfo.put("model_nm", learnHistNo);
         daAnlsInfo.put("fields", dpAnlsInfo);
 
-        eduPer = 80;
+        eduPer = 95;
         sampleTypeCd = "1";
         gpuUse = this.isGpuUse(algInfo);
         targetField = projectDAO.selectTargetField(map);

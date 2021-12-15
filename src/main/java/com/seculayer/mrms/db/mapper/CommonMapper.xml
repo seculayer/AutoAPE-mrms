@@ -35,7 +35,6 @@
              , LH.ml_score
              , LH.eps
              , LH.issue_task_idx
-             , LH.message
              , MPI.param_json
              , MAI.alg_json
              , MAI.metadata_json
@@ -130,7 +129,7 @@
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
-        SET    learn_sttus_cd = #{learn_sttus_cd}, issue_task_idx = #{task_idx}, message = #{message}
+        SET    learn_sttus_cd = #{learn_sttus_cd}, issue_task_idx = #{task_idx}
         WHERE  learn_hist_no = #{hist_no}
     </update>
     <update id="updateEps" parameterType="map">
