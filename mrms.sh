@@ -9,14 +9,13 @@ else
   BASE_DIR=$(echo "$EXEC_FILE" | sed 's/'"\/${BASE_NAME}"'$//')
 fi
 ##########################################################################
-source "$BASE_DIR"/.libs
 
-CLASSPATH=$CLASSPATH:automl-mrms-1.0.0.jar
-RUN_PATH=./
+RUN_PATH="."
+CLASSPATH="${RUN_PATH}/*:${RUN_PATH}/lib/*"
 
-JAVA_OPTS="-server"
-JAVA_OPTS="${JAVA_OPTS} -Xms1G -Xmx1G"
+
+JAVA_OPTS="-server -Xms1G -Xmx1G"
 JAVA_OPTS="${JAVA_OPTS} -DAPP=MRMServer -Dfile.encoding=UTF-8"
 
 export LANG CLASSPATH RUN_PATH
-"${JAVA_HOME}"/bin/java $JAVA_OPTS -classpath $CLASSPATH com.seculayer.mrms.MRMServerMain
+"${JAVA_HOME}"/bin/java $JAVA_OPTS --class-path "${CLASSPATH}" com.seculayer.mrms.MRMServerMain

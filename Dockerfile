@@ -19,8 +19,6 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 RUN mkdir -p /eyeCloudAI/app/ape/mrms/lib
 WORKDIR /eyeCloudAI/app/ape/mrms
 
-COPY ./.libs /eyeCloudAI/app/ape/mrms
-
 COPY ./mrms.sh /eyeCloudAI/app/ape/mrms
 RUN chmod +x /eyeCloudAI/app/ape/mrms/mrms.sh
 
