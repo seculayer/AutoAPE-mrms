@@ -14,7 +14,7 @@
     <maven.test.skip>true</maven.test.skip>
     <org.eclipse.jetty.version>9.2.22.v20170606</org.eclipse.jetty.version>
     <org.glassfish.jersey>2.25.1</org.glassfish.jersey>
-    <org.apache.log4j.version>2.16.0</org.apache.log4j.version>
+    <org.apache.log4j.version>2.17.0</org.apache.log4j.version>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
   </properties>
