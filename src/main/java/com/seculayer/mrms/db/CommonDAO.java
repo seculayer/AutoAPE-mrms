@@ -2,14 +2,17 @@ package com.seculayer.mrms.db;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CommonDAO {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final SqlSessionFactory factory = DBSessionManager.getSqlSession();
 
     private static final String mapperName = "CommonMapper.";
@@ -41,10 +44,14 @@ public class CommonDAO {
         return rstMap;
     }
 
-    public List<Map<String, Object>> selectModelsInfo(Map<String, Object> map){
+    public List<Map<String, Object>> selectModelsInfo(String projectID, String learnHistNoList){
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("project_id", projectID);
+        paramMap.put("learn_hist_no_list", learnHistNoList);
+
         List<Map<String, Object>> rstListMap;
         try (SqlSession session = factory.openSession()) {
-            rstListMap = session.selectList("CommonMapper.selectModelsInfo", map);
+            rstListMap = session.selectList("CommonMapper.selectModelsInfo", paramMap);
         }
 
         return rstListMap;

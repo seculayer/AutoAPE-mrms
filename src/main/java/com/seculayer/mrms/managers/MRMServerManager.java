@@ -5,15 +5,16 @@ import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.kubernetes.KubernetesManager;
 import com.seculayer.mrms.rest.HTTPServerManager;
 import com.seculayer.util.conf.Configuration;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 public class MRMServerManager {
     // base variables
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final Configuration conf = new Configuration(false);
 
     private static final ScheduleQueue daScheduleQueue = new ScheduleQueue();
@@ -21,6 +22,7 @@ public class MRMServerManager {
     private static final ScheduleQueue learnInitScheduleQueue = new ScheduleQueue();
 
     private static final Map<String, Object> modelResourceMap = new HashMap<>();
+    private static final Map<String, Object> modelsInfoMap = new HashMap<>();
 
     // REST server
     private HTTPServerManager httpServer;
@@ -114,4 +116,5 @@ public class MRMServerManager {
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
     public final ScheduleQueue getLearnInitScheduleQueue() { return learnInitScheduleQueue; }
     public final Map<String, Object> getModelResourceMap() { return modelResourceMap; }
+    public final Map<String, Object> getModelsInfoMap() { return modelsInfoMap; }
 }

@@ -46,7 +46,6 @@ public class LearnInitRequest extends Request {
     public Map<String, Object> setLearnHist(Map<String, Object> map) {
         map.replace("learn_sttus_cd", "2");
         map.put("task_idx", "0");
-        map.put("message", "-");
         map.put("hist_no", map.get("learn_hist_no"));
 
         return map;

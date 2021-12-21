@@ -20,6 +20,7 @@ import java.util.Map;
 public class ProjectCompleteChecker extends Checker {
     private ProjectManageDAO dao = new ProjectManageDAO();
     private static final Map<String, Object> modelResourceMap = MRMServerManager.getInstance().getModelResourceMap();
+    private static final Map<String, Object> modelsInfoMap = MRMServerManager.getInstance().getModelsInfoMap();
 
     @Override
     public void doCheck() throws CheckerException {
@@ -35,10 +36,12 @@ public class ProjectCompleteChecker extends Checker {
                 if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_COMPLETE)) {
                     completeCnt++;
                     this.updateLearnLog(idMap, schd);
+                    this.deleteLearnJob(idMap, schd);
                 }
                 else if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_ERROR)) {
                     errorCnt++;
                     this.updateLearnLog(idMap, schd);
+                    this.deleteLearnJob(idMap, schd);
                 }
             }
 
@@ -46,14 +49,14 @@ public class ProjectCompleteChecker extends Checker {
                 // 완료 상태 업데이트
                 idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
                 dao.updateStatus(idMap);
-                this.deleteKubeResources(idMap, schedules);
+//                this.deleteRCMDJob(idMap);
                 this.deleteResourceMonitoring(schedules);
                 this.removeJobFolder(idMap);
             }
-            else if (errorCnt > 0) {
+            else if (errorCnt > 0 && (errorCnt + completeCnt == cntModel)) {
                 idMap.replace("status", Constants.STATUS_PROJECT_ERROR);
                 dao.updateStatus(idMap);
-                this.deleteKubeResources(idMap, schedules);
+//                this.deleteRCMDJob(idMap);
                 this.deleteResourceMonitoring(schedules);
             }
         }
@@ -94,21 +97,10 @@ public class ProjectCompleteChecker extends Checker {
         }
     }
 
-    public void deleteKubeResources(Map<String, Object> idMap, List<Map<String, Object>> modelList) {
-        // delete job
+    public void deleteRCMDJob(Map<String, Object> idMap) {
         String projectID = idMap.get("project_id").toString();
         V1PodList podList = Request.getPodList();
 
-        try {
-            // In case Kubernetes < v1.22, It must enable
-//            this.deleteRCMDJob(projectID, podList);
-            this.deleteLearnJob(projectID, modelList, podList);  // for service delete
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteRCMDJob(String projectID, V1PodList podList) {
         Request.deleteJob(String.format("dprs-%s-0", projectID));
         Request.deleteJob(String.format("hprs-%s-0", projectID));
         Request.deleteJob(String.format("mars-%s-0", projectID));
@@ -123,18 +115,19 @@ public class ProjectCompleteChecker extends Checker {
         }
     }
 
-    public void deleteLearnJob(String projectID, List<Map<String, Object>> modelList, V1PodList podList) {
-        for(Map<String, Object> model: modelList) {
-            String modelHistNo = model.get("learn_hist_no").toString();
-            LearnInfo loadedInfo = new LearnInfo(modelHistNo, projectID);
-            loadedInfo.loadInfo(modelHistNo);
-            int numWorker = loadedInfo.getNumWorker();
+    public void deleteLearnJob(Map<String, Object> idMap, Map<String, Object> model) {
+        String modelHistNo = model.get("learn_hist_no").toString();
+        String projectID = idMap.get("project_id").toString();
+        V1PodList podList = Request.getPodList();
+        LearnInfo loadedInfo = new LearnInfo(modelHistNo, projectID);
+        loadedInfo.loadInfo(modelHistNo);
+        int numWorker = loadedInfo.getNumWorker();
 
-            for(int i=0; i<numWorker; i++){
-                String name = String.format("learn-%s-%s", modelHistNo, i);
-                // In case Kubernetes < v1.22, It must enable
+        for(int i=0; i<numWorker; i++){
+            String name = String.format("learn-%s-%s", modelHistNo, i);
+            // In case Kubernetes < v1.22, It must enable
 //                Request.deleteJob(name);
-                Request.deleteService(name);
+            Request.deleteService(name);
 
 //                for (V1Pod item : podList.getItems()) {
 //                    String podName = item.getMetadata().getName();
@@ -142,7 +135,6 @@ public class ProjectCompleteChecker extends Checker {
 //                        Request.deletePod(podName);
 //                    }
 //                }
-            }
         }
     }
 
@@ -151,6 +143,7 @@ public class ProjectCompleteChecker extends Checker {
             String histNo = modelMap.get("learn_hist_no").toString();
 
             modelResourceMap.remove(histNo);
+            modelsInfoMap.remove(histNo);
         }
     }
 }

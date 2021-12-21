@@ -1,13 +1,16 @@
 package com.seculayer.mrms.rest.servlet.insert;
 
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
 public class InsertLearnHistServlet extends ServletHandlerAbstract {
@@ -23,6 +26,7 @@ public class InsertLearnHistServlet extends ServletHandlerAbstract {
         try {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
             projectDAO.insertLearnHist(map);
+            this.cachingModelsInfo(map);
             logger.debug(map.toString());
 
             out.println("1");
@@ -33,5 +37,26 @@ public class InsertLearnHistServlet extends ServletHandlerAbstract {
 
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
+    }
+
+    public void cachingModelsInfo(Map<String, Object> req) {
+        String learnHistNo = req.get("learn_hist_no").toString();
+        String projectID = req.get("project_id").toString();
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<Map<String, Object>> modelInfoList = commonDAO.selectModelsInfo(projectID, learnHistNo);
+        Map<String, Object> model = modelInfoList.get(0);
+
+        try {
+            List<Object> dataAnalysisJson = mapper.readValue(model.get("data_analysis_json").toString(), List.class);
+            for (Object fieldJson : dataAnalysisJson) {
+                ((Map<String, Object>) fieldJson).remove("statistic");
+            }
+            model.put("data_analysis_json", dataAnalysisJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        MRMServerManager.getInstance().getModelsInfoMap().put(learnHistNo, model);
     }
 }

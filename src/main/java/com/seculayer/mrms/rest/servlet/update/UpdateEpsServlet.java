@@ -1,5 +1,6 @@
 package com.seculayer.mrms.rest.servlet.update;
 
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 
@@ -24,6 +25,15 @@ public class UpdateEpsServlet extends ServletHandlerAbstract {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
             logger.debug(map.toString());
             commonDAO.updateEps(map);
+
+            String learnHistNo = map.get("hist_no").toString();
+            String eps = map.get("eps").toString();
+            try {
+                ((Map<String, Object>) MRMServerManager.getInstance().getModelsInfoMap().get(learnHistNo)).put("eps", eps);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             out.println("1");
         }catch (Exception e){
             logger.error(e.toString());
