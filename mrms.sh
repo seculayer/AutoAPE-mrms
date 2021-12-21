@@ -11,7 +11,7 @@ fi
 ##########################################################################
 
 RUN_PATH="."
-CLASSPATH="${RUN_PATH}/*:${RUN_PATH}/lib/*"
+CLASSPATH="${RUN_PATH}/*:${RUN_PATH}/lib/*:${RUN_PATH}/conf/"
 
 
 JAVA_OPTS="-server -Xms1G -Xmx1G"
