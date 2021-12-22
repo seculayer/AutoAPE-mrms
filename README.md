@@ -1,5 +1,5 @@
-# automl-mrms
-Auto ML - MRMS(Model Recommend Management Server)
+# AutoAPE-mrms
+AutoAPE(Advanced Perceptron Engine) - MRMS(Model Recommend Management Server)
 
 ## build
 
