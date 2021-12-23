@@ -44,7 +44,7 @@ public class CommonDAO {
         return rstMap;
     }
 
-    public List<Map<String, Object>> selectModelsInfo(String projectID, String learnHistNoList){
+    public List<Map<String, Object>> selectModelsInfo(String projectID, String[] learnHistNoList){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("project_id", projectID);
         paramMap.put("learn_hist_no_list", learnHistNoList);

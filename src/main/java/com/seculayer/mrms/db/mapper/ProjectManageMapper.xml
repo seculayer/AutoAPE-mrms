@@ -162,6 +162,12 @@
         WHERE learn_hist_no = #{histNo}
     </select>
 
+    <select id="selectHistNoStatus" parameterType="string" resultType="map">
+      SELECT learn_hist_no, learn_sttus_cd
+      FROM LEARN_HIST
+      WHERE project_id = #{projectId}
+    </select>
+
 
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO

@@ -41,10 +41,11 @@ public class InsertLearnHistServlet extends ServletHandlerAbstract {
 
     public void cachingModelsInfo(Map<String, Object> req) {
         String learnHistNo = req.get("learn_hist_no").toString();
+        String[] learnHistNoList = learnHistNo.split(",");
         String projectID = req.get("project_id").toString();
         ObjectMapper mapper = new ObjectMapper();
 
-        List<Map<String, Object>> modelInfoList = commonDAO.selectModelsInfo(projectID, learnHistNo);
+        List<Map<String, Object>> modelInfoList = commonDAO.selectModelsInfo(projectID, learnHistNoList);
         Map<String, Object> model = modelInfoList.get(0);
 
         try {

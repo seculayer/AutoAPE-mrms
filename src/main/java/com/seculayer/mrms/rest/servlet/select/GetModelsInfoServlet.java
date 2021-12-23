@@ -1,7 +1,6 @@
 package com.seculayer.mrms.rest.servlet.select;
 
 import com.seculayer.mrms.managers.MRMServerManager;
-import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -34,7 +33,7 @@ public class GetModelsInfoServlet extends ServletHandlerAbstract {
 
             List<Map<String, Object>> returnList = this.getModelInfoCache(learnHistNoSplit);
             if (returnList.size() == 0) {
-                returnList = this.parseModelInfo(projectId, learnHistNoList);
+                returnList = this.parseModelInfo(projectId, learnHistNoSplit);
             }
 
             logger.debug(returnList.toString());
@@ -73,7 +72,7 @@ public class GetModelsInfoServlet extends ServletHandlerAbstract {
         return returnList;
     }
 
-    private List<Map<String, Object>> parseModelInfo(String projectID, String learnHistNoList) {
+    private List<Map<String, Object>> parseModelInfo(String projectID, String[] learnHistNoList) {
         List<Map<String, Object>> rst = commonDAO.selectModelsInfo(projectID, null);
 
         for (Map<String, Object> model: rst) {

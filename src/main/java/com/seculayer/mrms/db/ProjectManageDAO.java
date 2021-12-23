@@ -175,6 +175,15 @@ public class ProjectManageDAO {
         return rst;
     }
 
+    public List<Map<String, Object>> selectHistNoStatus(String projectId) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectHistNoStatus", projectId);
+        }
+
+        return rst;
+    }
+
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);

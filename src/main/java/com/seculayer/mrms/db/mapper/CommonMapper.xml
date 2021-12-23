@@ -56,8 +56,11 @@
                  INNER JOIN ALGORITHM_INFO AI ON MAI.alg_id = AI.alg_id
                  INNER JOIN DP_ANLS_INFO DI ON LH.dp_analysis_id = DI.dp_analysis_id
         WHERE LH.project_id = #{project_id}
-        <if test="learn_hist_no_list != null and learn_hist_no_list != ''">
-        AND learn_hist_no IN CONCAT('(', #{learn_hist_no_list} ,')')
+        <if test="learn_hist_no_list != null and learn_hist_no_list.length > 0">
+        AND learn_hist_no IN
+        <foreach collection="learn_hist_no_list" item="item" separator="," open="(" close=")">
+          #{item}
+        </foreach>
         </if>
     </select>
     <select id="selectProjectsInfo" resultType="map">
