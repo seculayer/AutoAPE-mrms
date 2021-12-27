@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.3
 FROM maven:3.8-jdk-11 as builder
 ARG app="/opt/app"
 
@@ -6,11 +7,11 @@ WORKDIR $app
 
 COPY ./pom.xml ./pom.xml
 
-RUN mvn dependency:go-offline -B
+RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline -B
 
 COPY ./src "$app/src"
 
-RUN mvn package
+RUN --mount=type=cache,target=/root/.m2 mvn package
 
 FROM azul/zulu-openjdk-centos:11 as app
 ARG app="/opt/app"
