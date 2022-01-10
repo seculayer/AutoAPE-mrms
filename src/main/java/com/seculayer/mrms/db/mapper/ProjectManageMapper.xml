@@ -85,6 +85,7 @@
         ,	project_id
         ,   learn_sttus_cd
         ,   start_time
+        ,   eval_result_json
         )
         VALUES
         (	#{learn_hist_no}
@@ -95,6 +96,7 @@
         ,	#{project_id}
         ,   #{learn_sttus_cd}
         ,   #{start_time}
+        ,   '{}'
         )
     </insert>
 

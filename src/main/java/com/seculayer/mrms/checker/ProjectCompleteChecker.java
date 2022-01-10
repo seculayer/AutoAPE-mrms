@@ -1,6 +1,7 @@
 package com.seculayer.mrms.checker;
 
 import com.seculayer.mrms.common.Constants;
+import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.LearnInfo;
 import com.seculayer.mrms.kubernetes.KubeUtil;
@@ -10,24 +11,25 @@ import com.seculayer.util.JsonUtil;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProjectCompleteChecker extends Checker {
-    private ProjectManageDAO dao = new ProjectManageDAO();
+    private ProjectManageDAO projectDAO = new ProjectManageDAO();
+    private CommonDAO commonDAO = new CommonDAO();
     private static final Map<String, Object> modelResourceMap = MRMServerManager.getInstance().getModelResourceMap();
     private static final Map<String, Object> modelsInfoMap = MRMServerManager.getInstance().getModelsInfoMap();
 
     @Override
     public void doCheck() throws CheckerException {
-        List<Map<String, Object>> recommendingProjectList = dao.selectProjectSchedule(Constants.STATUS_PROJECT_LEARN_ING);
+        List<Map<String, Object>> recommendingProjectList = projectDAO.selectProjectSchedule(Constants.STATUS_PROJECT_LEARN_ING);
 
         for (Map<String, Object> idMap : recommendingProjectList) {
-            List<Map<String, Object>> schedules = dao.selectLearningModelList(idMap);
+            List<Map<String, Object>> schedules = projectDAO.selectLearningModelList(idMap);
             int cntModel = schedules.size();
 
             int completeCnt = 0;
@@ -35,6 +37,7 @@ public class ProjectCompleteChecker extends Checker {
             for (Map<String, Object> schd: schedules) {
                 if (schd.get("learn_sttus_cd").toString().equals(Constants.STATUS_LEARN_COMPLETE)) {
                     completeCnt++;
+                    this.mergeEvalResult(schd);
                     this.updateLearnLog(idMap, schd);
                     this.deleteLearnJob(idMap, schd);
                 }
@@ -48,14 +51,14 @@ public class ProjectCompleteChecker extends Checker {
             if (cntModel == completeCnt && errorCnt == 0) {
                 // 완료 상태 업데이트
                 idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
-                dao.updateStatus(idMap);
+                projectDAO.updateStatus(idMap);
 //                this.deleteRCMDJob(idMap);
                 this.deleteResourceMonitoring(schedules);
                 this.removeJobFolder(idMap);
             }
             else if (errorCnt > 0 && (errorCnt + completeCnt == cntModel)) {
                 idMap.replace("status", Constants.STATUS_PROJECT_ERROR);
-                dao.updateStatus(idMap);
+                projectDAO.updateStatus(idMap);
 //                this.deleteRCMDJob(idMap);
                 this.deleteResourceMonitoring(schedules);
             }
@@ -78,7 +81,7 @@ public class ProjectCompleteChecker extends Checker {
             }
             JSONObject jsonData = JsonUtil.mapToJson(map);
             schd.put("logs", jsonData.toString());
-            dao.updateLearnLog(schd);
+            projectDAO.updateLearnLog(schd);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -145,5 +148,52 @@ public class ProjectCompleteChecker extends Checker {
             modelResourceMap.remove(histNo);
             modelsInfoMap.remove(histNo);
         }
+    }
+
+    public void mergeEvalResult(Map<String, Object> learnHistInfo) {
+        String histNo = learnHistInfo.get("learn_hist_no").toString();
+        List<Object> totalList = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        String evalRstStr = commonDAO.selectEvalResult(histNo);
+
+        try {
+            Map<String, Object> evalRstMap = mapper.readValue(evalRstStr, Map.class);
+            for (String key : evalRstMap.keySet()) {
+                List<Object> rstList = mapper.readValue(evalRstMap.get(key).toString(), List.class);
+                if (totalList == null) {
+                    totalList = rstList;
+                } else {
+                    for (int i = 0; i < rstList.size(); i++) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> tmpLabelRst = (Map<String, Object>) rstList.get(i);
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> totalLabelRst = (Map<String, Object>) totalList.get(i);
+                        for (String labelKey : tmpLabelRst.keySet()) {
+                            String updateVal = Integer.toString(Integer.parseInt(totalLabelRst.get(labelKey).toString()) + Integer.parseInt(tmpLabelRst.get(labelKey).toString()));
+                            totalLabelRst.put(labelKey, updateVal);
+                        }
+                    }
+                }
+            }
+        } catch (JsonMappingException e){
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        if (totalList != null) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("hist_no", histNo);
+            try {
+                paramMap.put("result", mapper.writeValueAsString(totalList));
+            } catch (Exception e) {
+                e.printStackTrace();
+                paramMap.put("result", "[]");
+            }
+            commonDAO.updateEvalResult(paramMap);
+        }
+
     }
 }

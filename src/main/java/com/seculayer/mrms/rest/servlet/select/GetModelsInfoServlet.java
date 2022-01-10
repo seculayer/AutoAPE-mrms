@@ -27,13 +27,18 @@ public class GetModelsInfoServlet extends ServletHandlerAbstract {
         logger.debug("In doPost - get models info");
 
         try {
-            String projectId = httpServletRequest.getParameter("project_id");
-            String learnHistNoList = httpServletRequest.getParameter("learn_hist_no");
-            String[] learnHistNoSplit = learnHistNoList.split(",");
+            List<Map<String, Object>> returnList = null;
 
-            List<Map<String, Object>> returnList = this.getModelInfoCache(learnHistNoSplit);
-            if (returnList.size() == 0) {
-                returnList = this.parseModelInfo(projectId, learnHistNoSplit);
+            String projectId = httpServletRequest.getParameter("project_id");
+            try {
+                String learnHistNoList = httpServletRequest.getParameter("learn_hist_no");
+                String[] learnHistNoSplit = learnHistNoList.split(",");
+
+                returnList = this.getModelInfoCache(learnHistNoSplit);
+            } catch (Exception e) { }
+
+            if (returnList == null || returnList.size() == 0) {
+                returnList = this.parseModelInfo(projectId);
             }
 
             logger.debug(returnList.toString());
@@ -72,7 +77,7 @@ public class GetModelsInfoServlet extends ServletHandlerAbstract {
         return returnList;
     }
 
-    private List<Map<String, Object>> parseModelInfo(String projectID, String[] learnHistNoList) {
+    private List<Map<String, Object>> parseModelInfo(String projectID) {
         List<Map<String, Object>> rst = commonDAO.selectModelsInfo(projectID, null);
 
         for (Map<String, Object> model: rst) {

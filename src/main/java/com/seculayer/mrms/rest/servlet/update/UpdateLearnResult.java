@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateResultServlet extends ServletHandlerAbstract {
+public class UpdateLearnResult extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/learn_result_update";
 
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -38,7 +38,7 @@ public class UpdateResultServlet extends ServletHandlerAbstract {
 
             out.println("1");
         }catch (Exception e){
-            logger.error(e.toString());
+            e.printStackTrace();
             out.println("error");
         }
 

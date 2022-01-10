@@ -132,6 +132,12 @@
           )
     </select>
 
+    <select id="selectEvalResult" parameterType="string" resultType="string">
+      SELECT eval_result_json
+      FROM LEARN_HIST
+      WHERE learn_hist_no = #{learnHistNo}
+    </select>
+
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
@@ -162,6 +168,11 @@
         UPDATE DATASET
         SET    status_cd = #{status_cd}
         WHERE  dataset_id = #{dataset_id}
+    </update>
+    <update id="updateEvalResult" parameterType="map">
+        UPDATE LEARN_HIST
+        SET    eval_result_json = #{result}
+        WHERE  learn_hist_no = #{hist_no}
     </update>
 
 

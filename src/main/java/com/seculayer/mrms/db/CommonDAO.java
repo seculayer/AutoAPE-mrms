@@ -161,6 +161,15 @@ public class CommonDAO {
         return rst;
     }
 
+    public String selectEvalResult(String learnHistNo) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectEvalResult", learnHistNo);
+        }
+
+        return rst;
+    }
+
 
     // Update
     public void updateSttusCd(Map<String, Object> map){
@@ -201,6 +210,13 @@ public class CommonDAO {
     public void updateDAStatus(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateDAStatus", map);
+            session.commit();
+        }
+    }
+
+    public void updateEvalResult(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateEvalResult", map);
             session.commit();
         }
     }
