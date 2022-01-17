@@ -14,6 +14,18 @@
         <value>N</value>
     </property>
     <property>
+      <name>use.learning.schedule</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>use.inference.schedule</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>use.data.analysis.schedule</name>
+      <value>true</value>
+    </property>
+    <property>
         <name>kube.pod.cpu.limit</name>
         <value>1200</value>
         <description>m</description>

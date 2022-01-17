@@ -20,6 +20,11 @@
         FROM LEARN_HIST
         WHERE learn_hist_no = #{hist_no}
     </select>
+    <select id="selectInfrSttusCd" resultType="map">
+      SELECT infr_sttus_cd
+      FROM INFERENCE_HIST
+      WHERE infr_hist_no = #{hist_no}
+    </select>
     <select id="selectModelsInfo" resultType="map">
         SELECT
             CAST(LH.learn_hist_no AS CHAR) AS learn_hist_no
@@ -138,11 +143,28 @@
       WHERE learn_hist_no = #{learnHistNo}
     </select>
 
+    <select id="selectInferenceSchedule" parameterType="string" resultType="map">
+      SELECT *
+      FROM INFERENCE_HIST
+      WHERE infr_sttus_cd = #{inferenceStatus}
+    </select>
+
+    <select id="selectLearnHistInfo" parameterType="string" resultType="map">
+      SELECT learn_hist_no, param_id, alg_anal_id, alg_id, dp_analysis_id, project_id
+      FROM LEARN_HIST
+      WHERE learn_hist_no = #{learnHistNo}
+    </select>
+
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
-        SET    learn_sttus_cd = #{learn_sttus_cd}, issue_task_idx = #{task_idx}
+        SET    learn_sttus_cd = #{sttus_cd}, issue_task_idx = #{task_idx}
         WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateInferenceSttusCd" parameterType="map">
+      UPDATE INFERENCE_HIST
+      SET    infr_sttus_cd = #{sttus_cd}, issue_task_idx = #{task_idx}
+      WHERE  infr_hist_no = #{hist_no}
     </update>
     <update id="updateEps" parameterType="map">
         UPDATE LEARN_HIST
@@ -163,6 +185,16 @@
         UPDATE LEARN_HIST
         SET    end_time = #{curr_time}
         WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateStartInfrTime" parameterType="map">
+      UPDATE INFERENCE_HIST
+      SET    start_time = #{curr_time}
+      WHERE  infr_hist_no = #{hist_no}
+    </update>
+    <update id="updateEndInfrTime" parameterType="map">
+      UPDATE INFERENCE_HIST
+      SET    end_time = #{curr_time}
+      WHERE  infr_hist_no = #{hist_no}
     </update>
     <update id="updateDAStatus" parameterType="map">
         UPDATE DATASET
@@ -210,6 +242,23 @@
                 #{analysis_file_nm},
                 #{dataset_id}
                 )
+    </insert>
+    <insert id="insertInferenceInfo" parameterType="map">
+      <selectKey keyProperty="infr_hist_no" resultType="long"
+                 order="BEFORE">
+        SELECT UUID_SHORT()
+      </selectKey>
+      INSERT INTO INFERENCE_HIST (infr_hist_no,
+      learn_hist_no,
+      infr_sttus_cd,
+      target_field,
+      data_analysis_id)
+      VALUES (#{infr_hist_no},
+      #{learn_hist_no},
+      "1",
+      #{target_field},
+      #{data_analysis_id}
+      )
     </insert>
 
     <!-- Delete -->

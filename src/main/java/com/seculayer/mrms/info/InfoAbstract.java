@@ -1,5 +1,6 @@
 package com.seculayer.mrms.info;
 
+import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.managers.MRMServerManager;
 import org.json.JSONObject;
 import org.apache.logging.log4j.Logger;
@@ -63,6 +64,25 @@ public abstract class InfoAbstract {
             if (outputStream != null){
                 outputStream.close();
             }
+        }
+    }
+
+    public static boolean gpuUseExceptions(String algorithmCode, boolean result){
+        // library type exceptions
+        switch (algorithmCode){
+            // 1. TFSTSV1 -> None GPU Use.
+
+            default:
+                return result;
+        }
+    }
+
+    public synchronized boolean isGpuUse(Map<String, Object> algInfo){
+        switch (algInfo.get("lib_type").toString()){
+            case Constants.LIB_TYPE_TFV1: case Constants.LIB_TYPE_KERAS: case Constants.LIB_TYPE_TFV2:
+                return gpuUseExceptions(algInfo.get("algorithm_code").toString(), true);
+            default:
+                return gpuUseExceptions(algInfo.get("algorithm_code").toString(), false);
         }
     }
 

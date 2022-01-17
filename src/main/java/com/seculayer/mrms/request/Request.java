@@ -13,11 +13,9 @@ import com.seculayer.mrms.db.CommonDAO;
 //import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
 import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.db.ProjectManageDAO;
-import com.seculayer.mrms.info.DAInfo;
-import com.seculayer.mrms.info.InfoAbstract;
-import com.seculayer.mrms.info.LearnInfo;
-import com.seculayer.mrms.info.RcmdInfo;
+import com.seculayer.mrms.info.*;
 import com.seculayer.mrms.kubernetes.yaml.job.DAJob;
+import com.seculayer.mrms.kubernetes.yaml.job.InferenceJob;
 import com.seculayer.mrms.kubernetes.yaml.job.LearnJob;
 import com.seculayer.mrms.kubernetes.yaml.job.RcmdJob;
 import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
@@ -100,6 +98,16 @@ abstract public class Request extends Thread {
         }
     }
 
+    public void makeInferenceJob(InferenceInfo inferenceInfo, int numWorker) {
+        for (int i=0; i<numWorker; i++) {
+            try{
+                createJob(makeJob(inferenceInfo, Constants.JOB_TYPE_INFERENCE, i));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     protected static V1Job makeJob(InfoAbstract info, String jobType, int workerIdx){
         switch (jobType){
             case Constants.JOB_TYPE_DA_CHIEF: case Constants.JOB_TYPE_DA_WORKER:
@@ -116,6 +124,12 @@ abstract public class Request extends Thread {
                         .make();
             case Constants.JOB_TYPE_LEARN:
                 return  new LearnJob()
+                        .info(info)
+                        .jobType(jobType)
+                        .workerIdx(workerIdx)
+                        .make();
+            case Constants.JOB_TYPE_INFERENCE:
+                return new InferenceJob()
                         .info(info)
                         .jobType(jobType)
                         .workerIdx(workerIdx)

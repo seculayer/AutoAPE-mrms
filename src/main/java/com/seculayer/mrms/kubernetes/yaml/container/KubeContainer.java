@@ -2,10 +2,7 @@ package com.seculayer.mrms.kubernetes.yaml.container;
 
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
-import com.seculayer.mrms.info.DAInfo;
-import com.seculayer.mrms.info.InfoAbstract;
-import com.seculayer.mrms.info.LearnInfo;
-import com.seculayer.mrms.info.RcmdInfo;
+import com.seculayer.mrms.info.*;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import io.kubernetes.client.custom.Quantity;
@@ -117,6 +114,8 @@ public abstract class KubeContainer {
                 return ((RcmdInfo)this.info).getProjectID();
             case Constants.JOB_TYPE_LEARN:
                 return ((LearnInfo)this.info).getLearnHistNo();
+            case Constants.JOB_TYPE_INFERENCE:
+                return ((InferenceInfo)this.info).getInfrHistNo();
             default:
                 return "0";
         }

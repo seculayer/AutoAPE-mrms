@@ -44,6 +44,15 @@ public class CommonDAO {
         return rstMap;
     }
 
+    public Map<String, Object> selectInfrSttusCd(Map<String, Object> map){
+        Map<String, Object> rstMap;
+        try (SqlSession session = factory.openSession()) {
+            rstMap = session.selectOne("CommonMapper.selectInfrSttusCd", map);
+        }
+
+        return rstMap;
+    }
+
     public List<Map<String, Object>> selectModelsInfo(String projectID, String[] learnHistNoList){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("project_id", projectID);
@@ -170,11 +179,36 @@ public class CommonDAO {
         return rst;
     }
 
+    public List<Map<String, Object>> selectInferenceSchedule(String inferenceStatus) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectInferenceSchedule", inferenceStatus);
+        }
+
+        return rst;
+    }
+
+    public Map<String, Object> selectLearnHistInfo(String learnHistNo) {
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectLearnHistInfo", learnHistNo);
+        }
+
+        return rst;
+    }
+
 
     // Update
     public void updateSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateSttusCd", map);
+            session.commit();
+        }
+    }
+
+    public void updateInferenceSttusCd(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateInferenceSttusCd", map);
             session.commit();
         }
     }
@@ -207,6 +241,20 @@ public class CommonDAO {
         }
     }
 
+    public void updateStartInfrTime(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateStartInfrTime", map);
+            session.commit();
+        }
+    }
+
+    public void updateEndInfrTime(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateEndInfrTime", map);
+            session.commit();
+        }
+    }
+
     public void updateDAStatus(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateDAStatus", map);
@@ -232,6 +280,17 @@ public class CommonDAO {
     public void insertDataAnlsInfo(Map<String, Object> map) {
         try(SqlSession session = factory.openSession()) {
             session.insert("CommonMapper.insertDataAnlsInfo", map);
+            session.commit();
+        }
+    }
+    public void insertInferenceInfo(String learnHistNo, String dataAnlsId, String targetField) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("learn_hist_no", learnHistNo);
+        paramMap.put("data_analysis_id", dataAnlsId);
+        paramMap.put("target_field", targetField);
+
+        try(SqlSession session = factory.openSession()) {
+            session.insert("CommonMapper.insertInferenceInfo", paramMap);
             session.commit();
         }
     }

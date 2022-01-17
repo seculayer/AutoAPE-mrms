@@ -1,6 +1,7 @@
 package com.seculayer.mrms.kubernetes.yaml.container;
 
 import com.seculayer.mrms.common.Constants;
+import com.seculayer.mrms.info.InferenceInfo;
 import com.seculayer.mrms.info.LearnInfo;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
@@ -54,9 +55,17 @@ public class MLPSContainer extends KubeContainer {
         Map<String, Quantity> limits = new HashMap<>();
 
         // for gpu pod
-        if (((LearnInfo) this.info).getGpuUse()){
-            String gpuMemLimit = Constants.GPU_MEM_LIMIT_LEARN;
-            limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
+        switch (jobType) {
+            case Constants.JOB_TYPE_LEARN:
+                if (((LearnInfo) this.info).getGpuUse()){
+                    String gpuMemLimit = Constants.GPU_MEM_LIMIT_LEARN;
+                    limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
+                }
+            case Constants.JOB_TYPE_INFERENCE:
+                if (((InferenceInfo) this.info).getGpuUse()){
+                    String gpuMemLimit = Constants.GPU_MEM_LIMIT_INFERENCE;
+                    limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
+                }
         }
 
         // cpu limit
@@ -92,10 +101,9 @@ public class MLPSContainer extends KubeContainer {
     protected List<V1EnvVar> makeEnv() {
         String key = this.getProcessKey();
 
-        int numWorker = ((LearnInfo) this.info).getNumWorker();
-
         List<V1EnvVar> envList = super.makeEnv();
         if (Constants.JOB_TYPE_LEARN.equals(this.jobType) && "Y".equals(((LearnInfo) this.info).getAlgInfo().get("dist_yn").toString())){
+            int numWorker = ((LearnInfo) this.info).getNumWorker();
             // learning - distributed support
             envList.add(new V1EnvVar()
                 .name("TF_CONFIG")
@@ -106,12 +114,23 @@ public class MLPSContainer extends KubeContainer {
                 .value(KubeUtil.generateTFConfigSingle(jobType, key, workerIdx)));
         }
 
-        if (!((LearnInfo) this.info).getGpuUse()) {
+        if (!this.getGpuUse()) {
             envList.add(new V1EnvVar()
                 .name("CUDA_VISIBLE_DEVICES")
                 .value("-1"));
         }
         return envList;
+    }
+
+    private boolean getGpuUse() {
+        switch (jobType) {
+            case Constants.JOB_TYPE_LEARN:
+                return ((LearnInfo) this.info).getGpuUse();
+            case Constants.JOB_TYPE_INFERENCE:
+                return ((InferenceInfo) this.info).getGpuUse();
+            default:
+                return false;
+        }
     }
 
     @Override

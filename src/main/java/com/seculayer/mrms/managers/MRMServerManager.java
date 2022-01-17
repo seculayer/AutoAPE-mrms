@@ -20,6 +20,7 @@ public class MRMServerManager {
     private static final ScheduleQueue daScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue learnInitScheduleQueue = new ScheduleQueue();
+    private static final ScheduleQueue inferenceInitScheduleQueue = new ScheduleQueue();
 
     private static final Map<String, Object> modelResourceMap = new HashMap<>();
     private static final Map<String, Object> modelsInfoMap = new HashMap<>();
@@ -96,11 +97,16 @@ public class MRMServerManager {
     private void initScheduleCheckers(Timer timer, long delay, long period){
         if (conf.getBoolean("use.learning.schedule", true)) {
 //            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
-            timer.scheduleAtFixedRate(new DAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new LearnInitScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
+        }
+        if (conf.getBoolean("use.data.analysis.schedule", true)) {
+            timer.scheduleAtFixedRate(new DAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new DACompleteChecker(), delay, period * 1000);
+        }
+        if (conf.getBoolean("use.inference.schedule", true)) {
+            timer.scheduleAtFixedRate(new InferenceInitScheduleChecker(), delay, period * 1000);
         }
     }
 
@@ -115,6 +121,7 @@ public class MRMServerManager {
     public final ScheduleQueue getDAScheduleQueue() { return daScheduleQueue; }
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
     public final ScheduleQueue getLearnInitScheduleQueue() { return learnInitScheduleQueue; }
+    public final ScheduleQueue getInferenceInitScheduleQueue() { return inferenceInitScheduleQueue; }
     public final Map<String, Object> getModelResourceMap() { return modelResourceMap; }
     public final Map<String, Object> getModelsInfoMap() { return modelsInfoMap; }
 }

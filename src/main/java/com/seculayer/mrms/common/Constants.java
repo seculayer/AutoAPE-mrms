@@ -27,6 +27,7 @@ public class Constants {
     public static final int GRPC_PORT = 9304;
 
     public static final String GPU_MEM_LIMIT_LEARN = "2048";
+    public static final String GPU_MEM_LIMIT_INFERENCE = "1024";
 
     public static final String STATUS_DA_REQ = "5";
     public static final String STATUS_DA_ING = "6";
@@ -44,6 +45,12 @@ public class Constants {
     public static final String STATUS_LEARN_HIST_INIT = "1";
     public static final String STATUS_LEARN_COMPLETE = "6";
     public static final String STATUS_LEARN_ERROR = "7";
+
+    public static final String STATUS_INFERENCE_REQ = "1";
+    public static final String STATUS_INFERENCE_INIT = "2";
+    public static final String STATUS_INFERENCE_ING = "5";
+    public static final String STATUS_INFERENCE_COMPLETE = "6";
+    public static final String STATUS_INFERENCE_ERROR = "7";
 
     public static final String LIB_TYPE_TFV1 = "1";
     public static final String LIB_TYPE_KERAS = "2";
