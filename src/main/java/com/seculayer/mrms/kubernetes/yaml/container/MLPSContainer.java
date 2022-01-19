@@ -61,11 +61,13 @@ public class MLPSContainer extends KubeContainer {
                     String gpuMemLimit = Constants.GPU_MEM_LIMIT_LEARN;
                     limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
                 }
+                break;
             case Constants.JOB_TYPE_INFERENCE:
                 if (((InferenceInfo) this.info).getGpuUse()){
                     String gpuMemLimit = Constants.GPU_MEM_LIMIT_INFERENCE;
                     limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
                 }
+                break;
         }
 
         // cpu limit

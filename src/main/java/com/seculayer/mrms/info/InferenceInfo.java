@@ -123,7 +123,7 @@ public class InferenceInfo extends InfoAbstract {
         Map<String, Object> map = new HashMap<>();
         map.put("learn_hist_no", learnHistNo);
         map.put("infr_hist_no", infrHistNo);
-        map.put("key", key);
+        map.put("key", infrHistNo);
         map.put("project_id", projectID);
         map.put("datasets", daAnlsInfo);
         map.put("algorithms", algInfo);
