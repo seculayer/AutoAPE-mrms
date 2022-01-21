@@ -48,7 +48,7 @@ public class ProjectCompleteChecker extends Checker {
                 }
             }
 
-            if (cntModel == completeCnt && errorCnt == 0) {
+            if (completeCnt > 0 && cntModel == completeCnt + errorCnt) {
                 // 완료 상태 업데이트
                 idMap.replace("status", Constants.STATUS_PROJECT_COMPLETE);
                 projectDAO.updateStatus(idMap);
@@ -56,7 +56,7 @@ public class ProjectCompleteChecker extends Checker {
                 this.deleteResourceMonitoring(schedules);
                 this.removeJobFolder(idMap);
             }
-            else if (errorCnt > 0 && (errorCnt + completeCnt == cntModel)) {
+            else if (errorCnt == cntModel) {
                 idMap.replace("status", Constants.STATUS_PROJECT_ERROR);
                 projectDAO.updateStatus(idMap);
 //                this.deleteRCMDJob(idMap);
