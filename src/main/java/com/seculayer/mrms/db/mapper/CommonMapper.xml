@@ -155,6 +155,30 @@
       WHERE learn_hist_no = #{learnHistNo}
     </select>
 
+    <select id="selectInferenceInfo" parameterType="string" resultType="map">
+      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, alg_cont, dataset_id, IH.learn_hist_no, DAI.data_analysis_id
+      FROM INFERENCE_HIST IH
+             INNER JOIN LEARN_HIST LH ON IH.learn_hist_no = LH.learn_hist_no
+             INNER JOIN ALGORITHM_INFO AI ON LH.alg_id = AI.alg_id
+             INNER JOIN DATA_ANLS_INFO DAI ON IH.data_analysis_id = DAI.data_analysis_id
+      WHERE LH.project_id = #{project_id}
+    </select>
+
+    <select id="selectInferenceInfoDataset" parameterType="string" resultType="map">
+      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, IH.learn_hist_no
+      FROM INFERENCE_HIST IH
+             INNER JOIN LEARN_HIST LH ON IH.learn_hist_no = LH.learn_hist_no
+             INNER JOIN ALGORITHM_INFO AI ON LH.alg_id = AI.alg_id
+             INNER JOIN DATA_ANLS_INFO DAI ON IH.data_analysis_id = DAI.data_analysis_id
+      WHERE dataset_id = #{dataset_id}
+    </select>
+
+    <select id="selectRunInference" parameterType="string" resultType="map">
+      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field
+      FROM INFERENCE_HIST IH
+      WHERE learn_hist_no = #{learn_hist_no}
+    </select>
+
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST

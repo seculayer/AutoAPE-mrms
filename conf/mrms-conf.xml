@@ -45,4 +45,9 @@
         <value>60</value>
         <description>seconds(integer)</description>
     </property>
+    <property>
+      <name>jobfile.remove.boolean</name>
+      <value>false</value>
+      <description>true/false</description>
+    </property>
 </configuration>

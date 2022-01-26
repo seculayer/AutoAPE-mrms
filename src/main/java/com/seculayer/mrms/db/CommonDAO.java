@@ -197,6 +197,33 @@ public class CommonDAO {
         return rst;
     }
 
+    public List<Map<String, Object>> selectInferenceInfo(String project_id) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectInferenceInfo", project_id);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectInferenceInfoDataset(String dataset_id) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectInferenceInfoDataset", dataset_id);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectRunInference(String learn_hist_no) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectRunInference", learn_hist_no);
+        }
+
+        return rst;
+    }
+
 
     // Update
     public void updateSttusCd(Map<String, Object> map){

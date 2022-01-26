@@ -37,13 +37,15 @@ public class DACompleteChecker extends Checker {
     }
 
     private void removeInitFolder(String datasetID) {
-        String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + datasetID;
-        File f = new File(folderPath);
-        try {
-            FileUtils.cleanDirectory(f);
-            f.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (MRMServerManager.getInstance().getConfiguration().getBoolean("jobfile.remove.boolean", false)) {
+            String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + datasetID;
+            File f = new File(folderPath);
+            try {
+                FileUtils.cleanDirectory(f);
+                f.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

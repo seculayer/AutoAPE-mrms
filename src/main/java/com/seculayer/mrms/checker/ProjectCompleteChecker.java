@@ -89,14 +89,16 @@ public class ProjectCompleteChecker extends Checker {
     }
 
     public void removeJobFolder(Map<String, Object> idMap) {
-        String projectID = idMap.get("project_id").toString();
-        String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + projectID;
-        File f = new File(folderPath);
-        try {
-            FileUtils.cleanDirectory(f);
-            f.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (MRMServerManager.getInstance().getConfiguration().getBoolean("jobfile.remove.boolean", false)) {
+            String projectID = idMap.get("project_id").toString();
+            String folderPath = MRMServerManager.getInstance().getConfiguration().get("ape.job.dir") + "/" + projectID;
+            File f = new File(folderPath);
+            try {
+                FileUtils.cleanDirectory(f);
+                f.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
