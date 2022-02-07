@@ -1,6 +1,8 @@
 package com.seculayer.mrms.rest.servlet.delete;
 
+import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.db.CommonDAO;
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 
@@ -15,6 +17,7 @@ public class DeleteDataset extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/delete_dataset";
 
     private CommonDAO commonDAO = new CommonDAO();
+    private static final ScheduleQueue daDelScheduleQueue = MRMServerManager.getInstance().getDADelScheduleQueue();
 
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -25,7 +28,8 @@ public class DeleteDataset extends ServletHandlerAbstract {
 
         try{
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
-            this.commonDAO.deleteDataset(map);
+            daDelScheduleQueue.push(map);
+
             logger.debug(map.toString());
 
             out.println("1");

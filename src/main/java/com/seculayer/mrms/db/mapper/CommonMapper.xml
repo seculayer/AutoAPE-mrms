@@ -290,4 +290,8 @@
         DELETE FROM DATASET
         WHERE dataset_id = #{dataset_id}
     </delete>
+    <delete id="deleteDataAnalysis" parameterType="map">
+      DELETE FROM DATA_ANLS_INFO
+      WHERE dataset_id = #{dataset_id}
+    </delete>
 </mapper>

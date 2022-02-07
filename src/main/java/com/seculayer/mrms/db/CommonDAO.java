@@ -330,6 +330,12 @@ public class CommonDAO {
             session.commit();
         }
     }
+    public void deleteDataAnalysis(Map<String, Object> map) {
+        try(SqlSession session = factory.openSession()) {
+            session.delete("CommonMapper.deleteDataAnalysis", map);
+            session.commit();
+        }
+    }
 
     public static void main(String[] args) {
 
