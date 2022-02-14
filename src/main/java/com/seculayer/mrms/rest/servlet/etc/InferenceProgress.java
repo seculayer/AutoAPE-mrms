@@ -32,7 +32,11 @@ public class InferenceProgress extends ServletHandlerAbstract {
                 );
             }
             else { // delete
-                inferenceProgressRate.remove(map.get("infr_hist_no").toString());
+                try {
+                    inferenceProgressRate.remove(map.get("infr_hist_no").toString());
+                } catch (Exception e){
+                    logger.error("infr_hist_no [{}] is not existed..", map.get("infr_hist_no").toString());
+                }
             }
             out.println("1");
         } catch (Exception e) {
