@@ -3,7 +3,6 @@ package com.seculayer.mrms.rest.servlet.etc;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
-import com.seculayer.util.StringUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
