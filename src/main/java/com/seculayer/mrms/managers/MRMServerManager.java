@@ -25,6 +25,7 @@ public class MRMServerManager {
 
     private static final Map<String, Object> modelResourceMap = new HashMap<>();
     private static final Map<String, Object> modelsInfoMap = new HashMap<>();
+    private static final Map<String, Object> inferenceProgressRate = new HashMap<>();
 
     // REST server
     private HTTPServerManager httpServer;
@@ -127,4 +128,5 @@ public class MRMServerManager {
     public final ScheduleQueue getInferenceInitScheduleQueue() { return inferenceInitScheduleQueue; }
     public final Map<String, Object> getModelResourceMap() { return modelResourceMap; }
     public final Map<String, Object> getModelsInfoMap() { return modelsInfoMap; }
+    public final Map<String, Object> getInferenceProgressRate() { return inferenceProgressRate; }
 }

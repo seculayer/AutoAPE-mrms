@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class InferenceInitScheduleChecker extends Checker {
     private CommonDAO dao = new CommonDAO();
+    public static final Map<String, Object> inferenceProgressRate = MRMServerManager.getInstance().getInferenceProgressRate();
 
     public InferenceInitScheduleChecker(){
         super.req(new InferenceInitRequest()
@@ -27,6 +28,9 @@ public class InferenceInitScheduleChecker extends Checker {
                     scheduleQueue.push(s);
                     s.replace("infr_sttus_cd", Constants.STATUS_INFERENCE_INIT);
                     s.put("task_idx", "0");
+
+                    inferenceProgressRate.put(s.get("infr_hist_no").toString(), "0.0");
+
                     dao.updateInferenceSttusCd(s);
                     logger.info("Inference init schedule queue size - {}", scheduleQueue.size());
                 } catch (Exception e) {
