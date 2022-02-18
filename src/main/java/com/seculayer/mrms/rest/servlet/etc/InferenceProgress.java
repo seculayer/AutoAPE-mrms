@@ -1,14 +1,20 @@
 package com.seculayer.mrms.rest.servlet.etc;
 
+import com.seculayer.mrms.info.InferenceInfo;
+import com.seculayer.mrms.info.LearnInfo;
+import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
+import com.seculayer.util.JsonUtil;
+import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 public class InferenceProgress extends ServletHandlerAbstract {
@@ -29,13 +35,17 @@ public class InferenceProgress extends ServletHandlerAbstract {
                     map.get("infr_hist_no").toString(),
                     map.get("progress_rate").toString()
                 );
+
+//                logger.info("progress {}", inferenceProgressRate.toString());
             }
             else { // delete
+                String infr_hist_no = map.get("infr_hist_no").toString();
                 try {
-                    inferenceProgressRate.remove(map.get("infr_hist_no").toString());
+                    inferenceProgressRate.remove(infr_hist_no);
                 } catch (Exception e){
-                    logger.error("infr_hist_no [{}] is not existed..", map.get("infr_hist_no").toString());
+                    logger.error("infr_hist_no [{}] is not existed..", infr_hist_no);
                 }
+                this.updateInferenceLog(map);
             }
             out.println("1");
         } catch (Exception e) {
@@ -67,5 +77,27 @@ public class InferenceProgress extends ServletHandlerAbstract {
 
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         logger.debug("###################################################################");
+    }
+
+    public void updateInferenceLog(Map<String, Object> idMap) {
+        String histNo = idMap.get("infr_hist_no").toString();
+        boolean tail = false;
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            InferenceInfo infrInfo = new InferenceInfo(histNo);
+            infrInfo.loadInfo(histNo);
+
+            for (int idx = 0; idx < infrInfo.getNumWorker(); idx++) {
+                String log = KubeUtil.getJobLogs("inference-" + histNo + "-" + idx, "mlps", tail);
+                map.put("worker_" + idx, log);
+            }
+            JSONObject jsonData = JsonUtil.mapToJson(map);
+            idMap.put("logs", jsonData.toString());
+            commonDAO.updateInferenceLog(idMap);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

@@ -179,6 +179,12 @@
       WHERE learn_hist_no = #{learn_hist_no}
     </select>
 
+    <select id="selectInferenceLog" parameterType="string" resultType="string">
+      SELECT logs
+      FROM INFERENCE_HIST
+      WHERE infr_hist_no = #{infr_hist_no}
+    </select>
+
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
         UPDATE LEARN_HIST
@@ -229,6 +235,11 @@
         UPDATE LEARN_HIST
         SET    eval_result_json = #{result}
         WHERE  learn_hist_no = #{hist_no}
+    </update>
+    <update id="updateInferenceLog" parameterType="map">
+        UPDATE INFERENCE_HIST
+        SET    logs = #{logs}
+        WHERE  infr_hist_no = #{infr_hist_no}
     </update>
 
 

@@ -224,6 +224,14 @@ public class CommonDAO {
         return rst;
     }
 
+    public String selectInferenceLog(String infr_hist_no) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectInferenceLog", infr_hist_no);
+        }
+
+        return rst;
+    }
 
     // Update
     public void updateSttusCd(Map<String, Object> map){
@@ -292,6 +300,13 @@ public class CommonDAO {
     public void updateEvalResult(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateEvalResult", map);
+            session.commit();
+        }
+    }
+
+    public void updateInferenceLog(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateInferenceLog", map);
             session.commit();
         }
     }
