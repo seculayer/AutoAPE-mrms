@@ -204,4 +204,18 @@ public class ProjectManageDAO {
             session.commit();
         }
     }
+
+    public void updateBookmark(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateBookmark", map);
+            session.commit();
+        }
+    }
+
+    public void updateModelAlias(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateModelAlias", map);
+            session.commit();
+        }
+    }
 }

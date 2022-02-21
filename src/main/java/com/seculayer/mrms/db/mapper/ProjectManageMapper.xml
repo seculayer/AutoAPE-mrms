@@ -188,4 +188,16 @@
         SET    logs = #{logs}
         WHERE  learn_hist_no = #{learn_hist_no}
     </update>
+
+    <update id="updateBookmark" parameterType="map">
+      UPDATE LEARN_HIST
+      SET    model_bookmark = #{bookmarkYN}
+      WHERE  learn_hist_no = #{learn_hist_no}
+    </update>
+
+    <update id="updateModelAlias" parameterType="map">
+      UPDATE LEARN_HIST
+      SET    model_alias = #{model_alias}
+      WHERE  learn_hist_no = #{learn_hist_no}
+    </update>
 </mapper>

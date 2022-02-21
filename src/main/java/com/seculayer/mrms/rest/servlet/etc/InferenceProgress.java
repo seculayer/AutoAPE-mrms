@@ -65,9 +65,9 @@ public class InferenceProgress extends ServletHandlerAbstract {
         logger.debug("###################################################################");
         logger.debug("In doGet - inference progress");
 
-        String id = httpServletRequest.getParameter("id");
-
         try {
+            String id = httpServletRequest.getParameter("id");
+
             String rate = inferenceProgressRate.get(id).toString();
             out.println(rate);
         } catch (Exception e) {

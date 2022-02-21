@@ -40,6 +40,8 @@
              , LH.ml_score
              , LH.eps
              , LH.issue_task_idx
+             , LH.model_alias
+             , LH.model_bookmark
              , MPI.param_json
              , MAI.alg_json
              , MAI.metadata_json
