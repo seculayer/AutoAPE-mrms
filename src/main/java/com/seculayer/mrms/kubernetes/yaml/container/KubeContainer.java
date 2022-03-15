@@ -97,6 +97,13 @@ public abstract class KubeContainer {
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
         return volumeMounts;
     }
+    protected List<V1VolumeMount> makeXAIVolumeMounts(){
+        List<V1VolumeMount> volumeMounts = new ArrayList<>();
+
+        volumeMounts.add(KubeUtil.getVolumeMountFromPath("temp", "/eyeCloudAI/data/processing/ape/temp"));
+        volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
+        return volumeMounts;
+    }
     protected abstract Map<String, Quantity> makeLimits();
     protected abstract List<String> makeCommands();
     protected List<V1EnvVar> makeEnv(){
@@ -116,6 +123,8 @@ public abstract class KubeContainer {
                 return ((LearnInfo)this.info).getLearnHistNo();
             case Constants.JOB_TYPE_INFERENCE:
                 return ((InferenceInfo)this.info).getInfrHistNo();
+            case Constants.JOB_TYPE_XAI:
+                return ((XAIInfo)this.info).getXAIHistNo();
             default:
                 return "0";
         }

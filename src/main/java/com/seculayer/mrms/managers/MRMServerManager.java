@@ -22,6 +22,7 @@ public class MRMServerManager {
     private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue learnInitScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue inferenceInitScheduleQueue = new ScheduleQueue();
+    private static final ScheduleQueue XAIScheduleQueue = new ScheduleQueue();
 
     private static final Map<String, Object> modelResourceMap = new HashMap<>();
     private static final Map<String, Object> modelsInfoMap = new HashMap<>();
@@ -110,6 +111,7 @@ public class MRMServerManager {
         }
         if (conf.getBoolean("use.inference.schedule", true)) {
             timer.scheduleAtFixedRate(new InferenceInitScheduleChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new XAIScheduleChecker(), delay, period * 1000);
         }
     }
 
@@ -126,6 +128,7 @@ public class MRMServerManager {
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
     public final ScheduleQueue getLearnInitScheduleQueue() { return learnInitScheduleQueue; }
     public final ScheduleQueue getInferenceInitScheduleQueue() { return inferenceInitScheduleQueue; }
+    public final ScheduleQueue getXAIScheduleQueue() { return XAIScheduleQueue; }
     public final Map<String, Object> getModelResourceMap() { return modelResourceMap; }
     public final Map<String, Object> getModelsInfoMap() { return modelsInfoMap; }
     public final Map<String, Object> getInferenceProgressRate() { return inferenceProgressRate; }

@@ -158,7 +158,7 @@
     </select>
 
     <select id="selectInferenceInfo" parameterType="string" resultType="map">
-      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, alg_cont, dataset_id, IH.learn_hist_no, DAI.data_analysis_id
+      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, alg_cont, dataset_id, IH.learn_hist_no, DAI.data_analysis_id, LH.model_alias
       FROM INFERENCE_HIST IH
              INNER JOIN LEARN_HIST LH ON IH.learn_hist_no = LH.learn_hist_no
              INNER JOIN ALGORITHM_INFO AI ON LH.alg_id = AI.alg_id
@@ -167,7 +167,7 @@
     </select>
 
     <select id="selectInferenceInfoDataset" parameterType="string" resultType="map">
-      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, IH.learn_hist_no
+      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, IH.learn_hist_no, LH.model_alias
       FROM INFERENCE_HIST IH
              INNER JOIN LEARN_HIST LH ON IH.learn_hist_no = LH.learn_hist_no
              INNER JOIN ALGORITHM_INFO AI ON LH.alg_id = AI.alg_id
@@ -176,8 +176,9 @@
     </select>
 
     <select id="selectRunInference" parameterType="string" resultType="map">
-      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field
+      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, DAI.dataset_id
       FROM INFERENCE_HIST IH
+             INNER JOIN DATA_ANLS_INFO DAI ON IH.data_analysis_id = DAI.data_analysis_id
       WHERE learn_hist_no = #{learn_hist_no}
     </select>
 
@@ -186,6 +187,13 @@
       FROM INFERENCE_HIST
       WHERE infr_hist_no = #{infr_hist_no}
     </select>
+
+    <select id="selectXAISchedule" parameterType="string" resultType="map">
+      SELECT *
+      FROM XAI_HIST
+      WHERE xai_sttus_cd = #{xaiStatus}
+    </select>
+
 
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
@@ -197,6 +205,11 @@
       UPDATE INFERENCE_HIST
       SET    infr_sttus_cd = #{sttus_cd}, issue_task_idx = #{task_idx}
       WHERE  infr_hist_no = #{hist_no}
+    </update>
+    <update id="updateXAISttusCd" parameterType="map">
+      UPDATE XAI_HIST
+      SET    xai_sttus_cd = #{sttus_cd}
+      WHERE  xai_hist_no = #{hist_no}
     </update>
     <update id="updateEps" parameterType="map">
         UPDATE LEARN_HIST
@@ -286,15 +299,32 @@
         SELECT UUID_SHORT()
       </selectKey>
       INSERT INTO INFERENCE_HIST (infr_hist_no,
-      learn_hist_no,
-      infr_sttus_cd,
-      target_field,
-      data_analysis_id)
+                    learn_hist_no,
+                    infr_sttus_cd,
+                    target_field,
+                    data_analysis_id)
       VALUES (#{infr_hist_no},
-      #{learn_hist_no},
-      "1",
-      #{target_field},
-      #{data_analysis_id}
+              #{learn_hist_no},
+              #{infr_sttus_cd},
+              #{target_field},
+              #{data_analysis_id}
+      )
+    </insert>
+    <insert id="insertXaiInfo" parameterType="map">
+      <selectKey keyProperty="xai_hist_no" resultType="long"
+                 order="BEFORE">
+        SELECT UUID_SHORT()
+      </selectKey>
+      INSERT INTO XAI_HIST (xai_hist_no,
+                    infr_hist_no,
+                    xai_sttus_cd,
+                    target_field,
+                    data_analysis_id)
+      VALUES (#{xai_hist_no},
+              #{infr_hist_no},
+              #{xai_sttus_cd},
+              #{target_field},
+              #{data_analysis_id}
       )
     </insert>
 

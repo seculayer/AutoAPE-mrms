@@ -17,6 +17,8 @@ public class KubeConfigMapFactory {
                 return new HPRSConfigMap().configMap(configMap);
             case "mlps-conf":
                 return new MLPSConfigMap().configMap(configMap);
+            case "xai-conf":
+                return new XAIConfigMap().configMap(configMap);
             default:
                 return null;
         }

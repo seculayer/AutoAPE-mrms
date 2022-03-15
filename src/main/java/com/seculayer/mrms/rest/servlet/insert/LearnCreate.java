@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InsertLearnHist extends ServletHandlerAbstract {
+public class LearnCreate extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/insert_learn_hist";
 
     @Override
@@ -45,7 +46,11 @@ public class InsertLearnHist extends ServletHandlerAbstract {
         String projectID = req.get("project_id").toString();
         ObjectMapper mapper = new ObjectMapper();
 
-        List<Map<String, Object>> modelInfoList = commonDAO.selectModelsInfo(projectID, learnHistNoList);
+        Map<String, Object> map = new HashMap<>();
+        map.put("project_id", projectID);
+        map.put("learn_hist_no_list", learnHistNoList);
+
+        List<Map<String, Object>> modelInfoList = commonDAO.selectModelsInfo(map);
         Map<String, Object> model = modelInfoList.get(0);
 
         try {

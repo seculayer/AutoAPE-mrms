@@ -53,14 +53,10 @@ public class CommonDAO {
         return rstMap;
     }
 
-    public List<Map<String, Object>> selectModelsInfo(String projectID, String[] learnHistNoList){
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("project_id", projectID);
-        paramMap.put("learn_hist_no_list", learnHistNoList);
-
+    public List<Map<String, Object>> selectModelsInfo(Map<String, Object> map){
         List<Map<String, Object>> rstListMap;
         try (SqlSession session = factory.openSession()) {
-            rstListMap = session.selectList("CommonMapper.selectModelsInfo", paramMap);
+            rstListMap = session.selectList("CommonMapper.selectModelsInfo", map);
         }
 
         return rstListMap;
@@ -233,6 +229,16 @@ public class CommonDAO {
         return rst;
     }
 
+    public List<Map<String, Object>> selectXAISchedule(String xaiStatus) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectXAISchedule", xaiStatus);
+        }
+
+        return rst;
+    }
+
+
     // Update
     public void updateSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
@@ -244,6 +250,13 @@ public class CommonDAO {
     public void updateInferenceSttusCd(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateInferenceSttusCd", map);
+            session.commit();
+        }
+    }
+
+    public void updateXAISttusCd(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateXAISttusCd", map);
             session.commit();
         }
     }
@@ -325,14 +338,17 @@ public class CommonDAO {
             session.commit();
         }
     }
-    public void insertInferenceInfo(String learnHistNo, String dataAnlsId, String targetField) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("learn_hist_no", learnHistNo);
-        paramMap.put("data_analysis_id", dataAnlsId);
-        paramMap.put("target_field", targetField);
+    public void insertInferenceInfo(Map<String, Object> map) {
 
         try(SqlSession session = factory.openSession()) {
-            session.insert("CommonMapper.insertInferenceInfo", paramMap);
+            session.insert("CommonMapper.insertInferenceInfo", map);
+            session.commit();
+        }
+    }
+    public void insertXaiInfo(Map<String, Object> map) {
+
+        try (SqlSession session = factory.openSession()) {
+            session.insert("CommonMapper.insertXaiInfo", map);
             session.commit();
         }
     }

@@ -22,7 +22,7 @@ public class InferenceInitRequest extends Request {
             schedule = this.setInferenceHist(schedule, Constants.STATUS_INFERENCE_ING);
         } catch (Exception e) {
             e.printStackTrace();
-            schedule = this.setInferenceHist(schedule, Constants.STATUS_INFERENCE_ING);
+            schedule = this.setInferenceHist(schedule, Constants.STATUS_INFERENCE_ERROR);
         } finally {
             commonDAO.updateInferenceSttusCd(schedule);
         }

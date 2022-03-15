@@ -7,6 +7,7 @@ import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.kubernetes.yaml.container.DAContainer;
 import com.seculayer.mrms.kubernetes.yaml.container.MLPSContainer;
 import com.seculayer.mrms.kubernetes.yaml.container.RcmdContainer;
+import com.seculayer.mrms.kubernetes.yaml.container.XAIContainer;
 import com.seculayer.mrms.managers.MRMServerManager;
 import io.kubernetes.client.openapi.models.*;
 import org.apache.logging.log4j.Logger;
@@ -120,6 +121,19 @@ public abstract class KubeJob {
             new MLPSContainer(jobType)
                 .info(this.info)
                 .workerIdx(workerIdx)
+                .configMapList(this.configMapList)
+                .make()
+        );
+
+        return containers;
+    }
+
+    protected List<V1Container> xaiContainers(String jobType){
+        List<V1Container> containers = new ArrayList<>();
+        containers.add(
+            new XAIContainer(jobType)
+                .info(this.info)
+                .workerIdx(0)
                 .configMapList(this.configMapList)
                 .make()
         );

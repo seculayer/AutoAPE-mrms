@@ -14,10 +14,7 @@ import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.*;
-import com.seculayer.mrms.kubernetes.yaml.job.DAJob;
-import com.seculayer.mrms.kubernetes.yaml.job.InferenceJob;
-import com.seculayer.mrms.kubernetes.yaml.job.LearnJob;
-import com.seculayer.mrms.kubernetes.yaml.job.RcmdJob;
+import com.seculayer.mrms.kubernetes.yaml.job.*;
 import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
@@ -108,6 +105,14 @@ abstract public class Request extends Thread {
         }
     }
 
+    public void makeXAIJob(XAIInfo xaiInfo) {
+        try{
+            createJob(makeJob(xaiInfo, Constants.JOB_TYPE_XAI, 0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     protected static V1Job makeJob(InfoAbstract info, String jobType, int workerIdx){
         switch (jobType){
             case Constants.JOB_TYPE_DA_CHIEF: case Constants.JOB_TYPE_DA_WORKER:
@@ -130,6 +135,12 @@ abstract public class Request extends Thread {
                         .make();
             case Constants.JOB_TYPE_INFERENCE:
                 return new InferenceJob()
+                        .info(info)
+                        .jobType(jobType)
+                        .workerIdx(workerIdx)
+                        .make();
+            case Constants.JOB_TYPE_XAI:
+                return new XAIJob()
                         .info(info)
                         .jobType(jobType)
                         .workerIdx(workerIdx)

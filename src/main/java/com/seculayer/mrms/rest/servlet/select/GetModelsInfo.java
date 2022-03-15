@@ -78,7 +78,11 @@ public class GetModelsInfo extends ServletHandlerAbstract {
     }
 
     private List<Map<String, Object>> parseModelInfo(String projectID) {
-        List<Map<String, Object>> rst = commonDAO.selectModelsInfo(projectID, null);
+        Map<String, Object> map = new HashMap<>();
+        map.put("project_id", projectID);
+        map.put("learn_hist_no_list", null);
+
+        List<Map<String, Object>> rst = commonDAO.selectModelsInfo(map);
 
         for (Map<String, Object> model: rst) {
             ObjectMapper mapper = new ObjectMapper();

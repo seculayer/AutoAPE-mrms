@@ -6,6 +6,7 @@ public class Constants {
     public static final String MARS_IMAGE_VERSION = "1.0.0";
     public static final String HPRS_IMAGE_VERSION = "1.0.0";
     public static final String MLPS_IMAGE_VERSION = "3.0.0";
+    public static final String XAI_IMAGE_VERSION = "1.0.0";
 
     public static final String REST_PACKAGES = "com.seculayer.mrms.rest.servlet";
 
@@ -22,8 +23,8 @@ public class Constants {
     public static final String JOB_TYPE_HPRS = "hprs";
     public static final String JOB_TYPE_LEARN = "learn";
     public static final String JOB_TYPE_INFERENCE = "inference";
+    public static final String JOB_TYPE_XAI = "xai";
 
-    public static final int RCMD_INTERFACE_PORT = 22;
     public static final int GRPC_PORT = 9304;
 
     public static final String GPU_MEM_LIMIT_LEARN = "2048";
@@ -51,6 +52,12 @@ public class Constants {
     public static final String STATUS_INFERENCE_ING = "5";
     public static final String STATUS_INFERENCE_COMPLETE = "6";
     public static final String STATUS_INFERENCE_ERROR = "7";
+
+    public static final String STATUS_XAI_REQ = "1";
+    public static final String STATUS_XAI_INIT = "2";
+    public static final String STATUS_XAI_ING = "5";
+    public static final String STATUS_XAI_COMPLETE = "6";
+    public static final String STATUS_XAI_ERROR = "7";
 
     public static final String LIB_TYPE_TFV1 = "1";
     public static final String LIB_TYPE_KERAS = "2";

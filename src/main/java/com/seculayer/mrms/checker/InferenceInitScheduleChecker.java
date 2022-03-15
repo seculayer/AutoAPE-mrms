@@ -26,8 +26,7 @@ public class InferenceInitScheduleChecker extends Checker {
             for (Map<String, Object> s : schedules){
                 try {
                     scheduleQueue.push(s);
-                    s.replace("infr_sttus_cd", Constants.STATUS_INFERENCE_INIT);
-                    s.put("task_idx", "0");
+                    s = setInferenceHist(s, Constants.STATUS_INFERENCE_INIT);
 
                     inferenceProgressRate.put(s.get("infr_hist_no").toString(), "0.0");
 
@@ -40,5 +39,13 @@ public class InferenceInitScheduleChecker extends Checker {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public Map<String, Object> setInferenceHist(Map<String, Object> map, String status) {
+        map.put("sttus_cd", status);
+        map.put("task_idx", "0");
+        map.put("hist_no", map.get("infr_hist_no"));
+
+        return map;
     }
 }
