@@ -324,6 +324,13 @@ public class CommonDAO {
         }
     }
 
+    public void updateInferenceRst(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateInferenceRst", map);
+            session.commit();
+        }
+    }
+
 
     // insert
     public void insertDataset(Map<String, Object> map) {

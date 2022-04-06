@@ -1,10 +1,14 @@
 package com.seculayer.mrms.kubernetes.yaml.container;
 
 import com.seculayer.mrms.common.Constants;
+import com.seculayer.mrms.info.LearnInfo;
+import com.seculayer.mrms.info.XAIInfo;
+import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1ContainerPort;
+import io.kubernetes.client.openapi.models.V1EnvVar;
 import io.kubernetes.client.openapi.models.V1VolumeMount;
 
 import java.util.ArrayList;
@@ -68,5 +72,26 @@ public class XAIContainer extends KubeContainer {
         List<V1ContainerPort> ports = new ArrayList<>();
 
         return ports;
+    }
+
+    @Override
+    protected List<V1EnvVar> makeEnv() {
+        String key = this.getProcessKey();
+        List<V1EnvVar> envList = super.makeEnv();
+
+        envList.add(new V1EnvVar()
+            .name("TF_CONFIG")
+            .value(KubeUtil.generateTFConfigSingle(jobType, key, workerIdx)));
+
+        if (!this.getGpuUse()) {
+            envList.add(new V1EnvVar()
+                .name("CUDA_VISIBLE_DEVICES")
+                .value("-1"));
+        }
+        return envList;
+    }
+
+    private boolean getGpuUse() {
+        return ((XAIInfo) this.info).getGpuUse();
     }
 }

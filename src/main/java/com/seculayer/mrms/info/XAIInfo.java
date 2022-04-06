@@ -37,6 +37,7 @@ public class XAIInfo extends InfoAbstract {
     protected String datasetFormat = "";
 
     protected String targetField = "";
+    protected boolean gpuUse = false;
 
     public XAIInfo(String key) { super(key); }
 
@@ -77,6 +78,7 @@ public class XAIInfo extends InfoAbstract {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        gpuUse = this.isGpuUse(algInfo);
     }
 
     protected void setInfo(Map<String, Object> learnHistMap) {
@@ -103,6 +105,7 @@ public class XAIInfo extends InfoAbstract {
         map.put("algorithms", algInfo);
         map.put("project_target_field", targetField);
         map.put("dataset_format", datasetFormat);
+        map.put("gpu_use", gpuUse);
 
         return map;
     }
@@ -119,6 +122,7 @@ public class XAIInfo extends InfoAbstract {
             this.xaiHistNo = StringUtil.get(map.get("xai_hist_no"));
             this.learnHistNo = StringUtil.get(map.get("learn_hist_no"));
             this.infrHistNo = StringUtil.get(map.get("infr_hist_no"));
+            this.gpuUse = StringUtil.getBoolean(map.get("gpu_use"));
             logger.debug("load xai info : {}", key);
         } catch (Exception e){
             e.printStackTrace();
@@ -128,4 +132,5 @@ public class XAIInfo extends InfoAbstract {
     }
 
     public String getXAIHistNo() { return xaiHistNo; }
+    public boolean getGpuUse() { return gpuUse; }
 }
