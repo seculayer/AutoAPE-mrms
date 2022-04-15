@@ -35,6 +35,7 @@ public class XAIContainer extends KubeContainer {
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
         configMapNameList.add("xai-conf");
+        configMapNameList.add("apeflow-conf");
         return configMapNameList;
     }
 
