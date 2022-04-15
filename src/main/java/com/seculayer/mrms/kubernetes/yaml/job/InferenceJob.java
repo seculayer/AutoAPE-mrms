@@ -16,6 +16,7 @@ public class InferenceJob extends KubeJob {
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
         configMapNameList.add("mlps-conf");
+        configMapNameList.add("apeflow-conf");
 
         return configMapNameList;
     }
