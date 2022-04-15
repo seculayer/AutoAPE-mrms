@@ -19,6 +19,8 @@ public class KubeConfigMapFactory {
                 return new MLPSConfigMap().configMap(configMap);
             case "xai-conf":
                 return new XAIConfigMap().configMap(configMap);
+            case "apeflow-conf":
+                return new APEFlowConfigMap().configMap(configMap);
             default:
                 return null;
         }
