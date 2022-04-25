@@ -36,6 +36,7 @@ public class MLPSContainer extends KubeContainer {
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
         configMapNameList.add("mlps-conf");
+        configMapNameList.add("apeflow-conf");
         return configMapNameList;
     }
 
