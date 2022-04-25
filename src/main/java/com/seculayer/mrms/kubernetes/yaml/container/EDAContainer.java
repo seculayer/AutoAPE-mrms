@@ -12,31 +12,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DAContainer extends KubeContainer {
+public class EDAContainer extends KubeContainer {
 
-    public DAContainer(String jobType) {
+    public EDAContainer(String jobType) {
         super(jobType);
 
-        this.name = "da";
-        this.image = registryURL + "/automl-da:"
-                        + Constants.DA_IMAGE_VERSION;
+        this.name = "eda";
+        this.image = registryURL + "/automl-eda:"
+                        + Constants.EDA_IMAGE_VERSION;
     }
 
     @Override
-    public V1Container make() {
-        return this.makeContainer();
-    }
+    public V1Container make() { return this.makeContainer(); }
 
     @Override
     protected List<String> makeConfigMapName() {
         List<String> configMapNameList = new ArrayList<>();
-        configMapNameList.add("da-conf");
+        configMapNameList.add("eda-conf");
         return configMapNameList;
     }
 
     @Override
     protected List<V1VolumeMount> makeVolumeMounts(){
-        List<V1VolumeMount> volumeMounts = super.makeDaVolumeMounts();
+        List<V1VolumeMount> volumeMounts = super.makeVolumeMounts();
         for (KubeConfigMap configMap : this.configMapList){
             volumeMounts.add(configMap.getVolumeMount());
         }
@@ -55,19 +53,19 @@ public class DAContainer extends KubeContainer {
     protected List<String> makeCommands() {
         List<String> commands = new ArrayList<>();
         switch (jobType) {
-            case Constants.JOB_TYPE_DA_CHIEF:
+            case Constants.JOB_TYPE_EDA_CHIEF:
                 commands.add("/bin/bash");
-                commands.add("./da.sh");
+                commands.add("./eda.sh");
                 commands.add(this.getProcessKey());
-                commands.add("chief");
                 commands.add("0");
+                commands.add("chief");
                 return commands;
-            case Constants.JOB_TYPE_DA_WORKER:
+            case Constants.JOB_TYPE_EDA_WORKER:
                 commands.add("/bin/bash");
-                commands.add("./da.sh");
+                commands.add("./eda.sh");
                 commands.add(this.getProcessKey());
-                commands.add("worker");
                 commands.add(Integer.toString(workerIdx));
+                commands.add("worker");
                 return commands;
             default:
         }

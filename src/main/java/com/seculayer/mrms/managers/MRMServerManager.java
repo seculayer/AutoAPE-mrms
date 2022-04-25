@@ -20,6 +20,7 @@ public class MRMServerManager {
     private static final ScheduleQueue daScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue daDelScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue rcmdScheduleQueue = new ScheduleQueue();
+    private static final ScheduleQueue edaScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue learnInitScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue inferenceInitScheduleQueue = new ScheduleQueue();
     private static final ScheduleQueue XAIScheduleQueue = new ScheduleQueue();
@@ -101,6 +102,7 @@ public class MRMServerManager {
         if (conf.getBoolean("use.learning.schedule", true)) {
 //            timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new RcmdScheduleChecker(), delay, period * 1000);
+            timer.scheduleAtFixedRate(new EDAScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new LearnInitScheduleChecker(), delay, period * 1000);
             timer.scheduleAtFixedRate(new ProjectCompleteChecker(), delay, period * 1000);
         }
@@ -126,6 +128,7 @@ public class MRMServerManager {
     public final ScheduleQueue getDAScheduleQueue() { return daScheduleQueue; }
     public final ScheduleQueue getDADelScheduleQueue() { return daDelScheduleQueue; }
     public final ScheduleQueue getRcmdScheduleQueue() { return rcmdScheduleQueue; }
+    public final ScheduleQueue getEDAScheduleQueue() { return edaScheduleQueue; }
     public final ScheduleQueue getLearnInitScheduleQueue() { return learnInitScheduleQueue; }
     public final ScheduleQueue getInferenceInitScheduleQueue() { return inferenceInitScheduleQueue; }
     public final ScheduleQueue getXAIScheduleQueue() { return XAIScheduleQueue; }

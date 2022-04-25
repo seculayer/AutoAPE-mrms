@@ -2,6 +2,7 @@ package com.seculayer.mrms.common;
 
 public class Constants {
     public static final String DA_IMAGE_VERSION = "1.0.0";
+    public static final String EDA_IMAGE_VERSION = "1.0.0";
     public static final String DPRS_IMAGE_VERSION = "1.0.0";
     public static final String MARS_IMAGE_VERSION = "1.0.0";
     public static final String HPRS_IMAGE_VERSION = "1.0.0";
@@ -18,6 +19,8 @@ public class Constants {
 
     public static final String JOB_TYPE_DA_CHIEF = "da-chief";
     public static final String JOB_TYPE_DA_WORKER = "da-worker";
+    public static final String JOB_TYPE_EDA_CHIEF = "eda-chief";
+    public static final String JOB_TYPE_EDA_WORKER = "eda-worker";
     public static final String JOB_TYPE_DPRS = "dprs";
     public static final String JOB_TYPE_MARS = "mars";
     public static final String JOB_TYPE_HPRS = "hprs";
@@ -35,6 +38,11 @@ public class Constants {
     public static final String STATUS_DA_COMPLETE = "7";
     public static final String STATUS_DA_ERROR = "8";
     public static final String STATUS_DA_RM_REQ = "9";
+
+    public static final String STATUS_EDA_REQ = "1";
+    public static final String STATUS_EDA_ING = "2";
+    public static final String STATUS_EDA_COMPLETE = "5";
+    public static final String STATUS_EDA_ERROR = "6";
 
     public static final String STATUS_PROJECT_RCMD_REQ = "3";
     public static final String STATUS_PROJECT_RCMD_ING = "4";

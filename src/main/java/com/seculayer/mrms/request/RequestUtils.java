@@ -4,11 +4,14 @@ package com.seculayer.mrms.request;
 //import com.seculayer.ape.mlms.info.DetectInfoAbstract;
 //import com.seculayer.ape.mlms.info.LearnInfo;
 //import com.seculayer.ape.mlms.info.VerifyInfo;
+
 import com.seculayer.mrms.db.CommonDAO;
+import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.DAInfo;
+import com.seculayer.mrms.info.EDAInfo;
 import com.seculayer.mrms.info.RcmdInfo;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
@@ -17,6 +20,7 @@ public class RequestUtils {
     protected static Logger logger = LogManager.getLogger();
 
     private static final CommonDAO dao = new CommonDAO();
+    private static final ProjectManageDAO projectDao = new ProjectManageDAO();
 
     public static DAInfo createDAInfo(Map<String, Object> schd) throws IOException {
         Map<String, Object> datasetInfo = dao.selectDatasetInfo(schd.get("dataset_id").toString());
@@ -34,6 +38,14 @@ public class RequestUtils {
         logger.debug(rcmdInfo.toString());
 
         return rcmdInfo;
+    }
+
+    public static EDAInfo createEDAInfo(Map<String, Object> schd) throws IOException {
+        EDAInfo edaInfo = new EDAInfo(schd.get("eda_id").toString());
+        edaInfo.init(schd);
+        logger.debug(edaInfo.toString());
+
+        return edaInfo;
     }
 
 //    public static LearnInfo createLearnInfo(Map<String, Object> schedule, String key) throws IOException {

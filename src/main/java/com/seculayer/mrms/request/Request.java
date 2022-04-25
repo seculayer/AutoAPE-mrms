@@ -1,17 +1,8 @@
 package com.seculayer.mrms.request;
 
+import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
-//import com.seculayer.mrms.db.HPOptimizeSchedulerDAO;
-//import com.seculayer.mrms.db.LearnSchedulerDAO;
-//import com.seculayer.mrms.db.VerifySchedulerDAO;
-//import com.seculayer.mrms.info.*;
-//import com.seculayer.mrms.kubernetes.yaml.deploy.DetectDeploy;
-//import com.seculayer.mrms.kubernetes.yaml.job.HPOLearningJob;
-//import com.seculayer.mrms.kubernetes.yaml.job.LearningJob;
-//import com.seculayer.mrms.kubernetes.yaml.job.VerifyJob;
-//import com.seculayer.mrms.kubernetes.yaml.svc.MLPSService;
-import com.seculayer.mrms.checker.ScheduleQueue;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.info.*;
 import com.seculayer.mrms.kubernetes.yaml.job.*;
@@ -20,11 +11,9 @@ import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
-import io.kubernetes.client.proto.V1;
 import org.apache.commons.lang.NotImplementedException;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
@@ -67,6 +56,14 @@ abstract public class Request extends Thread {
     public static void makeDAJob(DAInfo daInfo, String jobType, int workerIdx){
         try{
             createJob(makeJob(daInfo, jobType, workerIdx));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeEDAJob(EDAInfo edaInfo, String jobType, int workerIdx){
+        try{
+            createJob(makeJob(edaInfo, jobType, workerIdx));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -121,6 +118,12 @@ abstract public class Request extends Thread {
                         .jobType(jobType)
                         .workerIdx(workerIdx)
                         .make();
+            case Constants.JOB_TYPE_EDA_CHIEF: case Constants.JOB_TYPE_EDA_WORKER:
+                return new EDAJob()
+                        .info(info)
+                        .jobType(jobType)
+                        .workerIdx(workerIdx)
+                        .make();
             case Constants.JOB_TYPE_DPRS: case Constants.JOB_TYPE_MARS: case Constants.JOB_TYPE_HPRS:
                 return new RcmdJob()
                         .info(info)
@@ -163,7 +166,6 @@ abstract public class Request extends Thread {
                 throw new NotImplementedException();
         }
     }
-
 
     // Kubernetes API call
     protected static V1Job createJob(V1Job job) throws ApiException {

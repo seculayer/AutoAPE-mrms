@@ -21,6 +21,24 @@
             ,   #{project_target_field}
             )
     </insert>
+    <insert id="insertEDAInfo" parameterType="map">
+      <selectKey keyProperty="eda_id" resultType="long"
+                 order="BEFORE">
+        SELECT UUID_SHORT()
+      </selectKey>
+      INSERT INTO EDA_INFO
+      (	eda_id
+      , status
+      , dp_analysis_id
+      , project_id
+      )
+      VALUES
+        (	#{eda_id}
+        , #{status}
+        , #{dp_analysis_id}
+        ,	#{project_id}
+        )
+    </insert>
     <insert id="insertDPAnlsInfo" parameterType="map">
         INSERT INTO DP_ANLS_INFO
         (	dp_analysis_id
@@ -110,6 +128,11 @@
         FROM PROJECT_INFO
         WHERE status = #{status}
     </select>
+    <select id="selectEDASchedule" parameterType="string" resultType="map">
+      SELECT *
+      FROM EDA_INFO
+      WHERE status = #{status}
+    </select>
     <select id="selectDataAnalsId" parameterType="string" resultType="map">
         SELECT data_analysis_id
         FROM DATA_ANLS_INFO
@@ -175,6 +198,12 @@
         UPDATE PROJECT_INFO
         SET    status = #{status}
         WHERE  project_id = #{project_id}
+    </update>
+
+    <update id="updateEDAStatus" parameterType="map">
+      UPDATE EDA_INFO
+      SET    status = #{status}
+      WHERE  eda_id = #{eda_id}
     </update>
 
     <update id="updateUsedYN" parameterType="map">

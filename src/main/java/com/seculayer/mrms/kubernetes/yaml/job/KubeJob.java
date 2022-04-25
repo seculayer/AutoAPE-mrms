@@ -4,14 +4,11 @@ import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.info.InfoAbstract;
 import com.seculayer.mrms.kubernetes.KubeUtil;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
-import com.seculayer.mrms.kubernetes.yaml.container.DAContainer;
-import com.seculayer.mrms.kubernetes.yaml.container.MLPSContainer;
-import com.seculayer.mrms.kubernetes.yaml.container.RcmdContainer;
-import com.seculayer.mrms.kubernetes.yaml.container.XAIContainer;
+import com.seculayer.mrms.kubernetes.yaml.container.*;
 import com.seculayer.mrms.managers.MRMServerManager;
 import io.kubernetes.client.openapi.models.*;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +53,7 @@ public abstract class KubeJob {
 
     protected V1Job makeJob(){
         long userNum = 1000;
-        logger.debug("-------------------------------------------");
-        logger.debug("In KubeJob..");
-        logger.debug("metaname : {}", this.metaname);
-        logger.debug("labels : {}", this.labels.toString());
-        logger.debug("containers : {}, cnt : {}", this.containers.toString(), this.containers.size());
-        logger.debug("volumes : {}, cnt : {}", this.volumes.toString(), this.volumes.size());
-        logger.debug("-------------------------------------------");
+        this.printJobInfoDebug();
 
         return new V1Job()
                 .apiVersion("batch/v1")
@@ -115,6 +106,19 @@ public abstract class KubeJob {
         return containers;
     }
 
+    protected List<V1Container> edaContainers(String jobType){
+        List<V1Container> containers = new ArrayList<>();
+        containers.add(
+            new EDAContainer(jobType)
+                .info(this.info)
+                .workerIdx(workerIdx)
+                .configMapList(this.configMapList)
+                .make()
+        );
+
+        return containers;
+    }
+
     protected List<V1Container> mlpsContainers(String jobType){
         List<V1Container> containers = new ArrayList<>();
         containers.add(
@@ -139,5 +143,15 @@ public abstract class KubeJob {
         );
 
         return containers;
+    }
+
+    protected void printJobInfoDebug() {
+        logger.debug("-------------------------------------------");
+        logger.debug("In KubeJob..");
+        logger.debug("metaname : {}", this.metaname);
+        logger.debug("labels : {}", this.labels.toString());
+        logger.debug("containers : {}, cnt : {}", this.containers.toString(), this.containers.size());
+        logger.debug("volumes : {}, cnt : {}", this.volumes.toString(), this.volumes.size());
+        logger.debug("-------------------------------------------");
     }
 }

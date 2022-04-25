@@ -47,13 +47,7 @@ public abstract class KubeContainer {
     }
 
     protected V1Container makeContainer(){
-        logger.debug("-------------------------------------------");
-        logger.debug("In KubeContainer..");
-        logger.debug("name : {}", this.name);
-        logger.debug("image : {}", this.image);
-        logger.debug("command : {}", this.makeCommands().toString());
-        logger.debug("volumes : {}, cnt : {}",this.makeVolumeMounts().toString(), this.makeVolumeMounts().size());
-        logger.debug("-------------------------------------------");
+        this.printContainerInfoDebug();
 
         return new V1Container()
                 .name(this.name)
@@ -117,6 +111,8 @@ public abstract class KubeContainer {
         switch(this.jobType){
             case Constants.JOB_TYPE_DA_CHIEF: case Constants.JOB_TYPE_DA_WORKER:
                 return ((DAInfo)this.info).getDatasetId();
+            case Constants.JOB_TYPE_EDA_CHIEF: case Constants.JOB_TYPE_EDA_WORKER:
+                return ((EDAInfo)this.info).getKey();
             case Constants.JOB_TYPE_DPRS: case Constants.JOB_TYPE_MARS: case Constants.JOB_TYPE_HPRS:
                 return ((RcmdInfo)this.info).getProjectID();
             case Constants.JOB_TYPE_LEARN:
@@ -128,5 +124,15 @@ public abstract class KubeContainer {
             default:
                 return "0";
         }
+    }
+
+    protected void printContainerInfoDebug() {
+        logger.debug("-------------------------------------------");
+        logger.debug("In KubeContainer..");
+        logger.debug("name : {}", this.name);
+        logger.debug("image : {}", this.image);
+        logger.debug("command : {}", this.makeCommands().toString());
+        logger.debug("volumes : {}, cnt : {}",this.makeVolumeMounts().toString(), this.makeVolumeMounts().size());
+        logger.debug("-------------------------------------------");
     }
 }

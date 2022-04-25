@@ -21,6 +21,12 @@ public class ProjectManageDAO {
         }
     }
 
+    public void insertEDAInfo(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.insert(mapperName + "insertEDAInfo", map);
+            session.commit();
+        }
+    }
     public void insertDPAnlsInfo(List<Map<String, Object>> listMap) {
         try (SqlSession session = factory.openSession()) {
             ObjectMapper mapper = new ObjectMapper();
@@ -89,6 +95,15 @@ public class ProjectManageDAO {
         List<Map<String, Object>> rst;
         try (SqlSession session = factory.openSession()) {
             rst = session.selectList(mapperName + "selectProjectSchedule", status);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectEDASchedule(String status) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectEDASchedule", status);
         }
 
         return rst;
@@ -187,6 +202,13 @@ public class ProjectManageDAO {
     public void updateStatus(Map<String, Object> map) {
         try (SqlSession session = factory.openSession()) {
             session.update(mapperName + "updateProjectSttus", map);
+            session.commit();
+        }
+    }
+
+    public void updateEDAStatus(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateEDAStatus", map);
             session.commit();
         }
     }
