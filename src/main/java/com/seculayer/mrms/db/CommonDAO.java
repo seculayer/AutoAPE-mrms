@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -327,6 +325,13 @@ public class CommonDAO {
     public void updateInferenceRst(Map<String, Object> map){
         try (SqlSession session = factory.openSession()) {
             session.update("CommonMapper.updateInferenceRst", map);
+            session.commit();
+        }
+    }
+
+    public void updateXAICreateYN(Map<String, Object> map){
+        try (SqlSession session = factory.openSession()) {
+            session.update("CommonMapper.updateXAICreateYN", map);
             session.commit();
         }
     }

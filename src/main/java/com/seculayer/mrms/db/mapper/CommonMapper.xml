@@ -261,7 +261,11 @@
       SET    infr_accuracy = #{infr_accuracy}, infr_f1score = #{infr_f1score}
       WHERE  infr_hist_no = #{infr_hist_no}
     </update>
-
+    <update id="updateXAICreateYN" parameterType="map">
+      UPDATE INFERENCE_HIST
+      SET    xai_create_yn = "Y"
+      WHERE  infr_hist_no = #{infr_hist_no}
+    </update>
 
     <!-- Insert -->
     <insert id="insertDataset" parameterType="map">
