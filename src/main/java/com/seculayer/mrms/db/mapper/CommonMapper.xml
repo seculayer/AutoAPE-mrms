@@ -167,7 +167,7 @@
     </select>
 
     <select id="selectInferenceInfoDataset" parameterType="string" resultType="map">
-      SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, IH.learn_hist_no, LH.model_alias
+      SELECT infr_hist_no, infr_sttus_cd, IH.xai_create_yn, IH.start_time, IH.end_time, IH.target_field, alg_nm, IH.learn_hist_no, LH.model_alias
       FROM INFERENCE_HIST IH
              INNER JOIN LEARN_HIST LH ON IH.learn_hist_no = LH.learn_hist_no
              INNER JOIN ALGORITHM_INFO AI ON LH.alg_id = AI.alg_id
