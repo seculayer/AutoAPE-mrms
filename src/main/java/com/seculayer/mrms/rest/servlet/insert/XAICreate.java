@@ -1,8 +1,6 @@
 package com.seculayer.mrms.rest.servlet.insert;
 
 import com.seculayer.mrms.db.CommonDAO;
-import com.seculayer.mrms.info.XAIInfo;
-import com.seculayer.mrms.request.Request;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 
 import javax.servlet.ServletException;
@@ -31,7 +29,9 @@ public class XAICreate extends ServletHandlerAbstract {
                 "In doGet - create XAI, infr_hist_no: {}", infrHistNo
             );
 
-            commonDAO.insertXaiInfo(this.get_init_map(infrHistNo, targetField, dataAnlsID, learnHistNo));
+            Map<String, Object> init_map = this.get_init_map(infrHistNo, targetField, dataAnlsID, learnHistNo);
+            commonDAO.insertXaiInfo(init_map);
+            commonDAO.updateXAICreateYN(init_map);
 
             out.println("1");
         } catch (Exception e) {
