@@ -166,6 +166,14 @@
       WHERE LH.project_id = #{project_id}
     </select>
 
+    <select id="selectXaiInfo" parameterType="string" resultType="map">
+      SELECT xai_hist_no, xai_sttus_cd, alg_nm, alg_cont, XH.learn_hist_no
+      FROM XAI_HIST XH
+             INNER JOIN LEARN_HIST LH ON XH.learn_hist_no = LH.learn_hist_no
+             INNER JOIN ALGORITHM_INFO AI ON LH.alg_id = AI.alg_id
+      WHERE LH.project_id = #{project_id}
+    </select>
+
     <select id="selectInferenceInfoDataset" parameterType="string" resultType="map">
       SELECT infr_hist_no, infr_sttus_cd, IH.start_time, IH.end_time, IH.target_field, alg_nm, IH.learn_hist_no, LH.model_alias
       FROM INFERENCE_HIST IH
@@ -328,12 +336,14 @@
                     infr_hist_no,
                     xai_sttus_cd,
                     target_field,
-                    data_analysis_id)
+                    data_analysis_id,
+                    learn_hist_no)
       VALUES (#{xai_hist_no},
               #{infr_hist_no},
               #{xai_sttus_cd},
               #{target_field},
-              #{data_analysis_id}
+              #{data_analysis_id},
+              #{learn_hist_no}
       )
     </insert>
 

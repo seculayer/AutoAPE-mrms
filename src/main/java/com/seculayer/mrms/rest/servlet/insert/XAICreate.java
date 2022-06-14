@@ -25,11 +25,12 @@ public class XAICreate extends ServletHandlerAbstract {
             String targetField = httpServletRequest.getParameter("target_field");
             String dataAnlsID = httpServletRequest.getParameter("data_analysis_id");
             String learnHistNo = httpServletRequest.getParameter("learn_hist_no");
-            logger.debug(
-                "In doGet - create XAI, infr_hist_no: {}", infrHistNo
-            );
 
             Map<String, Object> init_map = this.get_init_map(infrHistNo, targetField, dataAnlsID, learnHistNo);
+            logger.debug(
+                "In doGet - create XAI, map :{}", init_map.toString()
+            );
+
             commonDAO.insertXaiInfo(init_map);
             commonDAO.updateXAICreateYN(init_map);
 

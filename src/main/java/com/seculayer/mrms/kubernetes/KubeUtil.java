@@ -5,14 +5,11 @@ import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMapFactory;
 import com.seculayer.util.StringUtil;
 import io.kubernetes.client.openapi.ApiException;
-import io.kubernetes.client.openapi.apis.AppsV1Api;
-import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
-import io.kubernetes.client.proto.V1;
-import org.json.JSONObject;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -127,6 +124,7 @@ public class KubeUtil {
     public static List<V1Volume> xaiVolumes() {
         List<V1Volume> volumes = new ArrayList<>();
         volumes.add(KubeUtil.getV1VolumeEmptyDir("temp"));
+        volumes.add(KubeUtil.getV1VolumeFromHostPath("results-xai", "/eyeCloudAI/data/processing/ape/results_xai"));
         volumes.add(KubeUtil.getV1VolumeFromHostPathFile("tz", "/usr/share/zoneinfo/Asia/Seoul"));
         return volumes;
     }

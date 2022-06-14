@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class XAIScheduleChecker extends Checker {
     private CommonDAO dao = new CommonDAO();
+    public static final Map<String, Object> xaiProgressRate = MRMServerManager.getInstance().getXaiProgressRate();
 
     public XAIScheduleChecker() {
         super.req(new XAIRequest()
@@ -25,6 +26,8 @@ public class XAIScheduleChecker extends Checker {
                 try {
                     scheduleQueue.push(s);
                     s = setXAIHist(s, Constants.STATUS_XAI_INIT);
+
+                    xaiProgressRate.put(s.get("xai_hist_no").toString(), "0.0");
 
                     dao.updateXAISttusCd(s);
                     logger.info("XAI init schedule queue size - {}", scheduleQueue.size());

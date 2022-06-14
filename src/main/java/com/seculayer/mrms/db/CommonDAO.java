@@ -200,6 +200,15 @@ public class CommonDAO {
         return rst;
     }
 
+    public List<Map<String, Object>> selectXaiInfo(String project_id) {
+        List<Map<String, Object>> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectList(mapperName + "selectXaiInfo", project_id);
+        }
+
+        return rst;
+    }
+
     public List<Map<String, Object>> selectInferenceInfoDataset(String dataset_id) {
         List<Map<String, Object>> rst;
         try (SqlSession session = factory.openSession()) {
