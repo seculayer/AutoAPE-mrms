@@ -10,6 +10,10 @@
         <value>/eyeCloudAI/data/processing/ape/da</value>
     </property>
     <property>
+        <name>ape.model.dir</name>
+        <value>/eyeCloudAI/data/storage/ape</value>
+    </property>
+    <property>
         <name>kubernetes.log.debug.yn</name>
         <value>N</value>
     </property>

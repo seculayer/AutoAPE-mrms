@@ -107,6 +107,9 @@ public class InferenceInfo extends InfoAbstract {
             case "7":
                 algInfo.put("algorithm_type", "OD");
                 break;
+            case "10":
+                algInfo.put("algorithm_type", "TA");
+                break;
             default:
                 algInfo.put("algorithm_type", "Classifier");
         }

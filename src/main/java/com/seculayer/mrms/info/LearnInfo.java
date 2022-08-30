@@ -1,6 +1,5 @@
 package com.seculayer.mrms.info;
 
-import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
@@ -78,6 +77,9 @@ public class LearnInfo extends InfoAbstract {
                 break;
             case "7":
                 algInfo.put("algorithm_type", "OD");
+                break;
+            case "10":
+                algInfo.put("algorithm_type", "TA");
                 break;
             default:
                 algInfo.put("algorithm_type", "Classifier");
