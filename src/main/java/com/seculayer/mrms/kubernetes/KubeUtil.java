@@ -3,7 +3,9 @@ package com.seculayer.mrms.kubernetes;
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMap;
 import com.seculayer.mrms.kubernetes.yaml.configmap.KubeConfigMapFactory;
+import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.util.StringUtil;
+import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
@@ -244,6 +246,65 @@ public class KubeUtil {
         }
         return "";
     }
+
+    /* Resource Controller */
+    public static boolean isAllocatable(int numPod){
+        CoreV1Api api = new CoreV1Api();
+        int cpuCores = 0;
+        int activeCores = 0;
+        float ratio = MRMServerManager.getInstance().getConfiguration().getFloat("kube.pod.limit.ratio", 0.5F);
+
+        int podCpuLimit = (MRMServerManager.getInstance().getConfiguration().getInt("kube.pod.cpu.limit", 1200));
+        try{
+            // get Node
+            for (V1Node node : api.listNode(null, null, null, null, null, null, null, null, null).getItems()){
+                cpuCores += nodeCPUCapacity(node) * 1000;
+            }
+            // namespaced pod lists
+            for (V1Pod pod : api.listNamespacedPod(Constants.KUBE_EYECLOUDAI_NAMESPACE, null, null, null, null, null, null, null, null, null).getItems()){
+                if(activePods(pod)){
+                    activeCores += podCpuLimit;
+                }
+            }
+        } catch (ApiException e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
+        boolean rst = cpuCores * ratio > (activeCores + (podCpuLimit * numPod));
+        if (!rst) {
+            logger.info(String.format("cpu usage / threashold : [%d / %.2f]", activeCores + podCpuLimit, cpuCores * ratio));
+        }
+        return rst;
+    }
+
+    private static int nodeCPUCapacity(V1Node node){
+        try{
+            V1NodeStatus status = node.getStatus();
+            assert status != null;
+            Map<String, Quantity> capacity = status.getCapacity();
+            assert capacity != null;
+            return capacity.get("cpu").getNumber().intValue();
+        } catch (Exception e){
+            return 0;
+        }
+    }
+
+    private static boolean activePods(V1Pod pod){
+        try{
+            String name = Objects.requireNonNull(pod.getMetadata()).getName();
+            String condition = Objects.requireNonNull(pod.getStatus()).getPhase();
+            assert name != null;
+            if (name.contains("learn") || name.contains("verify") || name.contains("rtdetect")){
+                return Objects.requireNonNull(condition).contains("Running");
+            }
+        } catch (Exception e){
+            return false;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         KubernetesManager.getInstance().initialize();
         String namespace = "apeautoml";

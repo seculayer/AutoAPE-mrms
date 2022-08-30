@@ -40,6 +40,26 @@
         <description>Gi</description>
     </property>
     <property>
+      <name>kube.pod.cpu.limit.ratio</name>
+      <value>0.5</value>
+      <description>0-1 float value</description>
+    </property>
+    <property>
+      <name>gpu.mem.unit</name>
+      <value>MiB</value>
+      <description>MiB or GiB</description>
+    </property>
+    <property>
+      <name>gpu_mem_limit_inference</name>
+      <value>1169</value>
+      <description>Integer(MiB or GiB)</description>
+    </property>
+    <property>
+      <name>gpu_mem_limit_learn</name>
+      <value>2048</value>
+      <description>Integer(MiB or GiB)</description>
+    </property>
+    <property>
         <name>global_steps</name>
         <value>50</value>
         <description>epoch</description>

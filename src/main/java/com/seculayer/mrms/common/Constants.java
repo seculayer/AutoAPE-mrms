@@ -30,9 +30,6 @@ public class Constants {
 
     public static final int GRPC_PORT = 9304;
 
-    public static final String GPU_MEM_LIMIT_LEARN = "2048";
-    public static final String GPU_MEM_LIMIT_INFERENCE = "1024";
-
     public static final String STATUS_DA_REQ = "5";
     public static final String STATUS_DA_ING = "6";
     public static final String STATUS_DA_COMPLETE = "7";

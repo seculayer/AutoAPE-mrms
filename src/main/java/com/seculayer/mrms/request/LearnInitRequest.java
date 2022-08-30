@@ -2,8 +2,9 @@ package com.seculayer.mrms.request;
 
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.info.LearnInfo;
+import com.seculayer.mrms.kubernetes.KubeUtil;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,22 @@ public class LearnInitRequest extends Request {
 
         try {
             for (Map<String, Object> req : learHistReqList) {
-                String key = this.makeKey(req);
 
-                projectDAO.updateUsedYN(req);
+                String key = this.makeKey(req);
 
                 LearnInfo learnInfo = new LearnInfo(key);
                 learnInfo.init(req);
+
+                if (!KubeUtil.isAllocatable(learnInfo.getNumWorker())){
+                    logger.info(
+                        "[learn-{}] CPU Limitations!, {} pod(s) is/are wating for resource free...",
+                        schedule.get("model_id"), learnInfo.getNumWorker()
+                    );
+                    continue;
+                }
+
+                projectDAO.updateUsedYN(req);
+
                 learnInfo.writeInfo();
 
                 this.makeLearnJob(learnInfo, learnInfo.getNumWorker());

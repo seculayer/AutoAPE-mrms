@@ -2,6 +2,7 @@ package com.seculayer.mrms.request;
 
 import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.info.InferenceInfo;
+import com.seculayer.mrms.kubernetes.KubeUtil;
 
 import java.io.IOException;
 import java.util.Map;
@@ -15,6 +16,15 @@ public class InferenceInitRequest extends Request {
 
             InferenceInfo inferenceInfo = new InferenceInfo(key);
             inferenceInfo.init(schedule);
+
+            if (!KubeUtil.isAllocatable(inferenceInfo.getNumWorker())){
+                logger.info(
+                    "[verify-{}] CPU Limitations!, {} pod(s) is/ar wating for resource free...",
+                    schedule.get("detect_id"), inferenceInfo.getNumWorker()
+                );
+                return;
+            }
+
             inferenceInfo.writeInfo();
 
             this.makeInferenceJob(inferenceInfo, inferenceInfo.getNumWorker());
