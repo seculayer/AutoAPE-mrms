@@ -245,6 +245,16 @@ public class CommonDAO {
         return rst;
     }
 
+    // TODO : 삭제 가능성 있음
+    public Map<String, Object> selectInferenceRst(String infrHistNo) {
+        Map<String, Object> rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectXAISchedule", infrHistNo);
+        }
+
+        return rst;
+    }
+
 
     // Update
     public void updateSttusCd(Map<String, Object> map){

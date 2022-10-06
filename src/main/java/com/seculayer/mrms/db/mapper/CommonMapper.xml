@@ -202,6 +202,13 @@
       WHERE xai_sttus_cd = #{xaiStatus}
     </select>
 
+    <!-- 삭제 가능성 있음 -->
+    <select id="selectInferenceRst" parameterType="string" resultType="map">
+      SELECT infr_accuracy, infr_f1score
+      FROM INFERENCE_HIST
+      WHERE infr_hist_no = #{infrHistNo}
+    </select>
+
 
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
