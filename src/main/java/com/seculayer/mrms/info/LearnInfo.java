@@ -1,5 +1,6 @@
 package com.seculayer.mrms.info;
 
+import com.seculayer.mrms.common.Constants;
 import com.seculayer.mrms.db.CommonDAO;
 import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,7 @@ public class LearnInfo extends InfoAbstract {
     protected Map<String, Object> dpAnlsInfo = null;
     protected Map<String, Object> mlParamInfo = null;
     protected Map<String, Object> algInfo = null;
+    protected Map<String, Object> projectInfo = null;
     protected boolean gpuUse = false;
     protected String targetField = "";
 
@@ -69,8 +72,9 @@ public class LearnInfo extends InfoAbstract {
         dpAnlsInfo = projectDAO.selectDpAnlsInfo(map);
         mlParamInfo = projectDAO.selectMLParamInfo(map);
         algInfo = commonDAO.selectAlgInfo(map);
+        projectInfo = commonDAO.selectProjectInfo(projectID);
 
-        String projectPurpose = commonDAO.selectProjectInfo(projectID).get("project_purpose_cd").toString();
+        String projectPurpose = projectInfo.get("project_purpose_cd").toString();
         switch (projectPurpose){
             case "2":
                 algInfo.put("algorithm_type", "Regressor");
@@ -107,10 +111,21 @@ public class LearnInfo extends InfoAbstract {
             this.setNumWorker(fileList.size());
 
             Map<String, Object> params = mapper.readValue(mlParamInfo.get("param_json").toString(), Map.class);
-            params.put("early_key", "0");
-            params.put("early_type", "0");
-            params.put("early_value", "10");
-            params.put("minsteps", "10");
+            Map<String, Object> earlyStopParam = mapper.readValue(projectInfo.get("early_stop_param").toString(), Map.class);
+
+            switch (StringUtil.get(projectInfo.get("modeling_mode"))) {
+                case Constants.MODELING_MODE_BASIC:
+                    params.put("early_key", "0");
+                    params.put("early_type", "0");
+                    params.put("early_value", "10");
+                    params.put("minsteps", "10");
+                    break;
+                case Constants.MODELING_MODE_RELEARN:
+                    earlyStopParam.forEach((key, value) -> params.merge(key, value, (v1, v2) -> v1));
+                    break;
+                default:
+                    break;
+            }
             algInfo.put("params", params);
 
             List<?> dpAnlsJson = mapper.readValue(dpAnlsInfo.get("data_analysis_json").toString(), List.class);

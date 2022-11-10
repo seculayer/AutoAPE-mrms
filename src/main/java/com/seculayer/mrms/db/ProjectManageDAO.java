@@ -240,4 +240,15 @@ public class ProjectManageDAO {
             session.commit();
         }
     }
+
+    public void updateSelectYN(Map<String, Object> map) {
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateSelectNAll", map);
+            session.commit();
+        }
+        try (SqlSession session = factory.openSession()) {
+            session.update(mapperName + "updateSelectYOne", map);
+            session.commit();
+        }
+    }
 }

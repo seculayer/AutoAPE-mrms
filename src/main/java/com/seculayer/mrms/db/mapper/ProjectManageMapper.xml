@@ -11,6 +11,8 @@
         ,   status
         ,   start_time
         ,   project_target_field
+        ,   modeling_mode
+        ,   early_stop_param
         )
         VALUES
             (	#{project_id}
@@ -18,7 +20,9 @@
             ,	#{data_analysis_id}
             ,	#{status}
             ,	#{start_time}
-            ,   #{project_target_field}
+            , #{project_target_field}
+            , #{modeling_mode}
+            , #{early_stop_param}
             )
     </insert>
     <insert id="insertEDAInfo" parameterType="map">
@@ -227,6 +231,18 @@
     <update id="updateModelAlias" parameterType="map">
       UPDATE LEARN_HIST
       SET    model_alias = #{model_alias}
+      WHERE  learn_hist_no = #{learn_hist_no}
+    </update>
+
+    <update id="updateSelectNAll" parameterType="map">
+      UPDATE LEARN_HIST
+      SET    select_yn = 'N'
+      WHERE  project_id = #{project_id}
+    </update>
+
+    <update id="updateSelectYOne" parameterType="map">
+      UPDATE LEARN_HIST
+      SET    select_yn = 'Y'
       WHERE  learn_hist_no = #{learn_hist_no}
     </update>
 </mapper>

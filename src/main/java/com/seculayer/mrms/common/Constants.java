@@ -70,4 +70,6 @@ public class Constants {
     public static final String LIB_TYPE_GS = "4";
     public static final String LIB_TYPE_SKL = "5";
 
+    public static final String MODELING_MODE_BASIC = "1";
+    public static final String MODELING_MODE_RELEARN = "2";
 }
