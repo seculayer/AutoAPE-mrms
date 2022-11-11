@@ -13,6 +13,7 @@
         ,   project_target_field
         ,   modeling_mode
         ,   early_stop_param
+        ,   tag
         )
         VALUES
             (	#{project_id}
@@ -23,6 +24,7 @@
             , #{project_target_field}
             , #{modeling_mode}
             , #{early_stop_param}
+            , #{tag}
             )
     </insert>
     <insert id="insertEDAInfo" parameterType="map">
