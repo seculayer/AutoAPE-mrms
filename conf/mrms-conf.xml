@@ -66,7 +66,7 @@
     </property>
     <property>
         <name>remove_ttl_time</name>
-        <value>60</value>
+        <value>1296000</value>
         <description>seconds(integer)</description>
     </property>
     <property>

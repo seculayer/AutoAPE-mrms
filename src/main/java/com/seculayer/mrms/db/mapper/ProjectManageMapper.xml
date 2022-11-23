@@ -199,6 +199,12 @@
       WHERE project_id = #{projectId}
     </select>
 
+    <select id="selectProjectTag" parameterType="string" resultType="string">
+      SELECT tag
+      FROM PROJECT_INFO
+      WHERE project_id = #{projectId}
+    </select>
+
 
     <update id="updateProjectSttus" parameterType="map">
         UPDATE PROJECT_INFO

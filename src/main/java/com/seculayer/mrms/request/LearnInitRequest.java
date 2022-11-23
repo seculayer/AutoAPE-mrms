@@ -13,10 +13,13 @@ public class LearnInitRequest extends Request {
     @Override
     public void doRequest(Map<String, Object> schedule) throws RequestException, IOException {
         List<Map<String, Object>> learHistReqList = projectDAO.selectLearnReqList(schedule);
+        int limiteCnt = 0;
 
         try {
             for (Map<String, Object> req : learHistReqList) {
-
+                if (!req.get("learn_sttus_cd").equals(Constants.STATUS_LEARN_HIST_INIT)){
+                    continue;
+                }
                 String key = this.makeKey(req);
 
                 LearnInfo learnInfo = new LearnInfo(key);
@@ -25,8 +28,9 @@ public class LearnInitRequest extends Request {
                 if (!KubeUtil.isAllocatable(learnInfo.getNumWorker())){
                     logger.info(
                         "[learn-{}] CPU Limitations!, {} pod(s) is/are wating for resource free...",
-                        schedule.get("model_id"), learnInfo.getNumWorker()
+                        req.get("learn_hist_no").toString(), learnInfo.getNumWorker()
                     );
+                    limiteCnt ++;
                     continue;
                 }
 
@@ -41,11 +45,15 @@ public class LearnInitRequest extends Request {
             }
 
             schedule.put("status", Constants.STATUS_PROJECT_LEARN_ING);
+
+            if (limiteCnt < learHistReqList.size()) {
+                projectDAO.updateStatus(schedule);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             schedule.put("status", Constants.STATUS_PROJECT_ERROR);
+            projectDAO.updateStatus(schedule);
         }
-        projectDAO.updateStatus(schedule);
     }
 
     @Override

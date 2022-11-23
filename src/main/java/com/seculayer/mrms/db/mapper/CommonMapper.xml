@@ -42,6 +42,7 @@
              , LH.issue_task_idx
              , LH.model_alias
              , LH.model_bookmark
+             , LH.select_yn
              , MPI.param_json
              , MAI.alg_json
              , MAI.metadata_json

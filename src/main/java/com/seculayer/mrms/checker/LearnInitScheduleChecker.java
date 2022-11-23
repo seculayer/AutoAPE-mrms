@@ -5,6 +5,8 @@ import com.seculayer.mrms.db.ProjectManageDAO;
 import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.request.LearnInitRequest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +21,13 @@ public class LearnInitScheduleChecker extends Checker {
     @Override
     public void doCheck() throws CheckerException {
         try{
-            List<Map<String, Object>> schedules = dao.selectProjectSchedule(Constants.STATUS_PROJECT_LEARN_REQ);
+            List<Map<String, Object>> initSchedules = dao.selectProjectSchedule(Constants.STATUS_PROJECT_LEARN_REQ);
+            List<Map<String, Object>> learningSchedules = dao.selectProjectSchedule(Constants.STATUS_PROJECT_LEARN_ING);
+
             ScheduleQueue scheduleQueue = MRMServerManager.getInstance().getLearnInitScheduleQueue();
+            List<Map<String, Object>> schedules = new ArrayList<>();
+            schedules.addAll(initSchedules);
+            schedules.addAll(learningSchedules);
 
             for (Map<String, Object> s : schedules){
                 try {
