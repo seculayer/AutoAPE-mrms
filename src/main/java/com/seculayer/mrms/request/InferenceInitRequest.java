@@ -18,10 +18,10 @@ public class InferenceInitRequest extends Request {
             inferenceInfo.init(schedule);
 
             if (!KubeUtil.isAllocatable(inferenceInfo.getNumWorker())){
-                logger.info(
-                    "[verify-{}] CPU Limitations!, {} pod(s) is/ar wating for resource free...",
-                    schedule.get("detect_id"), inferenceInfo.getNumWorker()
-                );
+//                logger.info(
+//                    "[verify-{}] CPU Limitations!, {} pod(s) is/ar wating for resource free...",
+//                    schedule.get("detect_id"), inferenceInfo.getNumWorker()
+//                );
                 return;
             }
 

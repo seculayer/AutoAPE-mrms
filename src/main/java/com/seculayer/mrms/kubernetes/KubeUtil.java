@@ -252,13 +252,13 @@ public class KubeUtil {
         CoreV1Api api = new CoreV1Api();
         int cpuCores = 0;
         int activeCores = 0;
-        float ratio = MRMServerManager.getInstance().getConfiguration().getFloat("kube.pod.limit.ratio", 0.5F);
+        float ratio = MRMServerManager.getInstance().getConfiguration().getFloat("kube.pod.cpu.limit.ratio", 0.5F);
 
         int podCpuLimit = (MRMServerManager.getInstance().getConfiguration().getInt("kube.pod.cpu.limit", 1200));
         try{
             // get Node
             for (V1Node node : api.listNode(null, null, null, null, null, null, null, null, null).getItems()){
-                cpuCores += nodeCPUCapacity(node) * 1000;
+                cpuCores += nodeCPUCapacity(node) * 1000;  // 12000
             }
             // namespaced pod lists
             for (V1Pod pod : api.listNamespacedPod(Constants.KUBE_EYECLOUDAI_NAMESPACE, null, null, null, null, null, null, null, null, null).getItems()){
@@ -274,7 +274,7 @@ public class KubeUtil {
 
         boolean rst = cpuCores * ratio > (activeCores + (podCpuLimit * numPod));
         if (!rst) {
-            logger.info(String.format("cpu usage / threashold : [%d / %.2f]", activeCores + podCpuLimit, cpuCores * ratio));
+            logger.info(String.format("cpu usage / threashold / pod cpu limit : [%d / %.2f / %d]", activeCores, cpuCores * ratio, podCpuLimit));
         }
         return rst;
     }
@@ -296,7 +296,7 @@ public class KubeUtil {
             String name = Objects.requireNonNull(pod.getMetadata()).getName();
             String condition = Objects.requireNonNull(pod.getStatus()).getPhase();
             assert name != null;
-            if (name.contains("learn") || name.contains("verify") || name.contains("rtdetect")){
+            if (name.contains("learn") || name.contains("inference") || name.contains("detect")){
                 return Objects.requireNonNull(condition).contains("Running");
             }
         } catch (Exception e){

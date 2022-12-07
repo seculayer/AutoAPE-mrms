@@ -31,7 +31,7 @@
     </property>
     <property>
         <name>kube.pod.cpu.limit</name>
-        <value>1200</value>
+        <value>1000</value>
         <description>m</description>
     </property>
     <property>
@@ -61,7 +61,7 @@
     </property>
     <property>
         <name>global_steps</name>
-        <value>50</value>
+        <value>100</value>
         <description>epoch</description>
     </property>
     <property>

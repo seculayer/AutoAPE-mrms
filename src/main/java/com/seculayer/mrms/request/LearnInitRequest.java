@@ -26,10 +26,11 @@ public class LearnInitRequest extends Request {
                 learnInfo.init(req);
 
                 if (!KubeUtil.isAllocatable(learnInfo.getNumWorker())){
-                    logger.info(
-                        "[learn-{}] CPU Limitations!, {} pod(s) is/are wating for resource free...",
-                        req.get("learn_hist_no").toString(), learnInfo.getNumWorker()
-                    );
+//                    logger.info(
+//                        "CPU Limitations!, {} pod(s) is/are wating for resource free...",
+//                        learnInfo.getNumWorker()
+//                    );
+
                     limiteCnt ++;
                     continue;
                 }
@@ -42,6 +43,8 @@ public class LearnInitRequest extends Request {
 
                 req = this.setLearnHist(req);
                 commonDAO.updateSttusCd(req);
+
+                Thread.sleep(3000);
             }
 
             schedule.put("status", Constants.STATUS_PROJECT_LEARN_ING);

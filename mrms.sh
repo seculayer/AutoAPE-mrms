@@ -14,7 +14,7 @@ RUN_PATH="."
 CLASSPATH="${RUN_PATH}/*:${RUN_PATH}/lib/*:${RUN_PATH}/conf/"
 
 
-JAVA_OPTS="-server -Xms1G -Xmx1G"
+JAVA_OPTS="-server -Xms2G -Xmx2G"
 JAVA_OPTS="${JAVA_OPTS} -DAPP=MRMServer -Dfile.encoding=UTF-8"
 
 export LANG CLASSPATH RUN_PATH
