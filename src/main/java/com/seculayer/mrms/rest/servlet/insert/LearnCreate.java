@@ -26,7 +26,7 @@ public class LearnCreate extends ServletHandlerAbstract {
 
         try {
             Map<String, Object> map = ServletFactory.getBodyFromJSON(httpServletRequest);
-            logger.info(map.toString());
+            logger.debug(map.toString());
             projectDAO.insertLearnHist(map);
             this.cachingModelsInfo(map);
 

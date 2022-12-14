@@ -190,12 +190,33 @@ public class ProjectCompleteChecker extends Checker {
             paramMap.put("hist_no", histNo);
             try {
                 paramMap.put("result", mapper.writeValueAsString(totalList));
+                paramMap.put("test_accuracy", this.getTestAcc(totalList));
             } catch (Exception e) {
                 e.printStackTrace();
                 paramMap.put("result", "[]");
+                paramMap.put("test_accuracy", "0");
             }
             commonDAO.updateEvalResult(paramMap);
         }
 
+    }
+
+    private String getTestAcc(List<Object> totalList) {
+        int totalCnt = 0;
+        int totalTPTN = 0;
+        for (Object map : totalList) {
+            int total = Integer.parseInt(((Map<String, Object>) map).get("total").toString());
+            int TPTN = total - Integer.parseInt(((Map<String, Object>) map).get("FN").toString());
+            totalCnt += total;
+            totalTPTN += TPTN;
+        }
+
+        String rst = "0";
+        if (totalCnt != 0) {
+            double rstD = (double) totalTPTN / totalCnt;
+            rst = String.format("%.4f", rstD);
+        }
+
+        return rst;
     }
 }

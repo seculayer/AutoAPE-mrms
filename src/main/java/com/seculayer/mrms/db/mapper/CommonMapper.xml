@@ -39,6 +39,7 @@
              , LH.ml_result_json
              , LH.ml_score
              , LH.eps
+             , LH.test_accuracy
              , LH.issue_task_idx
              , LH.model_alias
              , LH.model_bookmark
@@ -264,7 +265,7 @@
     </update>
     <update id="updateEvalResult" parameterType="map">
         UPDATE LEARN_HIST
-        SET    eval_result_json = #{result}
+        SET    eval_result_json = #{result}, test_accuracy = #{test_accuracy}
         WHERE  learn_hist_no = #{hist_no}
     </update>
     <update id="updateInferenceLog" parameterType="map">

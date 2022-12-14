@@ -32,7 +32,7 @@ public class LearnInitScheduleChecker extends Checker {
             for (Map<String, Object> s : schedules){
                 try {
                     scheduleQueue.push(s);
-                    logger.info("Learn init schedule queue size - {}", scheduleQueue.size());
+//                    logger.info("Learn init schedule queue size - {}", scheduleQueue.size());
                 } catch (Exception e) {
                     logger.warn("{}, error-{}", s, e.getMessage());
                 }

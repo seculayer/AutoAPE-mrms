@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateSelectYN extends ServletHandlerAbstract {
@@ -20,13 +21,13 @@ public class UpdateSelectYN extends ServletHandlerAbstract {
         logger.debug("###################################################################");
         logger.debug("In doGet");
         try {
-            /*
-            map : {
-                     learn_hist_no : (String),
-                     project_id : (String)
-                  }
-             */
-            Map<String, Object> map = ServletFactory.getBodyFromJSON(req);
+            String learnHistNo = req.getParameter("learn_hist_no");
+            String projectID = req.getParameter("project_id");
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("learn_hist_no", learnHistNo);
+            map.put("project_id", projectID);
+
             projectDAO.updateSelectYN(map);
 
             out.println("1");

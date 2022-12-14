@@ -121,7 +121,7 @@ public class LearnInfo extends InfoAbstract {
                     params.put("minsteps", "10");
                     break;
                 case Constants.MODELING_MODE_RELEARN:
-                    logger.info("params : " + params.toString());
+//                    logger.info("params : " + params.toString());
 //                    earlyStopParam.forEach((key, value) -> params.merge(key, value, (v1, v2) -> v1));
                     for (String key : earlyStopParam.keySet()) {
                         params.put(key, earlyStopParam.get(key));
