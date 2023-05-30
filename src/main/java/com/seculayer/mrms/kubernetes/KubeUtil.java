@@ -127,6 +127,7 @@ public class KubeUtil {
         List<V1Volume> volumes = new ArrayList<>();
         volumes.add(KubeUtil.getV1VolumeEmptyDir("temp"));
         volumes.add(KubeUtil.getV1VolumeFromHostPath("results-xai", "/eyeCloudAI/data/processing/ape/results_xai"));
+        volumes.add(KubeUtil.getV1VolumeFromHostPath("storage", "/eyeCloudAI/data/storage"));
         volumes.add(KubeUtil.getV1VolumeFromHostPathFile("tz", "/usr/share/zoneinfo/Asia/Seoul"));
         return volumes;
     }
