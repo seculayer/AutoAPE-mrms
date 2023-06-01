@@ -60,13 +60,13 @@ public class MLPSContainer extends KubeContainer {
             case Constants.JOB_TYPE_LEARN:
                 if (((LearnInfo) this.info).getGpuUse()){
                     String gpuMemLimit = MRMServerManager.getInstance().getConfiguration().get("gpu_mem_limit_learn", "2048");
-                    limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
+                    limits.put("seculayer.com/gpu-mem", Quantity.fromString(gpuMemLimit));
                 }
                 break;
             case Constants.JOB_TYPE_INFERENCE:
                 if (((InferenceInfo) this.info).getGpuUse()){
                     String gpuMemLimit = MRMServerManager.getInstance().getConfiguration().get("gpu_mem_limit_inference", "1024");
-                    limits.put("nvidia.com/gpu-mem", Quantity.fromString(gpuMemLimit));
+                    limits.put("seculayer.com/gpu-mem", Quantity.fromString(gpuMemLimit));
                 }
                 break;
         }

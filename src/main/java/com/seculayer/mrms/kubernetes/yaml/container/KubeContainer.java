@@ -96,6 +96,7 @@ public abstract class KubeContainer {
 
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("temp", "/eyeCloudAI/data/processing/ape/temp"));
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("results-xai", "/eyeCloudAI/data/processing/ape/results_xai"));
+        volumeMounts.add(KubeUtil.getVolumeMountFromPath("storage", "/eyeCloudAI/data/storage"));
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
         return volumeMounts;
     }
