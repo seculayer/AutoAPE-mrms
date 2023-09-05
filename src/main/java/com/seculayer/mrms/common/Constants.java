@@ -1,13 +1,15 @@
 package com.seculayer.mrms.common;
 
+import com.seculayer.mrms.managers.MRMServerManager;
+
 public class Constants {
-    public static final String DA_IMAGE_VERSION = "1.0.0";
-    public static final String EDA_IMAGE_VERSION = "1.0.0";
-    public static final String DPRS_IMAGE_VERSION = "1.0.0";
-    public static final String MARS_IMAGE_VERSION = "1.0.0";
-    public static final String HPRS_IMAGE_VERSION = "1.0.0";
-    public static final String MLPS_IMAGE_VERSION = "3.0.0";
-    public static final String XAI_IMAGE_VERSION = "1.0.0";
+    public static final String DA_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("da.tag", "1.0-2023.1.0301");
+    public static final String EDA_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("eda.tag", "1.0-2023.1.0301");
+    public static final String DPRS_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("dprs.tag", "1.0-2023.1.0301");
+    public static final String MARS_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("mars.tag", "1.0-2023.1.0301");
+    public static final String HPRS_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("hprs.tag", "1.0-2023.1.0301");
+    public static final String MLPS_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("mlps.tag", "3.0-2023.1.0301");
+    public static final String XAI_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("xai.tag", "1.0-2023.1.0301");
 
     public static final String REST_PACKAGES = "com.seculayer.mrms.rest.servlet";
 

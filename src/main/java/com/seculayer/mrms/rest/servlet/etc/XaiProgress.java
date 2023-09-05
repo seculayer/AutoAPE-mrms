@@ -66,7 +66,12 @@ public class XaiProgress extends ServletHandlerAbstract {
         try {
             String id = httpServletRequest.getParameter("id");
 
-            String rate = xaiProgressRate.get(id).toString();
+            String rate;
+            if (xaiProgressRate.containsKey(id)) {
+                rate = xaiProgressRate.get(id).toString();
+            } else {
+                rate = "100.0";
+            }
             out.print(rate);
         } catch (Exception e) {
             e.printStackTrace();

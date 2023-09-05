@@ -74,4 +74,39 @@
       <value>false</value>
       <description>true/false</description>
     </property>
+    <property>
+      <name>da.tag</name>
+      <value>4.0-2023.3.0901</value>
+      <description>DA Module Version</description>
+    </property>
+    <property>
+      <name>eda.tag</name>
+      <value>4.0-2023.3.0901</value>
+      <description>EDA Module Version</description>
+    </property>
+    <property>
+      <name>dprs.tag</name>
+      <value>4.0-2023.3.0901</value>
+      <description>DPRS Module Version</description>
+    </property>
+    <property>
+      <name>mars.tag</name>
+      <value>4.0-2023.3.0712</value>
+      <description>MARS Module Version</description>
+    </property>
+    <property>
+      <name>hprs.tag</name>
+      <value>4.0-2023.3.0712</value>
+      <description>HPRS Module Version</description>
+    </property>
+    <property>
+      <name>mlps.tag</name>
+      <value>4.0-2023.3.0901</value>
+      <description>MLPS Module Version</description>
+    </property>
+    <property>
+      <name>xai.tag</name>
+      <value>4.0-2023.3.0901</value>
+      <description>XAI Module Version</description>
+    </property>
 </configuration>
