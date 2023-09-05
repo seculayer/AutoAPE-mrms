@@ -41,9 +41,17 @@ public class ModelResource extends ServletHandlerAbstract {
     }
 
     public String scaleCpuUsage(Map<String, Object> cpu) {
-        String cpuUsage = cpu.get("percent").toString();
-        int limitCpuUsage = MRMServerManager.getInstance().getConfiguration().getInt("kube.pod.cpu.limit", 1200) / 10;
+        String cpuUsage = "";
+        try {
+            cpuUsage = cpu.get("percent").toString();
+            int limitCpuUsage = MRMServerManager.getInstance().getConfiguration().getInt("kube.pod.cpu.limit", 1200) / 10;
 
-        return Integer.toString((int) Math.floor(Double.parseDouble(cpuUsage) / limitCpuUsage * 100));
+            return Integer.toString((int) Math.floor(Double.parseDouble(cpuUsage) / limitCpuUsage * 100));
+        } catch (Exception e) {
+            logger.error("cpuUsage : {}", cpuUsage);
+            e.printStackTrace();
+        }
+
+        return "0";
     }
 }
