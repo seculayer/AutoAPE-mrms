@@ -293,7 +293,7 @@
                              n_rows,
                              status_cd,
                              format_json,
-                             dataset_target_field)
+                             target_field)
         VALUES (#{dataset_id},
                 #{dataset_format},
                 #{n_cols},
@@ -301,7 +301,7 @@
                 #{n_rows},
                 #{status_cd},
                 #{format_json},
-                #{dataset_target_field}
+                #{target_field}
                 )
     </insert>
     <insert id="insertDataAnlsInfo" parameterType="map">

@@ -132,7 +132,7 @@ public class InferenceInfo extends InfoAbstract {
         map.put("algorithms", algInfo);
         map.put("num_worker", numWorker);
         map.put("gpu_use", gpuUse);
-        map.put("project_target_field", targetField);
+        map.put("target_field", targetField);
         map.put("dataset_format", datasetFormat);
 
         return map;
@@ -156,7 +156,7 @@ public class InferenceInfo extends InfoAbstract {
 //            this.numWorker = StringUtil.getInt(map.get("num_worker"));
 //            this.gpuUse = StringUtil.getBoolean(map.get("gpu_use"));
 //            this.sampleTypeCd = StringUtil.get(map.get("sample_type_cd"));
-//            this.targetField = StringUtil.get(map.get("project_target_field"));
+//            this.targetField = StringUtil.get(map.get("target_field"));
 //            this.datasetFormat = StringUtil.get(map.get("dataset_format"));
             logger.debug("load inference info : {}", key);
         } catch (Exception e){
