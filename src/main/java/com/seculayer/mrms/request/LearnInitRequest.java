@@ -27,7 +27,7 @@ public class LearnInitRequest extends Request {
 
                 if (!KubeUtil.isAllocatable(learnInfo.getNumWorker())){
 //                    logger.info(
-//                        "CPU Limitations!, {} pod(s) is/are wating for resource free...",
+//                        "CPU Limitations!, {} pod(s) is/are waiting for resource free...",
 //                        learnInfo.getNumWorker()
 //                    );
 

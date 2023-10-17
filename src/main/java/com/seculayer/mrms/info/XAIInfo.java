@@ -103,7 +103,7 @@ public class XAIInfo extends InfoAbstract {
         map.put("project_id", projectID);
         map.put("datasets", daAnlsInfo);
         map.put("algorithms", algInfo);
-        map.put("project_target_field", targetField);
+        map.put("target_field", targetField);
         map.put("dataset_format", datasetFormat);
         map.put("gpu_use", gpuUse);
 

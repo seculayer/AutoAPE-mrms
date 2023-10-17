@@ -10,7 +10,6 @@
         ,	data_analysis_id
         ,   status
         ,   start_time
-        ,   project_target_field
         ,   modeling_mode
         ,   early_stop_param
         ,   tag
@@ -21,7 +20,6 @@
             ,	#{data_analysis_id}
             ,	#{status}
             ,	#{start_time}
-            , #{project_target_field}
             , #{modeling_mode}
             , #{early_stop_param}
             , #{tag}
@@ -176,9 +174,17 @@
     </select>
 
     <select id="selectTargetField" resultType="string">
-        SELECT project_target_field
-        FROM PROJECT_INFO
-        WHERE project_id = #{project_id}
+        SELECT target_field
+        FROM DATASET
+        WHERE dataset_id = (
+            SELECT dataset_id
+            FROM DATA_ANLS_INFO
+            WHERE data_analysis_id = (
+                SELECT data_analysis_id
+                FROM PROJECT_INFO
+                WHERE project_id = #{project_id}
+              )
+          )
     </select>
 
     <select id="selectProjectID" parameterType="string" resultType="string">
