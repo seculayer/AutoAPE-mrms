@@ -6,6 +6,7 @@ import com.seculayer.mrms.managers.MRMServerManager;
 import com.seculayer.mrms.rest.ServletFactory;
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 import com.seculayer.util.JsonUtil;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -75,11 +76,14 @@ public class InsertDataAnalsInfo extends ServletHandlerAbstract {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()))){
             String jsonStr = JsonUtil.getJSONString(reader);
             Map<String, Object> daResult = JsonUtil.strToMap(jsonStr);
+            ObjectMapper objectMapper = new ObjectMapper();
 
+            List<?> datasetMetaList = (List<?>) daResult.remove("dataset_meta_list");
             rstMap.put("dataset_id", map.get("dataset_id").toString());
-            rstMap.put("metadata_json", jsonStr);
+            rstMap.put("metadata_json", objectMapper.writeValueAsString(daResult));
             rstMap.put("analysis_file_nm", fileName);
             rstMap.put("dist_file_cnt", ((List<?>) daResult.get("file_list")).size());
+            rstMap.put("dataset_meta_json", objectMapper.writeValueAsString(datasetMetaList));
 
         } catch (Exception e) {
             e.printStackTrace();

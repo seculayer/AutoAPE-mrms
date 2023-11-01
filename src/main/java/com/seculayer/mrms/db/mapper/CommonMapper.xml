@@ -125,6 +125,12 @@
         )
     </select>
 
+    <select id="selectDatasetMeta" resultType="string">
+      SELECT dataset_meta_json
+      FROM DATA_ANLS_INFO
+      WHERE dataset_id = #{dataset_id}
+    </select>
+
     <select id="selectAlgInfo" resultType="map">
         SELECT *
         FROM ALGORITHM_INFO
@@ -308,15 +314,18 @@
             SELECT UUID_SHORT()
         </selectKey>
         INSERT INTO DATA_ANLS_INFO (data_analysis_id,
-                             metadata_json,
-                             dist_file_cnt,
-                             analysis_file_nm,
-                             dataset_id)
+                                    metadata_json,
+                                    dist_file_cnt,
+                                    analysis_file_nm,
+                                    dataset_id,
+                                    dataset_meta_json
+                            )
         VALUES (#{data_analysis_id},
                 #{metadata_json},
                 #{dist_file_cnt},
                 #{analysis_file_nm},
-                #{dataset_id}
+                #{dataset_id},
+                #{dataset_meta_json}
                 )
     </insert>
     <insert id="insertInferenceInfo" parameterType="map">
