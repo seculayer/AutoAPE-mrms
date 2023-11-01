@@ -255,6 +255,14 @@ public class CommonDAO {
         return rst;
     }
 
+    public String selectDatasetMeta(String datasetID) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDatasetMeta", datasetID);
+        }
+
+        return rst;
+    }
 
     // Update
     public void updateSttusCd(Map<String, Object> map){
