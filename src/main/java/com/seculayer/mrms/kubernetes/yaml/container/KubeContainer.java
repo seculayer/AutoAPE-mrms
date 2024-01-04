@@ -16,7 +16,7 @@ import java.util.Map;
 
 public abstract class KubeContainer {
     private Logger logger = LogManager.getLogger();
-    protected static final String registryURL = "registry.seculayer.com:31500/ape";
+    protected static final String registryURL = Constants.REGISTRY_URL;
 
     protected String name;
     protected String image;

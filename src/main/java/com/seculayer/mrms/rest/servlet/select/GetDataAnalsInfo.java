@@ -29,13 +29,17 @@ public class GetDataAnalsInfo extends ServletHandlerAbstract {
 
             Map<String, Object> rst = commonDAO.selectDataAnlsInfo(map);
             Map<String, Object> metadataJson = mapper.readValue(rst.get("metadata_json").toString(), Map.class);
-            List<Object> metaList = (List<Object>) metadataJson.get("meta");
-            for (Object meta: metaList) {
-                Map<String, Object> metaMap = (Map<String, Object>) meta;
-                Map<String, Object> statistics = (Map<String, Object>) metaMap.get("statistics");
-                statistics.remove("word");
-                statistics.remove("unique");
+
+            if (!map.containsKey("word_unique_yn") || ((String) map.get("word_unique_yn")).equalsIgnoreCase("n")) {
+                List<Object> metaList = (List<Object>) metadataJson.get("meta");
+                for (Object meta: metaList) {
+                    Map<String, Object> metaMap = (Map<String, Object>) meta;
+                    Map<String, Object> statistics = (Map<String, Object>) metaMap.get("statistics");
+                    statistics.remove("word");
+                    statistics.remove("unique");
+                }
             }
+
             rst.put("metadata_json", mapper.writeValueAsString(metadataJson));
 
             String jsonStr = mapper.writeValueAsString(rst);

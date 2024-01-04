@@ -143,7 +143,7 @@
         WHERE dataset_id = #{dataset_id}
     </select>
     <select id="selectAlgInfoList" resultType="map">
-        SELECT alg_id, alg_nm, alg_type
+        SELECT *
         FROM ALGORITHM_INFO
     </select>
     <select id="selectParamInfo" parameterType="string" resultType="map">
