@@ -84,6 +84,10 @@ public class XAIContainer extends KubeContainer {
             .name("TF_CONFIG")
             .value(KubeUtil.generateTFConfigSingle(jobType, key, workerIdx)));
 
+        envList.add(new V1EnvVar()
+            .name("TF_GPU_ALLOCATOR")
+            .value("cuda_malloc_async"));
+
         if (!this.getGpuUse()) {
             envList.add(new V1EnvVar()
                 .name("CUDA_VISIBLE_DEVICES")

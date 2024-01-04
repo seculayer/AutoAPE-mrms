@@ -3,6 +3,7 @@ package com.seculayer.mrms.common;
 import com.seculayer.mrms.managers.MRMServerManager;
 
 public class Constants {
+    public static final String REGISTRY_URL = MRMServerManager.getInstance().getConfiguration().get("registry.url", "registry.seculayer.com:31500/ape");
     public static final String DA_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("da.tag", "1.0-2023.1.0301");
     public static final String EDA_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("eda.tag", "1.0-2023.1.0301");
     public static final String DPRS_IMAGE_VERSION = MRMServerManager.getInstance().getConfiguration().get("dprs.tag", "1.0-2023.1.0301");

@@ -12,7 +12,7 @@
         FROM VAR_FUNC_INFO
     </select>
     <select id="selectVarFuncList" resultType="map">
-        SELECT conv_func_cls, conv_func_tag
+        SELECT *
         FROM VAR_FUNC_INFO
     </select>
     <select id="selectSttusCd" resultType="map">
@@ -217,6 +217,14 @@
       WHERE infr_hist_no = #{infrHistNo}
     </select>
 
+    <select id="selectAlgoPurpose" parameterType="map" resultType="map">
+      SELECT *
+      FROM ALGORITHM_INFO
+      WHERE alg_type like '${project_purpose_cd},%'
+         OR alg_type like '%,${project_purpose_cd},%'
+         OR alg_type like '%,${project_purpose_cd}'
+         OR alg_type like #{project_purpose_cd}
+    </select>
 
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">

@@ -2,17 +2,13 @@ package com.seculayer.mrms.rest.servlet.select;
 
 import com.seculayer.mrms.rest.ServletHandlerAbstract;
 import com.seculayer.util.JsonUtil;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GetDatasetMeta extends ServletHandlerAbstract {
     public static final String ContextPath = ServletHandlerAbstract.ContextPath + "/get_dataset_meta";
@@ -42,12 +38,33 @@ public class GetDatasetMeta extends ServletHandlerAbstract {
 
     public Map<String, Object> getDatasetMeta(List<Map<String, Object>> list) {
         Map<String, Object> rst = new HashMap<>();
-        for (Map<String, Object> e: list) {
-            for (String key: e.keySet()) {
+        int columnsCnt = list.size();
+        List<Integer> emptyIdxList = new ArrayList<>();
+        Set<String> keySet = null;
+
+        for (int idx=0; idx<list.size(); idx++) {
+            Map<String, Object> e = list.get(idx);
+            if (e.isEmpty()) {
+                emptyIdxList.add(idx);
+                continue;
+            }
+            keySet = e.keySet();
+            for (String key: keySet) {
                 if (!rst.containsKey(key)) {
                     rst.put(key, new ArrayList<>());
                 }
                 ((List) rst.get(key)).add(e.get(key));
+            }
+        }
+
+        for (Integer idx: emptyIdxList) {
+            assert keySet != null;
+            for (String key: keySet) {
+                List<?> tmpList = new ArrayList<>();
+                for (int i=0; i<columnsCnt; i++) {
+                    tmpList.add(null);
+                }
+                ((List) rst.get(key)).add(idx, tmpList);
             }
         }
 

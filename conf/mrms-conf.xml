@@ -75,6 +75,11 @@
       <description>true/false</description>
     </property>
     <property>
+      <name>registry.url</name>
+      <value>registry.seculayer.com:31500/ape</value>
+      <description>Registry URL</description>
+    </property>
+    <property>
       <name>da.tag</name>
       <value>4.0-2023.3.0901</value>
       <description>DA Module Version</description>
