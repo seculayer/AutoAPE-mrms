@@ -16,7 +16,7 @@ import java.util.Map;
 
 public abstract class KubeContainer {
     private Logger logger = LogManager.getLogger();
-    protected static final String registryURL = "registry.seculayer.com:31500/ape";
+    protected static final String registryURL = Constants.REGISTRY_URL;
 
     protected String name;
     protected String image;
@@ -96,6 +96,7 @@ public abstract class KubeContainer {
 
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("temp", "/eyeCloudAI/data/processing/ape/temp"));
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("results-xai", "/eyeCloudAI/data/processing/ape/results_xai"));
+        volumeMounts.add(KubeUtil.getVolumeMountFromPath("storage", "/eyeCloudAI/data/storage"));
         volumeMounts.add(KubeUtil.getVolumeMountFromPath("tz", "/etc/localtime"));
         return volumeMounts;
     }

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -255,6 +256,25 @@ public class CommonDAO {
         return rst;
     }
 
+    public String selectDatasetMeta(String datasetID) {
+        String rst;
+        try (SqlSession session = factory.openSession()) {
+            rst = session.selectOne(mapperName + "selectDatasetMeta", datasetID);
+        }
+
+        return rst;
+    }
+
+    public List<Map<String, Object>> selectAlgoPurpose(String projectPurposeCd){
+        List<Map<String, Object>> listMap;
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("project_purpose_cd", projectPurposeCd);
+        try (SqlSession session = factory.openSession()) {
+            listMap = session.selectList("CommonMapper.selectAlgoPurpose", paramMap);
+        }
+
+        return listMap;
+    }
 
     // Update
     public void updateSttusCd(Map<String, Object> map){

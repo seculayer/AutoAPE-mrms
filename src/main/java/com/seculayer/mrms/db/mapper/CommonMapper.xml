@@ -12,7 +12,7 @@
         FROM VAR_FUNC_INFO
     </select>
     <select id="selectVarFuncList" resultType="map">
-        SELECT conv_func_cls, conv_func_tag
+        SELECT *
         FROM VAR_FUNC_INFO
     </select>
     <select id="selectSttusCd" resultType="map">
@@ -125,6 +125,12 @@
         )
     </select>
 
+    <select id="selectDatasetMeta" resultType="string">
+      SELECT dataset_meta_json
+      FROM DATA_ANLS_INFO
+      WHERE dataset_id = #{dataset_id}
+    </select>
+
     <select id="selectAlgInfo" resultType="map">
         SELECT *
         FROM ALGORITHM_INFO
@@ -211,6 +217,14 @@
       WHERE infr_hist_no = #{infrHistNo}
     </select>
 
+    <select id="selectAlgoPurpose" parameterType="map" resultType="map">
+      SELECT *
+      FROM ALGORITHM_INFO
+      WHERE alg_type like '${project_purpose_cd},%'
+         OR alg_type like '%,${project_purpose_cd},%'
+         OR alg_type like '%,${project_purpose_cd}'
+         OR alg_type like #{project_purpose_cd}
+    </select>
 
     <!-- Update -->
     <update id="updateSttusCd" parameterType="map">
@@ -292,14 +306,16 @@
                              dataset_size,
                              n_rows,
                              status_cd,
-                             format_json)
+                             format_json,
+                             target_field)
         VALUES (#{dataset_id},
                 #{dataset_format},
                 #{n_cols},
                 #{dataset_size},
                 #{n_rows},
                 #{status_cd},
-                #{format_json}
+                #{format_json},
+                #{target_field}
                 )
     </insert>
     <insert id="insertDataAnlsInfo" parameterType="map">
@@ -308,15 +324,18 @@
             SELECT UUID_SHORT()
         </selectKey>
         INSERT INTO DATA_ANLS_INFO (data_analysis_id,
-                             metadata_json,
-                             dist_file_cnt,
-                             analysis_file_nm,
-                             dataset_id)
+                                    metadata_json,
+                                    dist_file_cnt,
+                                    analysis_file_nm,
+                                    dataset_id,
+                                    dataset_meta_json
+                            )
         VALUES (#{data_analysis_id},
                 #{metadata_json},
                 #{dist_file_cnt},
                 #{analysis_file_nm},
-                #{dataset_id}
+                #{dataset_id},
+                #{dataset_meta_json}
                 )
     </insert>
     <insert id="insertInferenceInfo" parameterType="map">

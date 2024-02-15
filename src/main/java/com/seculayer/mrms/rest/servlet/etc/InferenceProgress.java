@@ -68,7 +68,12 @@ public class InferenceProgress extends ServletHandlerAbstract {
         try {
             String id = httpServletRequest.getParameter("id");
 
-            String rate = inferenceProgressRate.get(id).toString();
+            String rate;
+            if (inferenceProgressRate.containsKey(id)) {
+                rate = inferenceProgressRate.get(id).toString();
+            } else {
+                rate = "100.0";
+            }
             out.println(rate);
         } catch (Exception e) {
             e.printStackTrace();
